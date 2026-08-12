@@ -81,7 +81,7 @@ class AlertDialog_atendimento:
         if isinstance(valor, Decimal):
             return valor
 
-        texto = str(valor).strip().replace(' ', '')
+        texto = str(valor).strip().replace(' ', '').replace('-', '')
 
         if ',' in texto and '.' in texto:
             if texto.rfind(',') > texto.rfind('.'):
@@ -100,7 +100,7 @@ class AlertDialog_atendimento:
         if valor in ['', 'None', None]:
             return '0,00'
         valor_decimal = Decimal(str(valor)).quantize(Decimal('0.01'))
-        return f'{valor_decimal:.2f}'.replace('.', ',')
+        return f'{valor_decimal:.2f}'.replace('.', ',').replace('-', '')
 
     def adicao_steppers(self, setor, servico, valor):
         stepper = self.stepper_control(
