@@ -29,6 +29,9 @@ class AlertDialog_atendimento:
         self.taxa_credito_C = Decimal("0.0023")
         self.taxa_cartoes = Decimal("0")
         self.coluna_main_descontos_adicionais = None
+        self.descontos_Fn = 0
+        self.adicionais_Fn = 0
+        self.taxa_operacao = 0
 
         self.margin_lateral_interna = 25
         self.largura_page = self.page.width
@@ -765,9 +768,13 @@ class AlertDialog_atendimento:
             if self.porcentagem_ativa:
                 operacao_desconto = base * (valor_desconto / Decimal('100'))
                 operacao_adicional = base * (valor_adicional / Decimal('100'))
+                self.descontos_Fn = f'% {operacao_desconto}'
+                self.adicionais_Fn = f'% {operacao_desconto}'
             else:
                 operacao_desconto = valor_desconto
                 operacao_adicional = valor_adicional
+                self.descontos_Fn = f'$ {operacao_desconto}'
+                self.adicionais_Fn = f'$ {operacao_desconto}'
 
             self.totais = base - operacao_desconto + operacao_adicional
 
@@ -939,13 +946,50 @@ class AlertDialog_atendimento:
                         color = c.branco,
                         som = 'venda_realizada.mp3'
                     )
+                    servicos = ''
+                    for servico in self.servicos_atendimento:
+                        quantidade = self.servicos_atendimento[servico]['quantidade']
+                        total_servico = self.servicos_atendimento[servico]['total']
+                        if servicos != '':
+                            servicos += f'/#servico:{servico} #quantidade:{quantidade} #total:{total_servico}'
+                        else:
+                            servicos += f'#servico:{servico} #quantidade:{quantidade} #total:{total_servico}'
+                    pagamentos_list = {
+                        'Pix': 0.00,
+                        'Dinheiro': 0.00,
+                        'Cartão_crédito': 0.00,
+                        'Cartão_débito': 0.00,
+                    }
+
+                    for pagamento in pagamentos_list:
+                        if pagamento in formas_pagamento:
+                            pagamentos_list[pagamento] = formas_pagamento[pagamento]
+
+                    pix = pagamentos_list['Pix']
+                    dinheiro = pagamentos_list['Dinheiro']
+                    cartao_debito = pagamentos_list['Cartão_débito']
+                    cartao_credito = pagamentos_list['Cartão_crédito']
+                        
+                    bd.registrar_atendimento(
+                        servicos = servicos,
+                        subtotal = self.totais_reserva,
+                        descontos = self.descontos_Fn,
+                        adicionais = self.adicionais_Fn,
+                        valor_total = self.totais,
+                        taxa_operacao = self.taxa_operacao,
+                        pix = pix, dinheiro = dinheiro,
+                        cartao_credito = cartao_credito,
+                        cartao_debito = cartao_debito,
+                        troco = total_final - self.totais
+                    )
                 else:
                     await notificacoes_top(
                         e,
                         msg1 = 'Saldo insuficiente!\n',
                         msg2 = 'O valor recebido é inferior ao total.',
                     )
-            except Exception:
+            except Exception as err:
+                print('Erro subir_venda: ', err)
                 await notificacoes_top(
                     e,
                     msg1 = 'Ops..!\n',
@@ -953,7 +997,8 @@ class AlertDialog_atendimento:
                 )
         async def recarregar_no_field(e):
             text = e.control.data['text']
-            formas_pagamento[text] = e.control.value
+            if text.lower() not in ['cartao', 'cartão']:
+                formas_pagamento[text] = e.control.value
             await recarregar_valores(e, referencia_p_field[text])
         async def focar_campo(e, focus = False):
             stack = e.control.data['stack']
@@ -1073,6 +1118,15 @@ class AlertDialog_atendimento:
             if card == False and campo == False:
                 self.cartao_credito = not self.cartao_credito
 
+            if self.cartao_credito:
+                cartao = 'Cartão_crédito'
+                if 'Cartão_débito' in formas_pagamento:
+                    formas_pagamento.pop('Cartão_débito', None)
+            else:
+                cartao = 'Cartão_débito'
+                if 'Cartão_crédito' in formas_pagamento:
+                    formas_pagamento.pop('Cartão_crédito', None)
+
             campo_value_fx = self.value_fieldtext_cartao #valor registrado no momento que o campo perde foco
 
             if self.cartao_credito:
@@ -1081,12 +1135,14 @@ class AlertDialog_atendimento:
                 taxa = self.taxa_debito_C
 
             self.taxa_cartoes = taxa
+            self.taxa_operacao = taxa
             await conversao_campo(e, campo = self.fieldtext_cartao)
             self.fieldtext_cartao.value = self.decimal_to_texto(campo_value_fx + (campo_value_fx * taxa))
             self.value_taxa_cartao = self.decimal_from_value(self.fieldtext_cartao.value)
             await conversao_campo(e, campo = self.fieldtext_cartao)
             if self.box_cartao_ativo:
-                formas_pagamento['Cartão'] = str(self.value_fieldtext_cartao)
+                formas_pagamento[cartao] = str(self.value_fieldtext_cartao)
+                print(formas_pagamento)
             await sistema_troco()
             self.alertdialog_global.update()
         async def campo_cartao(e):
@@ -1125,7 +1181,14 @@ class AlertDialog_atendimento:
                 await campos_pagamento_CONCLUSAO(button = button)
                 if button.data['modalidade'].lower() in ['cartão', 'cartao']:
                     self.box_cartao_ativo = False
+                    self.taxa_operacao = 0
                     await conversao_campo(e, text = text_valor_total)
+                    if 'Cartão_crédito'in formas_pagamento:
+                        formas_pagamento.pop('Cartão_crédito', None)
+                    elif 'Cartão_débito' in formas_pagamento:
+                        formas_pagamento.pop('Cartão_débito', None)
+                    print('desligou mas ficou:', formas_pagamento)
+
                 formas_pagamento.pop(text.value, None)
                 
                 print(f'off {text.value}')
