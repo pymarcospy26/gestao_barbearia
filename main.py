@@ -37,5 +37,5 @@ async def execute( page: ft.Page):
     i = App(page)  
     await i.pagina()
 
-# ft.run(execute, assets_dir = 'assets')
-ft.run(execute, view = ft.AppView.WEB_BROWSER, host = '0.0.0.0', assets_dir = 'assets')
+ft.run(execute, assets_dir = 'assets')
+# ft.run(execute, view = ft.AppView.WEB_BROWSER, host = '0.0.0.0', assets_dir = 'assets')

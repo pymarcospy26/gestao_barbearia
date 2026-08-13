@@ -27,8 +27,9 @@ rosa = '#FF8FA3'
 
 gradiente_botoes = [lilas, azul_violeta]
 
-borda_erro_0 = '#5c0000'
+vermelho_escuro = '#5c0000'
 borda_erro_1 = '#F94449'
+vermelho_fundo_claro = '#FFE8EC'
 
 gradiente_banner = [lilas, azul_violeta]
 

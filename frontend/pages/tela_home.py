@@ -3,6 +3,7 @@ import colors as c
 import icons as ic
 import variaveis_globais as vg
 from frontend.pages import tela_atendimento_dialog as diag
+from frontend.pages import tela_registros_atendimentos as tra
 from backend import fluxo_telas as fx
 
 class Tela_Home:
@@ -355,14 +356,21 @@ class Tela_Home:
                         ]
                     ),
                     
-                    ft.Column(
-                        alignment = ft.MainAxisAlignment.CENTER,
-                        horizontal_alignment = ft.CrossAxisAlignment.CENTER,
-                        
-                        controls = [
-                            ic.svg_icon('configuracao', size = 32, color = c.cinza_gelo),
-                            ft.Text(value = 'Ajustes', size = 14, color = c.cinza_gelo, font_family = 'inter')
-                        ]
+                    ft.Container(
+                        bgcolor = ft.Colors.TRANSPARENT,
+                        alignment = ft.Alignment.CENTER,
+                        content = ft.Column(
+                            alignment = ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment = ft.CrossAxisAlignment.CENTER,
+                            
+                            controls = [
+                                ic.svg_icon('historico', size = 32, color = c.cinza_gelo),
+                                ft.Text(value = 'Histórico', size = 14, color = c.cinza_gelo, font_family = 'inter')
+                            ]
+                        ),
+
+                        on_click = fx.mudar_page(self.page, atual = self, anterior = self, nova = tra.Registro_Atendimentos(self.page)),
+                        ink = True
                     ),
                 ]
             )

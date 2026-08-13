@@ -1,12 +1,15 @@
 import sqlite3
 import asyncio
+import flet as ft
 from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 
 BANCO = Path(__file__).resolve().parent
 BANCO = BANCO / 'banco.db'
+
 sqlite3.register_adapter(Decimal, str)
+
 def servico_valor_base():
     con = sqlite3.connect(BANCO)
     cursor = con.cursor()
@@ -75,3 +78,42 @@ def registrar_atendimento(
     con.close()
 
     print('adicionado!')
+
+def consultar_atendimentos():
+    con = sqlite3.connect(BANCO)
+    cursor = con.cursor()
+
+    cursor.execute("""
+        SELECT
+            id,
+            data,
+            servicos,
+            subtotal,
+            adicionais,
+            descontos,
+            taxas_operacao,
+            valor_total,
+            dinheiro,
+            pix,
+            cartao_debito,
+            cartao_credito,
+            troco
+        FROM atendimentos_nova
+    """)
+
+    resultados = cursor.fetchall()
+
+    con.close()
+
+    return resultados
+
+def limpar_registros_atendimentos(e = None):
+    con = sqlite3.connect(BANCO)
+    cursor = con.cursor()
+
+    cursor.execute('DELETE FROM atendimentos_nova')
+    cursor.execute("DELETE FROM sqlite_sequence WHERE name = 'atendimentos_nova'")
+
+    con.commit()
+    con.close()
+

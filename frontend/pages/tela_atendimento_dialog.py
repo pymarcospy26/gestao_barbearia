@@ -33,6 +33,8 @@ class AlertDialog_atendimento:
         self.adicionais_Fn = 0
         self.taxa_operacao = 0
 
+        self.btn_fechar = None
+
         self.margin_lateral_interna = 25
         self.largura_page = self.page.width
 
@@ -768,13 +770,13 @@ class AlertDialog_atendimento:
             if self.porcentagem_ativa:
                 operacao_desconto = base * (valor_desconto / Decimal('100'))
                 operacao_adicional = base * (valor_adicional / Decimal('100'))
-                self.descontos_Fn = f'% {operacao_desconto}'
-                self.adicionais_Fn = f'% {operacao_desconto}'
+                self.descontos_Fn = f'% {valor_desconto}'
+                self.adicionais_Fn = f'% {valor_adicional}'
             else:
                 operacao_desconto = valor_desconto
                 operacao_adicional = valor_adicional
-                self.descontos_Fn = f'$ {operacao_desconto}'
-                self.adicionais_Fn = f'$ {operacao_desconto}'
+                self.descontos_Fn = f'$ {valor_desconto}'
+                self.adicionais_Fn = f'$ {valor_adicional}'
 
             self.totais = base - operacao_desconto + operacao_adicional
 
@@ -938,6 +940,8 @@ class AlertDialog_atendimento:
                     total_final += self.decimal_from_value(formas_pagamento[formas])
 
                 if total_final >= (self.totais - Decimal('0.03')):
+                    self.btn_fechar.on_click = None
+                    self.btn_fechar.disabled = True
                     await notificacoes_top(
                         e,
                         msg1 = 'Sucesso!\n',
@@ -977,11 +981,15 @@ class AlertDialog_atendimento:
                         adicionais = self.adicionais_Fn,
                         valor_total = self.totais,
                         taxa_operacao = self.taxa_operacao,
-                        pix = pix, dinheiro = dinheiro,
+                        
+                        pix = pix,
+                        dinheiro = dinheiro,
                         cartao_credito = cartao_credito,
                         cartao_debito = cartao_debito,
                         troco = total_final - self.totais
                     )
+
+                    self.fechar()
                 else:
                     await notificacoes_top(
                         e,
@@ -1887,6 +1895,7 @@ class AlertDialog_atendimento:
                 ]
             )
 
+        self.btn_fechar = self.barra_inferior_conclusao.content.controls[0]
         text_valor_total = self.lista_options_conclusao.controls[0].content.controls[2].controls[0].controls[1]
         text_valor_troco = self.lista_options_conclusao.controls[0].content.controls[2].controls[1].controls[1]
         globals_controls['coluna'] = self.lista_options_conclusao
