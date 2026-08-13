@@ -31,7 +31,7 @@ class Tela_Home:
                 'cor_urgencia': c.lilas
             }
         }
-
+        self.titulo_pages = 'Home'
         self.acesso_rapido = ['Retirada', 'Fiados', 'Angendar']
 
     async def abrir_atendimento(self, e):
@@ -41,27 +41,91 @@ class Tela_Home:
         alert_dialog.abrir(e)
 
     async def tela(self):
-        self.botao_configuracao = ft.Container(
-            width = 74,
+        def botoes_top(
+            icon = 'menu', on_click = None,
+            top = None, left = None, right = None, bottom = None,
+            margin_top = 0, margin_left = 0, margin_right = 0, margin_bottom = 0
+        ):
+            return ft.Container(
+                top = top,
+                left = left,
+                right = right,
+                bottom = bottom,
+
+                data = {},
+                width = 74,
+                height = 74,
+                bgcolor = c.branco,
+                border_radius = 28,
+                shadow = c.shadow_leve(),
+                alignment = ft.Alignment.CENTER,
+                margin = ft.Margin(
+                    top = margin_top,
+                    left = margin_left,
+                    right = margin_right,
+                    bottom = margin_bottom
+                ),
+                content = ic.svg_icon(icon, size = 30, color = c.sub_textos),
+
+                on_click = on_click
+            )
+        self.titulo_control = ft.Text(
+            value = self.titulo_pages,
+            size = 26, color = c.preto_icons,
+            font_family = 'inter', weight = ft.FontWeight.W_400
+        )
+        self.box_titulo = ft.Container(
             height = 74,
-            bgcolor = c.branco,
-            border_radius = 28,
-            shadow = c.shadow_leve(),
-            margin = ft.Margin(left = vg.margin_left, top = vg.margin_top),
-
+            bgcolor = ft.Colors.TRANSPARENT,
             alignment = ft.Alignment.CENTER,
-
-            content = ic.svg_icon('configuracao', size = 30, color = c.preto_icons)
+            content = self.titulo_control,
+            margin = ft.Margin(top = vg.margin_top)
         )
 
+        def stack_notificcao(
+            icon = 'sino', on_click = None,
+            margin_top = 0, margin_left = 0, margin_right = 0, margin_bottom = 0
+        ):
+            btn = botoes_top(
+                icon = icon,
+                on_click = on_click,
+                right = 0, bottom = 0,
+            )
+            stack = ft.Stack(
+                data = {},
+                width = 74,
+                height = 74,
+                controls = [
+                    btn,
+                    ft.Container(
+                        top = 0,
+                        left = 0,
+                        width = 18,
+                        height = 18,
+                        border_radius = 9,
+                        bgcolor = c.azul_violeta,
+                    )
+                ],
+                margin = ft.Margin(
+                    top = margin_top,
+                    left = margin_left,
+                    right = margin_right,
+                    bottom = margin_bottom
+                )
+            )
+            btn.data['stack'] = stack
+            stack.data['btn'] = btn
+
+            return stack
+
         self.banner = ft.Container(
-            height = 300,
+            height = 360,
             expand = True,
             border_radius = 34,
-            # bgcolor = c.lilas,
+            bgcolor = c.branco,
+            shadow = c.shadow_leve(),
             margin = ft.Margin(left = vg.margin_left, top = vg.margin_top, right = vg.margin_right),
-
-            gradient = c.gradiente_top_bottom(c.gradiente_banner),
+            # gradient = c.gradiente_top_bottom(c.gradiente_banner),
         )
 
         self.ferramentas = ft.ResponsiveRow(
@@ -97,22 +161,25 @@ class Tela_Home:
                             ic.svg_icon(
                                 icon,
                                 size = 30,
-                                color = c.lilas
+                                color = c.sub_textos
                             ),
                             
                             ft.Text(
                                 value = titulo,
-                                size = 16, color = c.preto_icons,
+                                size = 16, color = c.sub_textos, weight = ft.FontWeight.W_400,
                                 font_family = 'inter', text_align = ft.TextAlign.CENTER
                             )
                         ]
-                    )
+                    ),
+
+                    on_click = True,
+                    ink = True
                 )
             )
 
-        btns_ferramentas(self.acesso_rapido[0], 'retirada_caixa', l = vg.margin_left, r = vg.margin_right / 2, t = vg.margin_top, col = 1)
-        btns_ferramentas(self.acesso_rapido[1], 'fiados', l = vg.margin_left / 2, r = vg.margin_right / 2, t = vg.margin_top, col = 1)
-        btns_ferramentas(self.acesso_rapido[2], 'calendar_add', l = vg.margin_left / 2, r = vg.margin_right, t = vg.margin_top, col = 1)
+        btns_ferramentas(self.acesso_rapido[0], 'retirada_caixa', l = vg.margin_left, r = vg.margin_right / 2, t = vg.margin_top + 10, col = 1)
+        btns_ferramentas(self.acesso_rapido[1], 'fiados', l = vg.margin_left / 2, r = vg.margin_right / 2, t = vg.margin_top + 10, col = 1)
+        btns_ferramentas(self.acesso_rapido[2], 'calendar_add', l = vg.margin_left / 2, r = vg.margin_right, t = vg.margin_top + 10, col = 1)
 
         self.agendados_prox = ft.Column(
             spacing = 0,
@@ -123,9 +190,9 @@ class Tela_Home:
             controls = [
                 ft.Text(
                     value = 'Clientes agendados',
-                    size = 20, color = c.preto_icons,
+                    size = 20, color = c.sub_textos,
                     font_family = 'inter', margin = ft.Margin(
-                        left = vg.margin_left, top = vg.margin_top, bottom = vg.margin_top / 2
+                        left = vg.margin_left, top = vg.margin_top, bottom = vg.margin_top
                     )
                 ),
 
@@ -162,7 +229,7 @@ class Tela_Home:
 
                     shadow = c.shadow_leve(),
 
-                    alignment = ft.Alignment.CENTER,
+                    alignment = ft.Alignment.CENTER_LEFT,
 
                     content = ft.Column(
                         spacing = 0,
@@ -170,35 +237,11 @@ class Tela_Home:
                         horizontal_alignment = ft.CrossAxisAlignment.START,
 
                         controls = [
-                            ft.Row(
-                                spacing = 0,
-                                alignment = ft.MainAxisAlignment.START,
-                                vertical_alignment = ft.CrossAxisAlignment.CENTER,
-
-                                controls = [
-                                    ft.Container(
-                                        width = 10,
-                                        height = 10,
-                                        border_radius = 5,
-                                        margin = ft.Margin(right = 10),
-                                        bgcolor = self.agendamentos[cliente]['cor_urgencia'],
-                                    ),
-
-                                    ft.Text(
-                                        value = 'Em breve',
-                                        size = 14, color = self.agendamentos[cliente]['cor_urgencia'],
-                                        font_family = 'inter'
-                                    ),
-
-                                    
-                                ]
-                            ),
-
                             ft.Text(
                                 value = self.agendamentos[cliente]['hora'],
-                                size = 28, color = c.preto_icons,
-                                font_family = 'inter', weight = ft.FontWeight.W_400,
-                                margin = ft.Margin(top = 14),
+                                size = 28, color = c.sub_textos,
+                                font_family = 'inter', weight = ft.FontWeight.W_300,
+                                margin = ft.Margin(top = 8),
                             ),
 
                             ft.Text(
@@ -208,8 +251,8 @@ class Tela_Home:
                                 margin = ft.Margin(top = 14),
                                 value = f'{cliente}\n',
                                 style = ft.TextStyle(
-                                    size = 18, color = c.preto_icons,
-                                    font_family = 'inter', weight = ft.FontWeight.W_500
+                                    size = 18, color = c.sub_textos,
+                                    font_family = 'inter', weight = ft.FontWeight.W_400
                                 ),
                             ),
  
@@ -285,10 +328,10 @@ class Tela_Home:
             )
 
         self.button_bar_center = ft.Container(
-            width = 90,
-            height = 90,
-            border_radius = 45,
-            margin = ft.Margin(top = 20, bottom = 20),
+            width = 100,
+            height = 100,
+            border_radius = 50,
+            margin = ft.Margin(top = 22, bottom = 22),
 
             gradient = c.gradiente_top_bottom(c.gradiente_banner),
 
@@ -313,10 +356,8 @@ class Tela_Home:
             left = 0,
             right = 0,
             bottom = 0,
-
             bgcolor = c.branco,
-
-            shadow = c.shadow_leve(0, -4),
+            shadow = c.shadow_leve(0, -4, opc = 0.36),
 
             content = ft.Row(
                 alignment = ft.MainAxisAlignment.SPACE_EVENLY,
@@ -328,19 +369,18 @@ class Tela_Home:
                         horizontal_alignment = ft.CrossAxisAlignment.CENTER,
                         
                         controls = [
-                            ic.svg_icon('home', size = 28, color = c.azul_violeta),
-                            ft.Text(value = 'Home', size = 14, color = c.azul_violeta, font_family = 'inter')
+                            ic.svg_icon('home', size = 28, color = c.roxo),
+                            ft.Text(value = 'Home', size = 14, color = c.roxo, font_family = 'inter', weight = ft.FontWeight.W_600)
                         ]
                     ),
-
-                    
+                   
                     ft.Column(
                         alignment = ft.MainAxisAlignment.CENTER,
                         horizontal_alignment = ft.CrossAxisAlignment.CENTER,
                         
                         controls = [
-                            ic.svg_icon('calendar', size = 28, color = c.cinza_gelo),
-                            ft.Text(value = 'Agenda', size = 14, color = c.cinza_gelo, font_family = 'inter')
+                            ic.svg_icon('calendar', size = 28, color = c.txt_fra),
+                            ft.Text(value = 'Agenda', size = 14, color = c.txt_fra, font_family = 'inter')
                         ]
                     ),
 
@@ -351,8 +391,8 @@ class Tela_Home:
                         horizontal_alignment = ft.CrossAxisAlignment.CENTER,
                         
                         controls = [
-                            ic.svg_icon('adm', size = 28, color = c.cinza_gelo),
-                            ft.Text(value = 'Adm', size = 14, color = c.cinza_gelo, font_family = 'inter')
+                            ic.svg_icon('adm', size = 28, color = c.txt_fra),
+                            ft.Text(value = 'Adm', size = 14, color = c.txt_fra, font_family = 'inter')
                         ]
                     ),
                     
@@ -364,8 +404,8 @@ class Tela_Home:
                             horizontal_alignment = ft.CrossAxisAlignment.CENTER,
                             
                             controls = [
-                                ic.svg_icon('historico', size = 32, color = c.cinza_gelo),
-                                ft.Text(value = 'Histórico', size = 14, color = c.cinza_gelo, font_family = 'inter')
+                                ic.svg_icon('historico', size = 32, color = c.txt_fra),
+                                ft.Text(value = 'Histórico', size = 14, color = c.txt_fra, font_family = 'inter')
                             ]
                         ),
 
@@ -387,9 +427,14 @@ class Tela_Home:
 
             controls = [
                 ft.Row(
+                    expand = True,
                     alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
                     vertical_alignment = ft.CrossAxisAlignment.CENTER,
-                    controls = [self.botao_configuracao]
+                    controls = [
+                        botoes_top('menu', None, margin_top = vg.margin_top, margin_left = vg.margin_left),
+                        self.box_titulo,
+                        stack_notificcao('sino', None, margin_top = vg.margin_top, margin_right = vg.margin_right)
+                    ]
                 ),
 
                 self.banner,
@@ -404,7 +449,7 @@ class Tela_Home:
             expand = True,
 
             controls = [
-                self.tela_scrol,
+                self.tela_scrol, #somene esta deve ser alterada conforme as telas mudam
                 self.control_bar,
             ]
         )

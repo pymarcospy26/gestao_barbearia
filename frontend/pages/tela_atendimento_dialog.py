@@ -369,7 +369,7 @@ class AlertDialog_atendimento:
 
                         bgcolor = c.branco,
                         border_color = ft.Colors.TRANSPARENT,
-                        focused_border_color = c.lilas_calmo,
+                        focused_border_color = c.roxo,
 
                         text_style = ft.TextStyle(
                             size = 16, color = c.textos,
@@ -623,7 +623,7 @@ class AlertDialog_atendimento:
                 text_valor_troco.color = c.verde
                 text_valor_troco.value = f'R$ {self.decimal_to_texto(total_pago - self.totais)}'
             elif total_pago < self.totais:
-                text_valor_troco.color = c.vermelho
+                text_valor_troco.color = c.rosa
                 text_valor_troco.value = f'R$ -{self.decimal_to_texto(self.totais - total_pago)}'
             else:
                 text_valor_troco.color = c.preto_icons
@@ -1021,10 +1021,10 @@ class AlertDialog_atendimento:
                 stack.controls[1].controls[0].color = c.sub_textos
             else:
                 field.label_style = ft.TextStyle(
-                    color = c.azul_violeta, size = 20,
+                    color = c.roxo, size = 20,
                     font_family = 'inter'
                 )
-                stack.controls[1].controls[0].color = c.lilas_calmo
+                stack.controls[1].controls[0].color = c.roxo
                 await asyncio.sleep(0.3)
                 await coluna.scroll_to(
                     scroll_key = field.key,
@@ -1168,11 +1168,11 @@ class AlertDialog_atendimento:
 
             if state == False:
                 button.data['ativo'] = not button.data['ativo']
-                button.border = ft.Border.all(width = 2, color = c.azul_violeta)
-                radio.border = ft.Border.all(width = 2, color = c.azul_violeta)
-                radio_interno.bgcolor = c.azul_violeta
-                icon.color = c.azul_violeta
-                text.color = c.azul_violeta
+                button.border = ft.Border.all(width = 2, color = c.roxo)
+                radio.border = ft.Border.all(width = 2, color = c.roxo)
+                radio_interno.bgcolor = c.roxo
+                icon.color = c.roxo
+                text.color = c.roxo
                 if button.data['modalidade'].lower() in ['cartão', 'cartao']:
                     self.box_cartao_ativo = True
                     await converter_credito_debito(card = True)
@@ -1277,7 +1277,7 @@ class AlertDialog_atendimento:
 
                         content_padding = ft.Padding(top = 22, left = 50, bottom = 22),
                         keyboard_type = ft.KeyboardType.NUMBER,
-                        focused_border_color = c.lilas_calmo,
+                        focused_border_color = c.roxo,
                         border_color = c.bordas,
                         border_radius = 24,
 
@@ -1358,33 +1358,34 @@ class AlertDialog_atendimento:
                 )
 
             field = ft.TextField(
-                    expand = True,
-                    key = ft.ScrollKey(f'Key_{text}'),
-                    label = f'Recebido em {text.lower()}',
-                    bgcolor = c.branco,
-                    label_style = ft.TextStyle(
-                        size = 20, color = c.sub_textos,
-                        font_family = 'inter'
-                    ),
+                expand = True,
+                bgcolor = c.branco,
+                key = ft.ScrollKey(f'Key_{text}'),
+                label = f'Recebido em {text.lower()}',
 
-                    text_style = ft.TextStyle(
-                        size = 16, color = c.preto_icons, font_family = 'inter'
-                    ),
+                label_style = ft.TextStyle(
+                    size = 20, color = c.sub_textos,
+                    font_family = 'inter'
+                ),
 
-                    content_padding = ft.Padding(top = 22, left = 50, bottom = 22),
-                    keyboard_type = ft.KeyboardType.NUMBER,
-                    focused_border_color = c.lilas_calmo,
-                    border_color = c.bordas,
-                    border_radius = 24,
+                text_style = ft.TextStyle(
+                    size = 16, color = c.preto_icons, font_family = 'inter'
+                ),
 
-                    margin = ft.Margin(
-                        left = self.margin_lateral_interna,
-                        right = self.margin_lateral_interna
-                    ),
+                content_padding = ft.Padding(top = 22, left = 50, bottom = 22),
+                keyboard_type = ft.KeyboardType.NUMBER,
+                focused_border_color = c.roxo,
+                border_color = c.bordas,
+                border_radius = 24,
 
-                    on_focus = rodar_focus,
-                    on_blur = change_values_campos_CONCLUSAO if on_blur == None else on_blur,
-                )
+                margin = ft.Margin(
+                    left = self.margin_lateral_interna,
+                    right = self.margin_lateral_interna
+                ),
+
+                on_focus = rodar_focus,
+                on_blur = change_values_campos_CONCLUSAO if on_blur == None else on_blur,
+            )
 
             coluna = ft.Column(
                     top = 0,
@@ -1788,7 +1789,7 @@ class AlertDialog_atendimento:
                                 )
                             ]
                         ),
-                        ft.Column(height = 70)
+                        ft.Column(height = 20)
                     ]
                 )
             ]
@@ -1834,13 +1835,13 @@ class AlertDialog_atendimento:
                             controls = [
                                 ic.svg_icon(
                                     'seta_exit',
-                                    size = 26, color = c.rosa
+                                    size = 26, color = c.roxo_esc
                                 ),
                                         
                                 ft.Text(
                                     value = 'Voltar',
                                     style = ft.TextStyle(
-                                        size = 16, color = c.rosa, font_family = 'inter',
+                                        size = 16, color = c.roxo_esc, font_family = 'inter',
                                     ),
                                 )
                             ]
@@ -1852,9 +1853,9 @@ class AlertDialog_atendimento:
 
                     ft.Container(
                         height = 58,
-                        shadow = c.shadow_buttons(),
-
-                        gradient = c.gradiente_top_bottom(c.gradiente_botoes),
+                        shadow = c.shadow_leve(),
+                        bgcolor = c.roxo,
+                        # gradient = c.gradiente_top_bottom(c.gradiente_botoes),
                         margin = ft.Margin(
                             right = self.margin_lateral_interna,
                         ),
@@ -1958,8 +1959,9 @@ class AlertDialog_atendimento:
             
                         ft.Container(
                             height = 58,
-                            shadow = c.shadow_buttons(),
-                            gradient = c.gradiente_top_bottom(c.gradiente_botoes),
+                            shadow = c.shadow_leve(),
+                            bgcolor = c.roxo,
+                            # gradient = c.gradiente_top_bottom(c.gradiente_botoes),
 
                             margin = ft.Margin(
                                 right = self.margin_lateral_interna,
