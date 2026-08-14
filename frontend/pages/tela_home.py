@@ -2,9 +2,6 @@ import flet as ft
 import colors as c
 import icons as ic
 import variaveis_globais as vg
-from frontend.pages import tela_atendimento_dialog as diag
-from frontend.pages import tela_registros_atendimentos as tra
-from backend import fluxo_telas as fx
 
 class Tela_Home:
     def __init__(self, page: ft.Page):
@@ -34,90 +31,10 @@ class Tela_Home:
         self.titulo_pages = 'Home'
         self.acesso_rapido = ['Retirada', 'Fiados', 'Angendar']
 
-    async def abrir_atendimento(self, e):
-        alert_dialog = diag.AlertDialog_atendimento(self.page)
-        await alert_dialog.inicializar()
-
-        alert_dialog.abrir(e)
-
+    async def titulo(self):
+        return self.titulo_pages
+    
     async def tela(self):
-        def botoes_top(
-            icon = 'menu', on_click = None,
-            top = None, left = None, right = None, bottom = None,
-            margin_top = 0, margin_left = 0, margin_right = 0, margin_bottom = 0
-        ):
-            return ft.Container(
-                top = top,
-                left = left,
-                right = right,
-                bottom = bottom,
-
-                data = {},
-                width = 74,
-                height = 74,
-                bgcolor = c.branco,
-                border_radius = 28,
-                shadow = c.shadow_leve(),
-                alignment = ft.Alignment.CENTER,
-                margin = ft.Margin(
-                    top = margin_top,
-                    left = margin_left,
-                    right = margin_right,
-                    bottom = margin_bottom
-                ),
-                content = ic.svg_icon(icon, size = 30, color = c.sub_textos),
-
-                on_click = on_click
-            )
-        self.titulo_control = ft.Text(
-            value = self.titulo_pages,
-            size = 26, color = c.preto_icons,
-            font_family = 'inter', weight = ft.FontWeight.W_400
-        )
-        self.box_titulo = ft.Container(
-            height = 74,
-            bgcolor = ft.Colors.TRANSPARENT,
-            alignment = ft.Alignment.CENTER,
-            content = self.titulo_control,
-            margin = ft.Margin(top = vg.margin_top)
-        )
-
-        def stack_notificcao(
-            icon = 'sino', on_click = None,
-            margin_top = 0, margin_left = 0, margin_right = 0, margin_bottom = 0
-        ):
-            btn = botoes_top(
-                icon = icon,
-                on_click = on_click,
-                right = 0, bottom = 0,
-            )
-            stack = ft.Stack(
-                data = {},
-                width = 74,
-                height = 74,
-                controls = [
-                    btn,
-                    ft.Container(
-                        top = 0,
-                        left = 0,
-                        width = 18,
-                        height = 18,
-                        border_radius = 9,
-                        bgcolor = c.azul_violeta,
-                    )
-                ],
-                margin = ft.Margin(
-                    top = margin_top,
-                    left = margin_left,
-                    right = margin_right,
-                    bottom = margin_bottom
-                )
-            )
-            btn.data['stack'] = stack
-            stack.data['btn'] = btn
-
-            return stack
-
         self.banner = ft.Container(
             height = 360,
             expand = True,
@@ -127,7 +44,6 @@ class Tela_Home:
             margin = ft.Margin(left = vg.margin_left, top = vg.margin_top, right = vg.margin_right),
             # gradient = c.gradiente_top_bottom(c.gradiente_banner),
         )
-
         self.ferramentas = ft.ResponsiveRow(
             spacing = 0,
             columns = 3,
@@ -176,7 +92,6 @@ class Tela_Home:
                     ink = True
                 )
             )
-
         btns_ferramentas(self.acesso_rapido[0], 'retirada_caixa', l = vg.margin_left, r = vg.margin_right / 2, t = vg.margin_top + 10, col = 1)
         btns_ferramentas(self.acesso_rapido[1], 'fiados', l = vg.margin_left / 2, r = vg.margin_right / 2, t = vg.margin_top + 10, col = 1)
         btns_ferramentas(self.acesso_rapido[2], 'calendar_add', l = vg.margin_left / 2, r = vg.margin_right, t = vg.margin_top + 10, col = 1)
@@ -208,7 +123,6 @@ class Tela_Home:
         )
 
         cont = 0
-
         for cliente in self.agendamentos:
             if cont == 3:
                 break
@@ -327,131 +241,16 @@ class Tela_Home:
                 )
             )
 
-        self.button_bar_center = ft.Container(
-            width = 100,
-            height = 100,
-            border_radius = 50,
-            margin = ft.Margin(top = 22, bottom = 22),
-
-            gradient = c.gradiente_top_bottom(c.gradiente_banner),
-
-            shadow = ft.BoxShadow(
-                blur_radius = 10,
-                offset = ft.Offset(0, 4),
-                color = ft.Colors.with_opacity(color = c.azul_violeta, opacity = 0.4)
-            ),
-
-            alignment = ft.Alignment.CENTER,
-
-            content = ft.Icon(
-                icon = ft.CupertinoIcons.SCISSORS_ALT,
-                size = 35, color = c.branco
-            ),
-
-            ink = True,
-            on_click = self.abrir_atendimento
-        )
-
-        self.control_bar = ft.Container(
-            left = 0,
-            right = 0,
-            bottom = 0,
-            bgcolor = c.branco,
-            shadow = c.shadow_leve(0, -4, opc = 0.36),
-
-            content = ft.Row(
-                alignment = ft.MainAxisAlignment.SPACE_EVENLY,
-                vertical_alignment = ft.CrossAxisAlignment.CENTER,
-
-                controls = [
-                    ft.Column(
-                        alignment = ft.MainAxisAlignment.CENTER,
-                        horizontal_alignment = ft.CrossAxisAlignment.CENTER,
-                        
-                        controls = [
-                            ic.svg_icon('home', size = 28, color = c.roxo),
-                            ft.Text(value = 'Home', size = 14, color = c.roxo, font_family = 'inter', weight = ft.FontWeight.W_600)
-                        ]
-                    ),
-                   
-                    ft.Column(
-                        alignment = ft.MainAxisAlignment.CENTER,
-                        horizontal_alignment = ft.CrossAxisAlignment.CENTER,
-                        
-                        controls = [
-                            ic.svg_icon('calendar', size = 28, color = c.txt_fra),
-                            ft.Text(value = 'Agenda', size = 14, color = c.txt_fra, font_family = 'inter')
-                        ]
-                    ),
-
-                    self.button_bar_center,
-
-                    ft.Column(
-                        alignment = ft.MainAxisAlignment.CENTER,
-                        horizontal_alignment = ft.CrossAxisAlignment.CENTER,
-                        
-                        controls = [
-                            ic.svg_icon('adm', size = 28, color = c.txt_fra),
-                            ft.Text(value = 'Adm', size = 14, color = c.txt_fra, font_family = 'inter')
-                        ]
-                    ),
-                    
-                    ft.Container(
-                        bgcolor = ft.Colors.TRANSPARENT,
-                        alignment = ft.Alignment.CENTER,
-                        content = ft.Column(
-                            alignment = ft.MainAxisAlignment.CENTER,
-                            horizontal_alignment = ft.CrossAxisAlignment.CENTER,
-                            
-                            controls = [
-                                ic.svg_icon('historico', size = 32, color = c.txt_fra),
-                                ft.Text(value = 'Histórico', size = 14, color = c.txt_fra, font_family = 'inter')
-                            ]
-                        ),
-
-                        on_click = fx.mudar_page(self.page, atual = self, anterior = self, nova = tra.Registro_Atendimentos(self.page)),
-                        ink = True
-                    ),
-                ]
-            )
-        )
-
-        self.tela_scrol = ft.Column(
-            top = 0,
-            left = 0,
-            right = 0,
-            bottom = 0,
-            
+        area_page = ft.Column(
+            spacing = 0,
             expand = True,
-            scroll = ft.ScrollMode.AUTO,
-
+            alignment = ft.MainAxisAlignment.START,
+            horizontal_alignment = ft.CrossAxisAlignment.START,
             controls = [
-                ft.Row(
-                    expand = True,
-                    alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
-                    vertical_alignment = ft.CrossAxisAlignment.CENTER,
-                    controls = [
-                        botoes_top('menu', None, margin_top = vg.margin_top, margin_left = vg.margin_left),
-                        self.box_titulo,
-                        stack_notificcao('sino', None, margin_top = vg.margin_top, margin_right = vg.margin_right)
-                    ]
-                ),
-
                 self.banner,
                 self.ferramentas,
                 self.agendados_prox,
-
-                ft.Column(height = 200) #espaco pra empurrar os componentes a baixo da bar
             ]
         )
 
-        self.estrutura = ft.Stack(
-            expand = True,
-
-            controls = [
-                self.tela_scrol, #somene esta deve ser alterada conforme as telas mudam
-                self.control_bar,
-            ]
-        )
-
-        return self.estrutura
+        return area_page

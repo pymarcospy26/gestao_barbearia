@@ -15,7 +15,8 @@ class Registro_Atendimentos:
     def lista(self):
         async def apagar_atualizar(e):
             bd.limpar_registros_atendimentos(e)
-            await fx.mudar_page(self.page, atual = self, nova = self, anterior = fx.tela_anterior)(e)
+            tela_nova = Registro_Atendimentos(self.page).tela()
+            await fx.mudar_page(self.page, atual = lista, nova = tela_nova)(e)
         dados = bd.consultar_atendimentos()
         lista = ft.Column(
             spacing = 0,
@@ -31,31 +32,8 @@ class Registro_Atendimentos:
                     vertical_alignment = ft.CrossAxisAlignment.CENTER,
                     controls = [
                         ft.Row(
-                            col = 1,
-                            alignment = ft.MainAxisAlignment.START,
-                            controls = [
-                                ft.Container(
-                                    width = 74,
-                                    height = 74,
-                                    border_radius = 28,
-                                    bgcolor = c.branco,
-                                    shadow = c.shadow_leve(),
-                                    alignment = ft.Alignment.CENTER,
-
-                                    content = ic.svg_icon(
-                                        'porta_aberta',
-                                        size = 30, color = c.preto_icons
-                                    ),
-
-                                    on_click = fx.mudar_page(self.page, atual = self, nova = fx.tela_anterior),
-                                    ink = True
-                                )
-                            ]
-                        ),
-
-                        ft.Row(
-                            col = 1,
-                            alignment = ft.MainAxisAlignment.END,
+                            col = 2,
+                            alignment = ft.MainAxisAlignment.CENTER,
                             controls = [
                                 ft.Container(
                                     width = 74,
@@ -81,9 +59,7 @@ class Registro_Atendimentos:
             ]
         )
 
-        lista.controls[0].controls[1].controls[0].data['lista'] = lista
-
-        if len(dados) < 1:
+        if len(dados) == 0:
             lista.scroll = None
             lista.alignment = ft.MainAxisAlignment.START
             lista.horizontal_alignment = ft.CrossAxisAlignment.CENTER
