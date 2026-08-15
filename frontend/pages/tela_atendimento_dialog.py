@@ -7,6 +7,7 @@ import asyncio
 import play_audio as play
 from decimal import Decimal
 import variaveis_globais as vg
+import dicionario_idioma as dic
 
 class AlertDialog_atendimento:
     def __init__(
@@ -66,7 +67,7 @@ class AlertDialog_atendimento:
             expand = True,
             actions_padding = 0,
             content_padding = 0,
-            bgcolor = c.background,
+            bgcolor = c.fundo,
             shape = ft.RoundedRectangleBorder(radius = 34),
             inset_padding = ft.Padding(left = vg.margin_left, right = vg.margin_right, bottom = 0),
 
@@ -119,7 +120,7 @@ class AlertDialog_atendimento:
         controle = ft.Container(
             expand = True,
             border_radius = 0,
-            border = ft.Border(bottom = ft.BorderSide(width = 0.04, color = c.preto_icons)),
+            border = ft.Border(bottom = ft.BorderSide(width = 0.04, color = c.texto_principal)),
             margin = ft.Margin(left = self.margin_lateral_interna, right = self.margin_lateral_interna),
                                                                     
             data = {
@@ -150,7 +151,7 @@ class AlertDialog_atendimento:
                                 max_lines = 1,
                                 value = servico,
                                 overflow = ft.TextOverflow.ELLIPSIS,
-                                style = ft.TextStyle(size = 16, color = c.preto_icons, font_family = 'inter'),
+                                style = ft.TextStyle(size = 16, color = c.texto_principal, font_family = 'inter'),
                             ),
 
                             ft.Text(
@@ -158,7 +159,7 @@ class AlertDialog_atendimento:
                                 max_lines = 1,
                                 value = valors,
                                 overflow = ft.TextOverflow.ELLIPSIS,
-                                style = ft.TextStyle(size = 14, color = c.preto_icons, font_family = 'inter', weight = ft.FontWeight.W_300),
+                                style = ft.TextStyle(size = 14, color = c.texto_principal, font_family = 'inter', weight = ft.FontWeight.W_300),
                             )
                         ]
                     ),
@@ -181,15 +182,15 @@ class AlertDialog_atendimento:
 
         lista.controls.clear()
         lista.alignment = ft.MainAxisAlignment.CENTER
-        lista.controls.append(ft.ProgressRing(color = c.lilas_calmo, height = 80, width = 80))
+        lista.controls.append(ft.ProgressRing(color = c.cor_principal_clara, height = 80, width = 80))
 
         for tag in self.armazenamento_tags:
-            self.armazenamento_tags[tag].bgcolor = c.branco
-            self.armazenamento_tags[tag].content.color = c.textos
+            self.armazenamento_tags[tag].bgcolor = c.fundo_neutralo
+            self.armazenamento_tags[tag].content.color = c.texto_principal
             self.armazenamento_tags[tag].update()
 
-        botao.bgcolor = c.lilas
-        botao.content.color = c.branco
+        botao.bgcolor = c.cor_principal
+        botao.content.color = c.fundo_neutralo
 
         botao.update()
 
@@ -227,7 +228,7 @@ class AlertDialog_atendimento:
 
         tag_todos = ft.Container(
             height = 56,
-            bgcolor = c.lilas,
+            bgcolor = c.cor_principal,
             border_radius = 22,
             shadow = c.shadow_leve(),
             alignment = ft.Alignment.CENTER,
@@ -235,9 +236,9 @@ class AlertDialog_atendimento:
             margin = ft.Margin(left = self.margin_lateral_interna),
                         
             content = ft.Text(
-                value = 'Todos',
+                value = dic.palavras[dic.idioma_select]['atendimento']['todos'],
                 style = ft.TextStyle(
-                    size = 14, color = c.branco
+                    size = 14, color = c.fundo_neutralo
                 )
             ),
 
@@ -255,7 +256,7 @@ class AlertDialog_atendimento:
         for setor in setores[:3]:
             tag = ft.Container(
                 height = 54,
-                bgcolor = c.branco,
+                bgcolor = c.fundo_neutralo,
                 border_radius = 22,
                 shadow = c.shadow_leve(),
                 alignment = ft.Alignment.CENTER,
@@ -267,7 +268,7 @@ class AlertDialog_atendimento:
                 content = ft.Text(
                     value = setor,
                     style = ft.TextStyle(
-                        size = 14, color = c.textos
+                        size = 14, color = c.texto_principal
                     )
                 ),
                 ink = True,
@@ -304,12 +305,12 @@ class AlertDialog_atendimento:
 
             return texto.lower()
 
-        palavras = normalizar_letras(digitado).split()
+        palavras_busca = normalizar_letras(digitado).split()
 
         for servico in self.armazenamento_controles:
             texto_servico = normalizar_letras(servico)
 
-            if all(palavra in texto_servico for palavra in palavras):
+            if all(palavra in texto_servico for palavra in palavras_busca):
                 self.alertdialog_global.data['lista_atendimento'].alignment = ft.MainAxisAlignment.START
                 controles.append(self.armazenamento_controles[servico])
 
@@ -320,12 +321,12 @@ class AlertDialog_atendimento:
                 controls = [
                     ic.svg_icon(
                         'not_found_busca',
-                        size = 50, color = c.preto_icons
+                        size = 50, color = c.texto_principal
                     ),
 
                     ft.Text(
-                        value = 'Sem resultados\npara essa busca',
-                        size = 16, color = c.preto_icons,
+                        value = dic.palavras[dic.idioma_select]['atendimento']['sem_resultados'],
+                        size = 16, color = c.texto_principal,
                         font_family = 'inter', text_align = ft.TextAlign.CENTER
                     ),
                 ]
@@ -340,7 +341,7 @@ class AlertDialog_atendimento:
 
     def barra_pesquisa(
         self,
-        text_interno = 'Busca rápida',
+        text_interno = dic.palavras[dic.idioma_select]['atendimento']['busca_rapida'],
 
         on_focus: ft.Event = None,
         on_change: ft.Event = None,
@@ -354,7 +355,7 @@ class AlertDialog_atendimento:
                     left = 0,
                     right = 0,
                     expand = True,
-                    bgcolor = c.branco,
+                    bgcolor = c.fundo_neutralo,
                     border_radius = 24,
                     shadow = c.shadow_leve(),
                     
@@ -367,18 +368,18 @@ class AlertDialog_atendimento:
                         border_radius = 24,
                         content_padding = ft.Padding(left = 50, top = 21, bottom = 21),
 
-                        bgcolor = c.branco,
+                        bgcolor = c.fundo_neutralo,
                         border_color = ft.Colors.TRANSPARENT,
-                        focused_border_color = c.roxo,
+                        focused_border_color = c.cor_principal,
 
                         text_style = ft.TextStyle(
-                            size = 16, color = c.textos,
+                            size = 16, color = c.texto_principal,
                             font_family = 'inter'
                         ),
 
                         hint_text = text_interno,
                         hint_style = ft.TextStyle(
-                            size = 16, color = c.sub_textos,
+                            size = 16, color = c.texto_suave,
                             font_family = 'inter'
                         ),
 
@@ -389,7 +390,7 @@ class AlertDialog_atendimento:
                 
                 ic.svg_icon(
                     path = 'lupa',
-                    size = 30, color = c.sub_textos,
+                    size = 30, color = c.texto_suave,
                     left = 38
                 )
             ]
@@ -433,8 +434,8 @@ class AlertDialog_atendimento:
 
         if controle.data['acao'] == 'somar':
             if int(campo.value) == 0:
-                controle.bgcolor = c.lilas
-                controle.content.color = c.branco
+                controle.bgcolor = c.cor_principal
+                controle.content.color = c.fundo_neutralo
 
                 btn_inverso.opacity = 1
                 btn_inverso.on_click = self.status_quant_stepper
@@ -470,8 +471,8 @@ class AlertDialog_atendimento:
             campo.update()
 
             if quantidade == 0:
-                btn_inverso.bgcolor = c.branco
-                btn_inverso.content.color = c.textos
+                btn_inverso.bgcolor = c.fundo_neutralo
+                btn_inverso.content.color = c.texto_principal
 
                 controle.on_click = None
                 controle.opacity = 0.2
@@ -507,7 +508,7 @@ class AlertDialog_atendimento:
             overflow = ft.TextOverflow.ELLIPSIS,
         
             style = ft.TextStyle(
-                size = 18, color = c.preto_icons, font_family = 'inter'
+                size = 18, color = c.texto_principal, font_family = 'inter'
             )
         )
 
@@ -516,13 +517,13 @@ class AlertDialog_atendimento:
             height = 54,
             opacity = 0.2,
             border_radius = 22,
-            bgcolor = c.branco,
+            bgcolor = c.fundo_neutralo,
             shadow = c.shadow_leve(),
             alignment = ft.Alignment.CENTER,
                 
             content = ft.Icon(
                 icon = ft.CupertinoIcons.MINUS,
-                size = 16, color = c.textos
+                size = 16, color = c.texto_principal
             )
         )
 
@@ -530,13 +531,13 @@ class AlertDialog_atendimento:
             width = 54,
             height = 54,
             border_radius = 22,
-            bgcolor = c.branco,
+            bgcolor = c.fundo_neutralo,
             shadow = c.shadow_leve(),
             alignment = ft.Alignment.CENTER,
                                     
             content = ft.Icon(
                 icon = ft.CupertinoIcons.PLUS,
-                size = 16, color = c.textos
+                size = 16, color = c.texto_principal
             ),
 
             on_click = self.status_quant_stepper
@@ -595,7 +596,7 @@ class AlertDialog_atendimento:
             bottom = 0,
             expand = True,
             visible = False,
-            bgcolor = c.rosa,
+            bgcolor = c.cor_rosa,
             alignment = ft.Alignment.CENTER,
             border_radius = ft.BorderRadius(
                 top_left = 34, top_right = 34,
@@ -620,17 +621,17 @@ class AlertDialog_atendimento:
                     print('valor inválido no troco: ', valor)
                     return
             if total_pago > self.totais:
-                text_valor_troco.color = c.verde
+                text_valor_troco.color = c.cor_verde
                 text_valor_troco.value = f'R$ {self.decimal_to_texto(total_pago - self.totais)}'
             elif total_pago < self.totais:
-                text_valor_troco.color = c.rosa
+                text_valor_troco.color = c.cor_rosa
                 text_valor_troco.value = f'R$ -{self.decimal_to_texto(self.totais - total_pago)}'
             else:
-                text_valor_troco.color = c.preto_icons
+                text_valor_troco.color = c.texto_principal
                 text_valor_troco.value = 'R$ 0,00'
             if update == True:
                 text_valor_troco.update()
-        async def notificacoes_top(e, msg1 = None, msg2 = None, color = c.branco, bgcolor = c.rosa, som = 'som_error.wav'):
+        async def notificacoes_top(e, msg1 = None, msg2 = None, color = c.fundo_neutralo, bgcolor = c.cor_rosa, som = 'som_error.wav'):
             click = None
             if e != None:
                 click = e.control.on_click
@@ -647,7 +648,7 @@ class AlertDialog_atendimento:
                 text_align = ft.TextAlign.CENTER,
                 spans = [
                     ft.TextSpan(
-                        text = 'Atenção!\n' if msg1 == None else msg1,
+                        text = dic.palavras[dic.idioma_select]['notificacoes']['selecione_itens_titulo'] if msg1 == None else msg1,
                         style = ft.TextStyle(
                             size = 18, color = color,
                             font_family = 'inter', weight = ft.FontWeight.W_600
@@ -655,7 +656,7 @@ class AlertDialog_atendimento:
                     ),
                     
                     ft.TextSpan(
-                        text = 'Selecione itens para prosseguir.' if msg2 == None else msg2,
+                        text = dic.palavras[dic.idioma_select]['notificacoes']['selecione_itens_msg'] if msg2 == None else msg2,
                         style = ft.TextStyle(
                             size = 16, color = color,
                             font_family = 'inter', weight = ft.FontWeight.W_500
@@ -737,8 +738,8 @@ class AlertDialog_atendimento:
             except Exception as err:
                 await notificacoes_top(
                     e = None,
-                    msg1 = 'Ops..!\n',
-                    msg2 = 'Valor inválido. (conversão)'
+                    msg1 = dic.palavras[dic.idioma_select]['notificacoes']['valor_invalido_titulo'],
+                    msg2 = dic.palavras[dic.idioma_select]['notificacoes']['valor_invalido_msg']
                 )
 
                 if campo != None:
@@ -800,7 +801,7 @@ class AlertDialog_atendimento:
                         controls = [
                             ft.Text(
                                 value = self.titulo,
-                                style = ft.TextStyle(size = 22, color = c.preto_icons, font_family = 'inter')
+                                style = ft.TextStyle(size = 22, color = c.texto_principal, font_family = 'inter')
                             ),
 
                             ft.Container(
@@ -812,7 +813,7 @@ class AlertDialog_atendimento:
 
                                 content = ft.Icon(
                                     icon = ft.CupertinoIcons.XMARK,
-                                    size = 24, color = c.preto_icons
+                                    size = 24, color = c.texto_principal
                                 ),
 
                                 on_click = self.fechar,
@@ -829,7 +830,7 @@ class AlertDialog_atendimento:
         async def return_atendimento(e):
             await asyncio.sleep(0.26)
             self.alertdialog_global.content = self.page_servico
-            await carregar_page_now('Atendimento')  
+            await carregar_page_now(dic.palavras[dic.idioma_select]['dialog_atendimento']['titulo_atendimento'])  
             self.alertdialog_global.update()
         async def go_conclusao(e):
             self.totais_reserva = Decimal('0')
@@ -842,7 +843,7 @@ class AlertDialog_atendimento:
                 self.totais = self.totais_reserva
                 notificacao.visible = False
                 self.alertdialog_global.content = self.page_conclusao
-                await carregar_page_now('Conclusão')
+                await carregar_page_now(dic.palavras[dic.idioma_select]['dialog_atendimento']['titulo_conclusao'])
                 self.alertdialog_global.update()
                 await conversao_campo(e, campo = None, text = text_valor_total)
                 text_valor_total.value = f'R$ {text_valor_total.value}'
@@ -874,11 +875,11 @@ class AlertDialog_atendimento:
                                     controls = [
                                         ft.Text(
                                             value = f'{self.servicos_atendimento[servico]['quantidade']}x {servico}',
-                                            size = 16, color = c.preto_icons, font_family = 'inter'
+                                            size = 16, color = c.texto_principal, font_family = 'inter'
                                         ),
                                         ft.Text(
                                             value = f'R$ {self.servicos_atendimento[servico]['total']}',
-                                            size = 16, color = c.preto_icons, font_family = 'inter'
+                                            size = 16, color = c.texto_principal, font_family = 'inter'
                                         ),
                                     ]
                                 ),
@@ -889,8 +890,8 @@ class AlertDialog_atendimento:
                                     
                                     controls = [
                                         ft.Text(
-                                            value = f'Und R$ {self.servicos_atendimento[servico]['valor']}',
-                                            size = 16, color = c.sub_textos, font_family = 'inter'
+                                            value = f'{dic.palavras[dic.idioma_select]["dialog_atendimento"]["unidade_abrev"]} R$ {self.servicos_atendimento[servico]['valor']}',
+                                            size = 16, color = c.texto_secundario, font_family = 'inter'
                                         )
                                     ]
                                 )
@@ -930,8 +931,8 @@ class AlertDialog_atendimento:
                 if len(formas_pagamento) == 0:
                     await notificacoes_top(
                         e,
-                        msg1 = 'Atenção!\n',
-                        msg2 = 'Selecione a forma de pagamento.',
+                        msg1 = dic.palavras[dic.idioma_select]['notificacoes']['selecione_pagamento_titulo'],
+                        msg2 = dic.palavras[dic.idioma_select]['notificacoes']['selecione_pagamento_msg'],
                     )
                     return
                     
@@ -944,10 +945,10 @@ class AlertDialog_atendimento:
                     self.btn_fechar.disabled = True
                     await notificacoes_top(
                         e,
-                        msg1 = 'Sucesso!\n',
-                        msg2 = 'Sua venda foi registrada e salva.',
-                        bgcolor = c.verde,
-                        color = c.branco,
+                        msg1 = dic.palavras[dic.idioma_select]['notificacoes']['venda_sucesso_titulo'],
+                        msg2 = dic.palavras[dic.idioma_select]['notificacoes']['venda_sucesso_msg'],
+                        bgcolor = c.cor_verde,
+                        color = c.fundo_neutralo,
                         som = 'venda_realizada.mp3'
                     )
                     servicos = ''
@@ -993,15 +994,15 @@ class AlertDialog_atendimento:
                 else:
                     await notificacoes_top(
                         e,
-                        msg1 = 'Saldo insuficiente!\n',
-                        msg2 = 'O valor recebido é inferior ao total.',
+                        msg1 = dic.palavras[dic.idioma_select]['notificacoes']['saldo_insuficiente_titulo'],
+                        msg2 = dic.palavras[dic.idioma_select]['notificacoes']['saldo_insuficiente_msg'],
                     )
             except Exception as err:
                 print('Erro subir_venda: ', err)
                 await notificacoes_top(
                     e,
-                    msg1 = 'Ops..!\n',
-                    msg2 = 'O valor inserido é inválido.'
+                    msg1 = dic.palavras[dic.idioma_select]['notificacoes']['valor_inserido_invalido_titulo'],
+                    msg2 = dic.palavras[dic.idioma_select]['notificacoes']['valor_inserido_invalido_msg']
                 )
         async def recarregar_no_field(e):
             text = e.control.data['text']
@@ -1015,16 +1016,16 @@ class AlertDialog_atendimento:
 
             if focus == False:
                 field.label_style = ft.TextStyle(
-                    color = c.sub_textos, size = 20,
+                    color = c.texto_secundario, size = 20,
                     font_family = 'inter'
                 )
-                stack.controls[1].controls[0].color = c.sub_textos
+                stack.controls[1].controls[0].color = c.texto_secundario
             else:
                 field.label_style = ft.TextStyle(
-                    color = c.roxo, size = 20,
+                    color = c.cor_principal, size = 20,
                     font_family = 'inter'
                 )
-                stack.controls[1].controls[0].color = c.roxo
+                stack.controls[1].controls[0].color = c.cor_principal
                 await asyncio.sleep(0.3)
                 await coluna.scroll_to(
                     scroll_key = field.key,
@@ -1168,11 +1169,11 @@ class AlertDialog_atendimento:
 
             if state == False:
                 button.data['ativo'] = not button.data['ativo']
-                button.border = ft.Border.all(width = 2, color = c.roxo)
-                radio.border = ft.Border.all(width = 2, color = c.roxo)
-                radio_interno.bgcolor = c.roxo
-                icon.color = c.roxo
-                text.color = c.roxo
+                button.border = ft.Border.all(width = 2, color = c.cor_principal)
+                radio.border = ft.Border.all(width = 2, color = c.cor_principal)
+                radio_interno.bgcolor = c.cor_principal
+                icon.color = c.cor_principal
+                text.color = c.cor_principal
                 if button.data['modalidade'].lower() in ['cartão', 'cartao']:
                     self.box_cartao_ativo = True
                     await converter_credito_debito(card = True)
@@ -1182,10 +1183,10 @@ class AlertDialog_atendimento:
             else:
                 button.data['ativo'] = not button.data['ativo']
                 button.border = ft.Border.all(width = 0, color = ft.Colors.TRANSPARENT)
-                radio.border = ft.Border.all(width = 2, color = c.bordas)
-                radio_interno.bgcolor = c.background
-                icon.color = c.sub_textos
-                text.color = c.sub_textos
+                radio.border = ft.Border.all(width = 2, color = c.borda)
+                radio_interno.bgcolor = c.fundo
+                icon.color = c.texto_secundario
+                text.color = c.texto_secundario
                 await campos_pagamento_CONCLUSAO(button = button)
                 if button.data['modalidade'].lower() in ['cartão', 'cartao']:
                     self.box_cartao_ativo = False
@@ -1224,14 +1225,14 @@ class AlertDialog_atendimento:
                 controls = [
                     ft.Text(
                         value = text,
-                        size = 16, color = c.sub_textos,
+                        size = 16, color = c.texto_secundario,
                         font_family = 'inter',
                         margin = ft.Margin(left = self.margin_lateral_interna)
                     ),
 
                     ft.CupertinoSwitch(
                         value = True,
-                        active_track_color = c.lilas,
+                        active_track_color = c.cor_principal,
                         data = {'control': 'switch'},
                         margin = ft.Margin(right = self.margin_lateral_interna)
                     )
@@ -1259,14 +1260,14 @@ class AlertDialog_atendimento:
                         expand = True,
                         key = ft.ScrollKey(f'Key_{text}'),
                         label = label,
-                        bgcolor = c.branco,
+                        bgcolor = c.fundo_neutralo,
                         label_style = ft.TextStyle(
-                            size = 20, color = c.sub_textos,
+                            size = 20, color = c.texto_secundario,
                             font_family = 'inter'
                         ),
 
                         text_style = ft.TextStyle(
-                            size = 16, color = c.preto_icons, font_family = 'inter'
+                            size = 16, color = c.texto_principal, font_family = 'inter'
                         ),
 
                         data = {
@@ -1277,8 +1278,8 @@ class AlertDialog_atendimento:
 
                         content_padding = ft.Padding(top = 22, left = 50, bottom = 22),
                         keyboard_type = ft.KeyboardType.NUMBER,
-                        focused_border_color = c.roxo,
-                        border_color = c.bordas,
+                        focused_border_color = c.cor_principal,
+                        border_color = c.borda,
                         border_radius = 24,
 
                         on_focus = rodar_focus,
@@ -1293,12 +1294,12 @@ class AlertDialog_atendimento:
                         controls = [
                             ic.svg_icon(
                                 icon,
-                                size = 30, color = c.sub_textos,
+                                size = 30, color = c.texto_secundario,
                             )
                             if isinstance(icon, str) else
                             ft.Icon(
                                 icon = icon,
-                                size = 30, color = c.sub_textos
+                                size = 30, color = c.texto_secundario
                             ),
                         ]
                     )
@@ -1359,23 +1360,23 @@ class AlertDialog_atendimento:
 
             field = ft.TextField(
                 expand = True,
-                bgcolor = c.branco,
+                bgcolor = c.fundo_neutralo,
                 key = ft.ScrollKey(f'Key_{text}'),
-                label = f'Recebido em {text.lower()}',
+                label = f'{dic.palavras[dic.idioma_select]["dialog_atendimento"]["recebido_em"]} {text.lower()}',
 
                 label_style = ft.TextStyle(
-                    size = 20, color = c.sub_textos,
+                    size = 20, color = c.texto_secundario,
                     font_family = 'inter'
                 ),
 
                 text_style = ft.TextStyle(
-                    size = 16, color = c.preto_icons, font_family = 'inter'
+                    size = 16, color = c.texto_principal, font_family = 'inter'
                 ),
 
                 content_padding = ft.Padding(top = 22, left = 50, bottom = 22),
                 keyboard_type = ft.KeyboardType.NUMBER,
-                focused_border_color = c.roxo,
-                border_color = c.bordas,
+                focused_border_color = c.cor_principal,
+                border_color = c.borda,
                 border_radius = 24,
 
                 margin = ft.Margin(
@@ -1396,12 +1397,12 @@ class AlertDialog_atendimento:
                     controls = [
                         ic.svg_icon(
                             icon,
-                            size = 30, color = c.sub_textos,
+                            size = 30, color = c.texto_secundario,
                         )
                         if isinstance(icon, str) else
                         ft.Icon(
                             icon = icon,
-                            size = 30, color = c.sub_textos
+                            size = 30, color = c.texto_secundario
                         ),
                     ]
                 )
@@ -1433,22 +1434,22 @@ class AlertDialog_atendimento:
                 width = 30,
                 height = 30,
                 border_radius = 15,
-                bgcolor = c.background,
+                bgcolor = c.fundo,
                 alignment = ft.Alignment.CENTER,
-                border = ft.Border.all(width = 2, color = c.bordas),
+                border = ft.Border.all(width = 2, color = c.borda),
 
                 content = ft.Container(
                     width = 20,
                     height = 20,
                     border_radius = 10,
-                    bgcolor = c.background
+                    bgcolor = c.fundo
                 )
             )
 
             card = ft.Container(
                 col = 1,
                 height = 180,
-                bgcolor = c.branco,
+                bgcolor = c.fundo_neutralo,
                 border_radius = 24,
                 shadow = c.shadow_leve(),
                 on_click = pagamento_select,
@@ -1497,19 +1498,19 @@ class AlertDialog_atendimento:
                             controls = [
                                 ic.svg_icon(
                                     icon,
-                                    size = 30, color = c.sub_textos,
+                                    size = 30, color = c.texto_secundario,
                                 )
 
                                 if isinstance(icon, str) else
 
                                 ft.Icon(
                                     icon = icon,
-                                    size = 30, color = c.sub_textos
+                                    size = 30, color = c.texto_secundario
                                 ),
                                 
                                 ft.Text(
                                     value = text,
-                                    size = 16, color = c.sub_textos,
+                                    size = 16, color = c.texto_secundario,
                                     font_family = 'inter',
                                 ),
                             ]
@@ -1537,7 +1538,7 @@ class AlertDialog_atendimento:
                 caminho.controls.insert(0, campo_cliente)
                 edit.content = ic.svg_icon(
                     'check_square',
-                    size = 35, color = c.preto_icons
+                    size = 35, color = c.texto_principal
                 )
 
                 caminho.update()
@@ -1549,7 +1550,7 @@ class AlertDialog_atendimento:
                 caminho.controls.insert(0, text_cliente)
                 edit.content = ic.svg_icon(
                     'editar',
-                    size = 35, color = c.preto_icons
+                    size = 35, color = c.texto_principal
                 )
 
             edit.data['ativo'] = not edit.data['ativo']
@@ -1559,12 +1560,12 @@ class AlertDialog_atendimento:
         campo_cliente = ft.TextField(
             expand = True,
             text_style = ft.TextStyle(
-                size = 22, color = c.preto_icons,
+                size = 22, color = c.texto_principal,
                 font_family = 'inter'
             ),
-            hint_text = 'Nome do cliente..',
+            hint_text = dic.palavras[dic.idioma_select]['dialog_atendimento']['nome_cliente_hint'],
             hint_style = ft.TextStyle(
-                size = 22, color = c.preto_icons,
+                size = 22, color = c.texto_principal,
                 font_family = 'inter'
             ),
             border_color = ft.Colors.TRANSPARENT,
@@ -1572,8 +1573,8 @@ class AlertDialog_atendimento:
             content_padding = ft.Padding(left = self.margin_lateral_interna)
         )
         text_cliente = ft.Text(
-            value = 'Cliente ##',
-            size = 22, color = c.preto_icons,
+            value = dic.palavras[dic.idioma_select]['dialog_atendimento']['cliente_padrao'],
+            size = 22, color = c.texto_principal,
             font_family = 'inter',
             margin = ft.Margin(left = self.margin_lateral_interna)
         )                                     
@@ -1591,7 +1592,7 @@ class AlertDialog_atendimento:
             controls = [
                 ft.Container(
                     expand = True,
-                    bgcolor = c.branco,
+                    bgcolor = c.fundo_neutralo,
                     border_radius = 26,
                     shadow = c.shadow_leve(),
                     alignment = ft.Alignment.CENTER,
@@ -1625,8 +1626,8 @@ class AlertDialog_atendimento:
                                         vertical_alignment = ft.CrossAxisAlignment.CENTER,
                                         controls = [
                                             ft.Text(
-                                                value = 'Cliente ##',
-                                                size = 22, color = c.preto_icons,
+                                                value = dic.palavras[dic.idioma_select]['dialog_atendimento']['cliente_padrao'],
+                                                size = 22, color = c.texto_principal,
                                                 font_family = 'inter',
                                                 margin = ft.Margin(left = self.margin_lateral_interna)
                                             ),
@@ -1643,7 +1644,7 @@ class AlertDialog_atendimento:
                                                 },
                                                 content = ic.svg_icon(
                                                     'editar',
-                                                    size = 35, color = c.preto_icons
+                                                    size = 35, color = c.texto_principal
                                                 ),
                                                 on_click = atualizar_nome_cliente_CONCLUSAO
                                             )
@@ -1678,13 +1679,13 @@ class AlertDialog_atendimento:
 
                                         controls = [
                                             ft.Text(
-                                                value = 'Total:', expand = True, overflow = ft.TextOverflow.ELLIPSIS,
-                                                size = 16, color = c.sub_textos, font_family = 'inter', max_lines = 1
+                                                value = dic.palavras[dic.idioma_select]['dialog_atendimento']['total'], expand = True, overflow = ft.TextOverflow.ELLIPSIS,
+                                                size = 16, color = c.texto_secundario, font_family = 'inter', max_lines = 1
                                             ),
 
                                             ft.Text(
                                                 value = f'R$ 0,00', expand = True, overflow = ft.TextOverflow.ELLIPSIS,
-                                                size = 22, color = c.preto_icons, font_family = 'inter', max_lines = 1,
+                                                size = 22, color = c.texto_principal, font_family = 'inter', max_lines = 1,
                                                 weight = ft.FontWeight.W_500
                                             )
                                         ]
@@ -1702,13 +1703,13 @@ class AlertDialog_atendimento:
 
                                         controls = [
                                             ft.Text(
-                                                value = 'Troco:', expand = True, overflow = ft.TextOverflow.ELLIPSIS,
-                                                size = 16, color = c.sub_textos, font_family = 'inter', max_lines = 1
+                                                value = dic.palavras[dic.idioma_select]['dialog_atendimento']['troco'], expand = True, overflow = ft.TextOverflow.ELLIPSIS,
+                                                size = 16, color = c.texto_secundario, font_family = 'inter', max_lines = 1
                                             ),
 
                                             ft.Text(
                                                 value = f'R$ 0,00', expand = True, overflow = ft.TextOverflow.ELLIPSIS,
-                                                size = 22, color = c.preto_icons, font_family = 'inter', max_lines = 1,
+                                                size = 22, color = c.texto_principal, font_family = 'inter', max_lines = 1,
                                                 weight = ft.FontWeight.W_500
                                             )
                                         ]
@@ -1741,7 +1742,7 @@ class AlertDialog_atendimento:
                             icon = 'cartao', text = 'Cartão',
                             top = vg.margin_top,
                             right = self.margin_lateral_interna,
-                            switch = True, text_switch = 'Cartão de crédito',
+                            switch = True, text_switch = dic.palavras[dic.idioma_select]['dialog_atendimento']['cartao_credito'],
                             on_blur = campo_cartao
                         ),
                     ]
@@ -1770,7 +1771,7 @@ class AlertDialog_atendimento:
                                 ft.Container(
                                     height = 1.2,
                                     expand = True,
-                                    bgcolor = c.bordas,
+                                    bgcolor = c.borda,
                                     margin = ft.Margin(
                                         left = self.margin_lateral_interna,
                                         right = self.margin_lateral_interna,
@@ -1778,11 +1779,11 @@ class AlertDialog_atendimento:
                                     )
                                 ),
                                 await switch_fields(
-                                    label_text_1 = 'Desconto',
-                                    label_text_2 = 'Adicional',
+                                    label_text_1 = dic.palavras[dic.idioma_select]['dialog_atendimento']['desconto'],
+                                    label_text_2 = dic.palavras[dic.idioma_select]['dialog_atendimento']['adicional'],
                                     icon_1 = 'descontos',
                                     icon_2 = 'adicionais',
-                                    text = 'Valor em porcentagem %',
+                                    text = dic.palavras[dic.idioma_select]['dialog_atendimento']['valor_porcentagem'],
                                     campo_switch = True,
                                     tipo1 = 'Desconto',
                                     tipo2 = 'Adicional'
@@ -1797,7 +1798,7 @@ class AlertDialog_atendimento:
         )                  
         self.barra_inferior_conclusao = ft.Container(
             height = 110,
-            bgcolor = c.branco,
+            bgcolor = c.fundo_neutralo,
             shadow = c.shadow_leve(x = 0, y = -4),
 
             border_radius = ft.BorderRadius(
@@ -1815,7 +1816,7 @@ class AlertDialog_atendimento:
                 controls = [
                     ft.Container(
                         height = 58,
-                        bgcolor = c.branco,
+                        bgcolor = c.fundo_neutralo,
                         shadow = c.shadow_leve(y = 2, opc = 0.4),
 
                         margin = ft.Margin(
@@ -1835,13 +1836,13 @@ class AlertDialog_atendimento:
                             controls = [
                                 ic.svg_icon(
                                     'seta_exit',
-                                    size = 26, color = c.roxo_esc
+                                    size = 26, color = c.cor_principal_escura
                                 ),
                                         
                                 ft.Text(
-                                    value = 'Voltar',
+                                    value = dic.palavras[dic.idioma_select]['dialog_atendimento']['voltar'],
                                     style = ft.TextStyle(
-                                        size = 16, color = c.roxo_esc, font_family = 'inter',
+                                        size = 16, color = c.cor_principal_escura, font_family = 'inter',
                                     ),
                                 )
                             ]
@@ -1854,7 +1855,7 @@ class AlertDialog_atendimento:
                     ft.Container(
                         height = 58,
                         shadow = c.shadow_leve(),
-                        bgcolor = c.roxo,
+                        bgcolor = c.cor_principal,
                         # gradient = c.gradiente_top_bottom(c.gradiente_botoes),
                         margin = ft.Margin(
                             right = self.margin_lateral_interna,
@@ -1864,9 +1865,9 @@ class AlertDialog_atendimento:
                         alignment = ft.Alignment.CENTER,
         
                         content = ft.Text(
-                            value = 'Finalizar',
+                            value = dic.palavras[dic.idioma_select]['dialog_atendimento']['finalizar'],
                             style = ft.TextStyle(
-                                size = 16, color = c.branco, font_family = 'inter',
+                                size = 16, color = c.fundo_neutralo, font_family = 'inter',
                             ),
                             margin = ft.Margin(left = 36, right = 36)
                         ),
@@ -1917,11 +1918,11 @@ class AlertDialog_atendimento:
                 alignment = ft.MainAxisAlignment.CENTER,
                 horizontal_alignment = ft.CrossAxisAlignment.CENTER,
 
-                controls = [ft.ProgressRing(color = c.lilas_calmo, height = 100, width = 100)]
+                controls = [ft.ProgressRing(color = c.cor_principal, height = 100, width = 100)]
             )      
         self.barra_inferior = ft.Container(
                 height = 110,
-                bgcolor = c.branco,
+                bgcolor = c.fundo_neutralo,
                 shadow = c.shadow_leve(x = 0, y = -4),
 
                 border_radius = ft.BorderRadius(
@@ -1944,13 +1945,13 @@ class AlertDialog_atendimento:
             
                             controls = [
                                 ft.Text(
-                                    value = 'Subtotal', margin = ft.Margin(left = self.margin_lateral_interna),
-                                    style = ft.TextStyle(size = 14, color = c.sub_textos, font_family = 'inter')
+                                    value = dic.palavras[dic.idioma_select]['dialog_atendimento']['subtotal'], margin = ft.Margin(left = self.margin_lateral_interna),
+                                    style = ft.TextStyle(size = 14, color = c.texto_secundario, font_family = 'inter')
                                 ),
             
                                 ft.Text(
                                     value = 'R$ 0,00', margin = ft.Margin(left = self.margin_lateral_interna),
-                                    style = ft.TextStyle(size = 22, color = c.preto_icons, font_family = 'inter')
+                                    style = ft.TextStyle(size = 22, color = c.texto_principal, font_family = 'inter')
                                 ),
                                 
                                 ft.Row(height = 6),
@@ -1960,7 +1961,7 @@ class AlertDialog_atendimento:
                         ft.Container(
                             height = 58,
                             shadow = c.shadow_leve(),
-                            bgcolor = c.roxo,
+                            bgcolor = c.cor_principal,
                             # gradient = c.gradiente_top_bottom(c.gradiente_botoes),
 
                             margin = ft.Margin(
@@ -1971,9 +1972,9 @@ class AlertDialog_atendimento:
                             alignment = ft.Alignment.CENTER,
             
                             content = ft.Text(
-                                value = 'Prosseguir',
+                                value = dic.palavras[dic.idioma_select]['dialog_atendimento']['prosseguir'],
                                 style = ft.TextStyle(
-                                    size = 16, color = c.branco, font_family = 'inter',
+                                    size = 16, color = c.fundo_neutralo, font_family = 'inter',
                                 ),
 
                                 margin = ft.Margin(left = 26, right = 26)
@@ -2023,4 +2024,4 @@ class AlertDialog_atendimento:
             'barra_pesquisa_conclusao': self.barra_pesquisa,
         }
 
-        await carregar_page_now('Atendimento')
+        await carregar_page_now(dic.palavras[dic.idioma_select]['dialog_atendimento']['titulo_atendimento'])

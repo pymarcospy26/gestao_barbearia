@@ -117,3 +117,40 @@ def limpar_registros_atendimentos(e = None):
     con.commit()
     con.close()
 
+def status_idioma_page(idioma = 'BR', option = ['0 - Pega', '1 - Altera']):
+    con = sqlite3.connect(BANCO)
+    cursor = con.cursor()
+
+    if option == 0:
+        cursor.execute(
+            'SELECT idioma FROM idioma_page WHERE id = 1'
+        )
+
+        return cursor.fetchone()[0]
+
+    elif option == 1 and idioma in ['EUA', 'BR', 'ES', 'FR']:
+        cursor.execute(
+            'UPDATE idioma_page SET idioma = ? WHERE id = 1', (idioma,)
+        )
+
+    con.commit()
+    con.close()
+
+def status_tema_page(tema = None, option = ['0 - Pega', '1 - Altera']):
+    con = sqlite3.connect(BANCO)
+    cursor = con.cursor()
+
+    if option == 0:
+        cursor.execute(
+            'SELECT tema FROM status_page WHERE id = 1'
+        )
+
+        return cursor.fetchone()[0]
+
+    elif option == 1 and tema in ['claro', 'escuro']:
+        cursor.execute(
+            'UPDATE status_page SET tema = ? WHERE id = 1', (tema,)
+        )
+
+    con.commit()
+    con.close()

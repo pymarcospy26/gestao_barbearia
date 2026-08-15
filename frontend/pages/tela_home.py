@@ -2,6 +2,7 @@ import flet as ft
 import colors as c
 import icons as ic
 import variaveis_globais as vg
+import dicionario_idioma as dic
 
 class Tela_Home:
     def __init__(self, page: ft.Page):
@@ -11,25 +12,25 @@ class Tela_Home:
                 'hora': '10:40',
                 'setor': 'Estética',
                 'servico': 'Design de Sobrancelha',
-                'cor_urgencia': c.vermelho
+                'cor_urgencia': c.cor_vermelho
             },
 
             'Maria Eduarda': {
                 'hora': '13:20',
                 'setor': 'Barbearia',
                 'servico': 'Hidratação Capilar',
-                'cor_urgencia': c.laranja
+                'cor_urgencia': c.cor_laranja
             },
 
             'Ana Carolina': {
                 'hora': '16:15',
                 'setor': 'Estética',
                 'servico': 'Drenagem Linfática',
-                'cor_urgencia': c.lilas
+                'cor_urgencia': c.cor_principal_clara
             }
         }
         self.titulo_pages = 'Home'
-        self.acesso_rapido = ['Retirada', 'Fiados', 'Angendar']
+        self.acesso_rapido = [dic.palavras[dic.idioma_select]['home']['retirada'], dic.palavras[dic.idioma_select]['home']['fiados'], dic.palavras[dic.idioma_select]['home']['agendar']]
 
     async def titulo(self):
         return self.titulo_pages
@@ -39,7 +40,7 @@ class Tela_Home:
             height = 360,
             expand = True,
             border_radius = 34,
-            bgcolor = c.branco,
+            bgcolor = c.fundo_neutralo,
             shadow = c.shadow_leve(),
             margin = ft.Margin(left = vg.margin_left, top = vg.margin_top, right = vg.margin_right),
             # gradient = c.gradiente_top_bottom(c.gradiente_banner),
@@ -61,7 +62,7 @@ class Tela_Home:
                 ft.Container(
                     col = col,
                     height = 140,
-                    bgcolor = c.branco,
+                    bgcolor = c.fundo_neutralo,
                     border_radius = 34,
                     margin = ft.Margin(left = l, right = r, top = t, bottom = b),
 
@@ -77,12 +78,12 @@ class Tela_Home:
                             ic.svg_icon(
                                 icon,
                                 size = 30,
-                                color = c.sub_textos
+                                color = c.texto_secundario
                             ),
                             
                             ft.Text(
                                 value = titulo,
-                                size = 16, color = c.sub_textos, weight = ft.FontWeight.W_400,
+                                size = 16, color = c.texto_secundario, weight = ft.FontWeight.W_400,
                                 font_family = 'inter', text_align = ft.TextAlign.CENTER
                             )
                         ]
@@ -104,8 +105,8 @@ class Tela_Home:
 
             controls = [
                 ft.Text(
-                    value = 'Clientes agendados',
-                    size = 20, color = c.sub_textos,
+                    value = dic.palavras[dic.idioma_select]['home']['clientes_agendados'],
+                    size = 20, color = c.texto_secundario,
                     font_family = 'inter', margin = ft.Margin(
                         left = vg.margin_left, top = vg.margin_top, bottom = vg.margin_top
                     )
@@ -122,23 +123,16 @@ class Tela_Home:
             ]
         )
 
-        cont = 0
-        for cliente in self.agendamentos:
-            if cont == 3:
-                break
-
-            else:
-                cont += 1
-
+        for i, cliente in enumerate(self.agendamentos, 1):
             self.agendados_prox.controls[1].controls.append(
                 ft.Container(
                     col = 1,
                     padding = ft.Padding(left = 26, top = 26, right = 26,  bottom = 20),
-                    bgcolor = c.branco,
+                    bgcolor = c.fundo_neutralo,
                     border_radius = 34,
                     margin = ft.Margin(
-                        left = vg.margin_left / 2 if cont % 2 == 0 else vg.margin_left,
-                        right = vg.margin_right /2 if cont % 2 != 0 else vg.margin_right,
+                        left = vg.margin_left / 2 if i % 2 == 0 else vg.margin_left,
+                        right = vg.margin_right /2 if i % 2 != 0 else vg.margin_right,
                     ),
 
                     shadow = c.shadow_leve(),
@@ -153,7 +147,7 @@ class Tela_Home:
                         controls = [
                             ft.Text(
                                 value = self.agendamentos[cliente]['hora'],
-                                size = 28, color = c.sub_textos,
+                                size = 28, color = c.texto_secundario,
                                 font_family = 'inter', weight = ft.FontWeight.W_300,
                                 margin = ft.Margin(top = 8),
                             ),
@@ -165,7 +159,7 @@ class Tela_Home:
                                 margin = ft.Margin(top = 14),
                                 value = f'{cliente}\n',
                                 style = ft.TextStyle(
-                                    size = 18, color = c.sub_textos,
+                                    size = 18, color = c.texto_secundario,
                                     font_family = 'inter', weight = ft.FontWeight.W_400
                                 ),
                             ),
@@ -177,7 +171,7 @@ class Tela_Home:
                                 margin = ft.Margin(top = 6),
                                 value = f'{self.agendamentos[cliente]['servico']}\n',
                                 style = ft.TextStyle(
-                                    size = 14, color = c.sub_textos,
+                                    size = 14, color = c.texto_secundario,
                                     font_family = 'inter', weight = ft.FontWeight.W_300
                                 ),
                             ),
@@ -189,7 +183,7 @@ class Tela_Home:
                                 margin = ft.Margin(top = 6, bottom = 18),
                                 value = f'{self.agendamentos[cliente]['setor']}\n',
                                 style = ft.TextStyle(
-                                    size = 14, color = c.sub_textos,
+                                    size = 14, color = c.texto_secundario,
                                     font_family = 'inter', weight = ft.FontWeight.W_300
                                 ),
                             ),
@@ -206,12 +200,12 @@ class Tela_Home:
                                         width = 45,
                                         height  = 45,
                                         border_radius = 45 / 2,
-                                        bgcolor = c.cinza_fundo,
+                                        bgcolor = c.borda_neutra,
                                         alignment = ft.Alignment.CENTER,
             
                                         content = ic.svg_icon(
                                             'telefone',
-                                            size = 25, color = c.sub_textos,
+                                            size = 25, color = c.texto_secundario,
                                         )
                                     ),
 
@@ -219,18 +213,18 @@ class Tela_Home:
                                         right = 0,
                                         padding = 3,
                                         border_radius = (45 + 3) / 2,
-                                        bgcolor = c.branco,
+                                        bgcolor = c.fundo_neutralo,
 
                                         content = ft.Container(
                                             width = 45,
                                             height  = 45,
                                             border_radius = 45 / 2,
-                                            bgcolor = c.verde_fundo,
+                                            bgcolor = c.cor_verde_clara,
                                             alignment = ft.Alignment.CENTER,
                                                             
                                             content = ic.svg_icon(
                                                 'whatsapp_icon',
-                                                size = 25, color = c.verde,
+                                                size = 25, color = c.cor_verde,
                                             )
                                         )
                                     ),
@@ -240,6 +234,8 @@ class Tela_Home:
                     )
                 )
             )
+            if i == 3:
+                break
 
         area_page = ft.Column(
             spacing = 0,

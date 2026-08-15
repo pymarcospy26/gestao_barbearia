@@ -3,10 +3,13 @@ import icons as ic
 import colors as c
 import play_audio as play
 import variaveis_globais as vg
+import dicionario_idioma as dic
 from backend import fluxo_telas as fx
 from frontend.pages import tela_home as thm
 from frontend.pages import tela_atendimento_dialog as diag
 from frontend.pages import tela_registros_atendimentos as tra
+from frontend.pages import tela_configuracao as tcg
+from frontend.pages import tela_mudar_idioma as tid
 
 class App:
     def __init__(self, page: ft.Page):
@@ -15,10 +18,11 @@ class App:
         self.page.padding = 0
 
         self.titulos_page = 'HELLO WORD'
-        self.page.bgcolor = c.background
+        self.page.bgcolor = c.fundo
         self.quantidade_home = 0
         self.quantidade_agenda = 0
         self.quantidade_historico = 0
+        self.quantidade_configuracao = 0
         self.lista_btns_control_bar = []
 
         self.page.fonts = {
@@ -29,14 +33,14 @@ class App:
                 status_bar_color = ft.Colors.TRANSPARENT,
                 status_bar_icon_brightness = ft.Brightness.DARK,
 
-                system_navigation_bar_color = c.branco,
+                system_navigation_bar_color = c.fundo_neutralo,
                 system_navigation_bar_icon_brightness = ft.Brightness.DARK
             )
         )
         self.tela_home = thm.Tela_Home(page)
 
         def botoes_top(
-            icon = 'menu', on_click = None,
+            icon = 'menu', on_click = None, data = 'config',
             top = None, left = None, right = None, bottom = None,
             margin_top = 0, margin_left = 0, margin_right = 0, margin_bottom = 0
         ):
@@ -46,10 +50,10 @@ class App:
                 right = right,
                 bottom = bottom,
 
-                data = {},
+                data = {'controle': data},
                 width = 74,
                 height = 74,
-                bgcolor = c.branco,
+                bgcolor = c.fundo_neutralo,
                 border_radius = 28,
                 shadow = c.shadow_leve(),
                 alignment = ft.Alignment.CENTER,
@@ -59,18 +63,19 @@ class App:
                     right = margin_right,
                     bottom = margin_bottom
                 ),
-                content = ic.svg_icon(icon, size = 30, color = c.sub_textos),
+                content = ic.svg_icon(icon, size = 30, color = c.texto_secundario),
 
-                on_click = on_click
+                on_click = on_click, ink = True
             )
         def stack_notificcao(
-            icon = 'sino', on_click = None,
+            icon = 'sino', on_click = None, data = 'notificacao',
             margin_top = 0, margin_left = 0, margin_right = 0, margin_bottom = 0
         ):
             btn = botoes_top(
                 icon = icon,
                 on_click = on_click,
                 right = 0, bottom = 0,
+                data = data
             )
             stack = ft.Stack(
                 data = {},
@@ -84,7 +89,7 @@ class App:
                         width = 18,
                         height = 18,
                         border_radius = 9,
-                        bgcolor = c.azul_violeta,
+                        bgcolor = c.cor_principal_escura,
                     )
                 ],
                 margin = ft.Margin(
@@ -101,7 +106,7 @@ class App:
 
         self.titulo_control = ft.Text(
             value = self.titulos_page,
-            size = 26, color = c.preto_icons,
+            size = 26, color = c.texto_principal,
             font_family = 'inter', weight = ft.FontWeight.W_400
         )
         self.box_titulo = ft.Container(
@@ -124,14 +129,14 @@ class App:
             shadow = ft.BoxShadow(
                 blur_radius = 10,
                 offset = ft.Offset(0, 4),
-                color = ft.Colors.with_opacity(color = c.azul_violeta, opacity = 0.4)
+                color = ft.Colors.with_opacity(color = c.cor_principal_escura, opacity = 0.4)
             ),
 
             alignment = ft.Alignment.CENTER,
 
             content = ft.Icon(
                 icon = ft.CupertinoIcons.SCISSORS_ALT,
-                size = 35, color = c.branco
+                size = 35, color = c.fundo_neutralo
             ),
 
             ink = True,
@@ -143,7 +148,7 @@ class App:
             right = 0,
             bottom = 0,
             expand = True,
-            bgcolor = c.branco,
+            bgcolor = c.fundo_neutralo,
             alignment = ft.Alignment.CENTER,
             shadow = c.shadow_leve(0, -4, opc = 0.36),
 
@@ -170,9 +175,9 @@ class App:
                             
                             controls = [
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT),
-                                ic.svg_icon('home', size = 32, color = c.roxo),
-                                ft.Text(value = 'Início', size = 14, color = c.roxo, font_family = 'inter', weight = ft.FontWeight.W_600, margin = ft.Margin(top = 2)),
-                                ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = c.roxo, margin = ft.Margin(top = 6)),
+                                ic.svg_icon('home', size = 32, color = c.cor_principal),
+                                ft.Text(value = dic.palavras[dic.idioma_select]['navegacao']['inicio'], size = 14, color = c.cor_principal, font_family = 'inter', weight = ft.FontWeight.W_600, margin = ft.Margin(top = 2)),
+                                ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = c.cor_principal, margin = ft.Margin(top = 6)),
                             ]
                         ),
                         ink = True,
@@ -194,9 +199,9 @@ class App:
                             
                             controls = [
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT),
-                                ic.svg_icon('calendar', size = 32, color = c.txt_fra),
-                                ft.Text(value = 'Agenda', size = 14, color = c.txt_fra, font_family = 'inter', margin = ft.Margin(top = 2)),
-                                ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = c.txt_fra, margin = ft.Margin(top = 6)),
+                                ic.svg_icon('calendar', size = 32, color = c.texto_suave),
+                                ft.Text(value = dic.palavras[dic.idioma_select]['navegacao']['agenda'], size = 14, color = c.texto_suave, font_family = 'inter', margin = ft.Margin(top = 2)),
+                                ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = c.texto_suave, margin = ft.Margin(top = 6)),
                             ]
                         ),
                         ink = True,
@@ -220,9 +225,9 @@ class App:
                             
                             controls = [
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT),
-                                ic.svg_icon('historico', size = 32, color = c.txt_fra),
-                                ft.Text(value = 'Histórico', size = 14, color = c.txt_fra, font_family = 'inter', margin = ft.Margin(top = 2)),
-                                ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = c.txt_fra, margin = ft.Margin(top = 6)),
+                                ic.svg_icon('historico', size = 32, color = c.texto_suave),
+                                ft.Text(value = dic.palavras[dic.idioma_select]['navegacao']['historico'], size = 14, color = c.texto_suave, font_family = 'inter', margin = ft.Margin(top = 2)),
+                                ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = c.texto_suave, margin = ft.Margin(top = 6)),
                             ]
                         ),
                         ink = True,
@@ -244,8 +249,8 @@ class App:
                             
                             controls = [
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT),
-                                ic.svg_icon('tres_pontos', size = 32, color = c.txt_fra),
-                                ft.Text(value = 'Outros', size = 14, color = c.txt_fra, font_family = 'inter', margin = ft.Margin(top = 2)),
+                                ic.svg_icon('tres_pontos', size = 32, color = c.texto_suave),
+                                ft.Text(value = dic.palavras[dic.idioma_select]['navegacao']['outros'], size = 14, color = c.texto_suave, font_family = 'inter', margin = ft.Margin(top = 2)),
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT, margin = ft.Margin(top = 6)),
                             ]
                         ),
@@ -277,9 +282,9 @@ class App:
                     alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
                     vertical_alignment = ft.CrossAxisAlignment.CENTER,
                     controls = [
-                        botoes_top('menu', None, margin_top = vg.margin_top, margin_left = vg.margin_left),
+                        botoes_top('menu', margin_top = vg.margin_top, margin_left = vg.margin_left, on_click = self.tela_configuracao_GO, data = 'Configuracao'),
                         self.box_titulo,
-                        stack_notificcao('sino', None, margin_top = vg.margin_top, margin_right = vg.margin_right)
+                        stack_notificcao('sino', None, margin_top = vg.margin_top, margin_right = vg.margin_right, data = 'Notificação')
                     ]
                 ),
 
@@ -308,16 +313,21 @@ class App:
 
         self.page.data['area_build'] = self.area_page
 
+    async def recriar_main(self):
+        self.page.controls.clear()
+        novo_app = App(self.page)
+        await novo_app.abrir_home()
+
     def click_cor_control_bar(self, e, controle = None):
         for x in self.lista_btns_control_bar:
             if x.data['controle'] == controle:
-                x.controls[1].color = c.roxo_esc
-                x.controls[2].color = c.roxo_esc
-                x.controls[3].bgcolor = c.roxo_esc
+                x.controls[1].color = c.cor_principal_escura
+                x.controls[2].color = c.cor_principal_escura
+                x.controls[3].bgcolor = c.cor_principal_escura
 
             else:
-                x.controls[1].color = c.txt_fra
-                x.controls[2].color = c.txt_fra
+                x.controls[1].color = c.texto_suave
+                x.controls[2].color = c.texto_suave
                 x.controls[3].bgcolor = ft.Colors.TRANSPARENT
                 
     async def abrir_atendimento(self, e):
@@ -330,22 +340,16 @@ class App:
         tela_home_go = await self.tela_home.tela()
         fx.tela_anterior = tela_home_go
         self.quantidade_home += 1
-        self.titulo_control.value = await self.tela_home.titulo() + str(self.quantidade_home)
+        self.titulo_control.value = dic.palavras[dic.idioma_select]['titulos']['inicio']
         self.area_page.controls.clear()
         self.area_page.controls.append(tela_home_go)
-        # await fx.mudar_page(
-        #     page = self.page,
-        #     atual = tela_inicio,         USAR ESSE MODELO PARA NAVEGAÇÃO INTERNA
-        #     anterior = tela_inicio,
-        #     nova = tela_nova
-        # )(e)
         self.page.update()
     async def tela_agenda_GO(self, e):
         self.click_cor_control_bar(e, controle = 'Agenda')
-        tela_agenda_go = ft.Container(expand = True, bgcolor = c.verde)
+        tela_agenda_go = ft.Container(expand = True, bgcolor = c.cor_verde)
         fx.tela_anterior = tela_agenda_go
         self.quantidade_agenda += 1
-        self.titulo_control.value = 'Agenda' + str(self.quantidade_agenda)
+        self.titulo_control.value = dic.palavras[dic.idioma_select]['titulos']['agenda']
         self.area_page.controls.clear()
         self.area_page.controls.append(tela_agenda_go)
         self.page.update()
@@ -354,11 +358,30 @@ class App:
         tela_historico_go = tra.Registro_Atendimentos(self.page).tela()
         fx.tela_anterior = tela_historico_go
         self.quantidade_historico += 1
-        self.titulo_control.value = 'Histórico' + str(self.quantidade_historico)
+        self.titulo_control.value = dic.palavras[dic.idioma_select]['titulos']['historico']
         self.area_page.controls.clear()
         self.area_page.controls.append(tela_historico_go)
         self.page.update()
+    async def tela_configuracao_GO(self, e):
+        def tela_idioma_GO(e):
+            tela_idioma_go = tid.Tela_Idioma(self.page).tela()
+            self.titulo_control.value = 'Idioma'
+            self.area_page.controls.clear()
+            self.area_page.controls.append(tela_idioma_go)
+            self.page.update()
+
+        self.click_cor_control_bar(e, controle = 'Config')
+        tela_configuracao_go = tcg.Configuracao(
+            self.page, fx_tela_idioma = tela_idioma_GO
+        ).tela_config()
+        fx.tela_anterior = tela_configuracao_go
+        self.quantidade_configuracao += 1
+        self.titulo_control.value = dic.palavras[dic.idioma_select]['titulos']['configuracao']
+        self.area_page.controls.clear()
+        self.area_page.controls.append(tela_configuracao_go)
+        self.page.update()
     async def abrir_home(self):
+        vg.pagina_main = self.recriar_main
         await self.tela_home_GO(None)
         await play.system_sons(self.page)
         self.page.add(

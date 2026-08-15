@@ -4,6 +4,7 @@ import icons as ic
 import banco as bd
 import variaveis_globais as vg
 from backend import fluxo_telas as fx
+import dicionario_idioma as dic
 
 class Registro_Atendimentos:
     def __init__(self, page: ft.Page):
@@ -39,14 +40,14 @@ class Registro_Atendimentos:
                                     width = 74,
                                     height = 74,
                                     border_radius = 28,
-                                    bgcolor = c.vermelho_fundo_claro,
+                                    bgcolor = c.cor_vermelho_fundo,
                                     shadow = c.shadow_leve(),
                                     alignment = ft.Alignment.CENTER,
                                     data = {'page': self.page},
 
                                     content = ic.svg_icon(
                                         'lixeira',
-                                        size = 30, color = c.rosa
+                                        size = 30, color = c.cor_rosa
                                     ),
 
                                     on_click = apagar_atualizar,
@@ -71,13 +72,13 @@ class Registro_Atendimentos:
                     controls = [
                         ft.Container(
                             height = 300,
-                            bgcolor = c.branco,
+                            bgcolor = c.fundo_neutralo,
                             border_radius = 34,
                             alignment = ft.Alignment.CENTER,
-                            border = ft.Border.all(width = 1.6, color = c.rosa),
+                            border = ft.Border.all(width = 1.6, color = c.cor_rosa),
                             content = ft.Text(
-                                value = 'Sem informações..',
-                                size = 26, color = c.rosa,
+                                value = dic.palavras[dic.idioma_select]['registros']['sem_informacoes'],
+                                size = 26, color = c.cor_rosa,
                                 font_family = 'inter', weight = ft.FontWeight.BOLD
                             )
                         )
@@ -108,13 +109,13 @@ class Registro_Atendimentos:
                 controles_atendimento = [
                     ft.Text(
                         value = f'Atendimento #{id_atnd}',
-                        size = 22, color = c.preto_icons, font_family = 'inter',
+                        size = 22, color = c.texto_principal, font_family = 'inter',
                         weight = ft.FontWeight.W_500, margin = ft.Margin(top = 26)
                     ),
 
                     ft.Text(
                         value = f'Data e hora:\n{data}',
-                        size = 16, color = c.sub_textos, font_family = 'inter',
+                        size = 16, color = c.texto_secundario, font_family = 'inter',
                         text_align = ft.TextAlign.LEFT, margin = ft.Margin(bottom = vg.margin_top)
                     ),
                 ]
@@ -133,7 +134,7 @@ class Registro_Atendimentos:
                                 text = f'{servico_ex}\n',
                                 style = ft.TextStyle(
                                     size = 16,
-                                    color = c.preto_icons,
+                                    color = c.texto_principal,
                                     font_family = 'inter',
                                     weight = ft.FontWeight.W_500,
                                 )
@@ -143,7 +144,7 @@ class Registro_Atendimentos:
                                 text = f'Quantidade: {quantidade_ex}',
                                 style = ft.TextStyle(
                                     size = 16,
-                                    color = c.sub_textos,
+                                    color = c.texto_secundario,
                                     font_family = 'inter',
                                 )
                             ),
@@ -152,7 +153,7 @@ class Registro_Atendimentos:
                                 text = f'Total: {total_ex}',
                                 style = ft.TextStyle(
                                     size = 16,
-                                    color = c.sub_textos,
+                                    color = c.texto_secundario,
                                     font_family = 'inter',
                                 )
                             ),
@@ -163,7 +164,7 @@ class Registro_Atendimentos:
 
                 subtotal = ft.Text(
                     value = f'Subtotal: {subtotal}',
-                    size = 16, color = c.sub_textos, font_family = 'inter',
+                    size = 16, color = c.texto_secundario, font_family = 'inter',
                     text_align = ft.TextAlign.LEFT, margin = ft.Margin(bottom = vg.margin_top)
                 )
                 controles_atendimento.append(subtotal)
@@ -175,11 +176,11 @@ class Registro_Atendimentos:
                     vertical_alignment = ft.CrossAxisAlignment.START,
                     columns = 2,
                     controls = [
-                        ft.Text(
-                            col = 1,
-                            value = f'Adicionais: {adicionais}',
-                            size = 16,
-                            color = c.sub_textos,
+                            ft.Text(
+                                col = 1,
+                                value = f'Adicionais: {adicionais}',
+                                size = 16,
+                                color = c.texto_secundario,
                             font_family = 'inter',
                             text_align = ft.TextAlign.LEFT,
                         ),
@@ -187,7 +188,7 @@ class Registro_Atendimentos:
                             col = 1,
                             value = f'Descontos: {descontos}',
                             size = 16,
-                            color = c.sub_textos,
+                            color = c.texto_secundario,
                             font_family = 'inter',
                             text_align = ft.TextAlign.LEFT,
                         ),
@@ -195,7 +196,7 @@ class Registro_Atendimentos:
                             col = 1,
                             value = f'Pix: {pix}',
                             size = 16,
-                            color = c.sub_textos,
+                            color = c.texto_secundario,
                             font_family = 'inter',
                             text_align = ft.TextAlign.LEFT,
                         ),
@@ -203,7 +204,7 @@ class Registro_Atendimentos:
                             col = 1,
                             value = f'Dinheiro: {dinheiro}',
                             size = 16,
-                            color = c.sub_textos,
+                            color = c.texto_secundario,
                             font_family = 'inter',
                             text_align = ft.TextAlign.LEFT,
                         ),
@@ -211,7 +212,7 @@ class Registro_Atendimentos:
                             col = 1,
                             value = f'C. Débito: {cartao_debito}',
                             size = 16,
-                            color = c.sub_textos,
+                            color = c.texto_secundario,
                             font_family = 'inter',
                             text_align = ft.TextAlign.LEFT,
                         ),
@@ -219,7 +220,7 @@ class Registro_Atendimentos:
                             col = 1,
                             value = f'C. Crédito: {cartao_credito}',
                             size = 16,
-                            color = c.sub_textos,
+                            color = c.texto_secundario,
                             font_family = 'inter',
                             text_align = ft.TextAlign.LEFT,
                         ),
@@ -227,7 +228,7 @@ class Registro_Atendimentos:
                             col = 2,
                             value = f'Taxas Op.: {taxas_operacao}',
                             size = 16,
-                            color = c.sub_textos,
+                            color = c.texto_secundario,
                             font_family = 'inter',
                             text_align = ft.TextAlign.LEFT,
                         ),
@@ -235,7 +236,7 @@ class Registro_Atendimentos:
                             col = 1,
                             value = f'Total: {valor_total}',
                             size = 16,
-                            color = c.preto_icons,
+                            color = c.texto_principal,
                             font_family = 'inter',
                             weight = ft.FontWeight.W_500,
                             text_align = ft.TextAlign.LEFT,
@@ -244,7 +245,7 @@ class Registro_Atendimentos:
                             col = 1,
                             value = f'Troco: {troco}',
                             size = 16,
-                            color = c.sub_textos,
+                            color = c.texto_secundario,
                             font_family = 'inter',
                             text_align = ft.TextAlign.LEFT,
                         ),
@@ -264,7 +265,7 @@ class Registro_Atendimentos:
                 divider = ft.Container(
                     height = 1.6,
                     expand = True,
-                    bgcolor = c.bordas,
+                    bgcolor = c.borda,
                     margin = ft.Margin(top = vg.margin_top)
                 )
 
