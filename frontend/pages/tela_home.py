@@ -241,7 +241,7 @@ class Tela_Home:
             spacing = 0,
             expand = True,
             alignment = ft.MainAxisAlignment.START,
-            horizontal_alignment = ft.CrossAxisAlignment.START,
+            horizontal_alignment = ft.CrossAxisAlignment.CENTER,
             controls = [
                 self.banner,
                 self.ferramentas,

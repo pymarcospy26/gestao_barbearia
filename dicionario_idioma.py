@@ -5,6 +5,7 @@ idioma_select = bd.status_idioma_page(option = 0)
 palavras = {
     'BR': {
         'titulos': {
+            'idioma': 'Idioma',
             'inicio': 'Início',
             'agenda': 'Agenda',
             'historico': 'Histórico',
@@ -66,7 +67,10 @@ palavras = {
             'desconto': 'Desconto',
             'adicional': 'Adicional',
             'valor_porcentagem': 'Valor em porcentagem %',
-            'unidade_abrev': 'Und'
+            'unidade_abrev': 'Und',
+            'pix': 'Pix',
+            'cartao': 'Cartão',
+            'dinheiro': 'Dinheiro'
         },
 
         'notificacoes': {
@@ -82,11 +86,23 @@ palavras = {
             'saldo_insuficiente_msg': 'O valor recebido é menor que o total da venda.',
             'valor_inserido_invalido_titulo': 'Ops..!\n',
             'valor_inserido_invalido_msg': 'Não foi possível processar o valor informado.'
+        },
+
+        'idioma': {
+            'nome_idioma': {
+                'portugues': 'Português - BR',
+                'ingles': 'Inglês - EUA',
+                'espanhol': 'Espanhol - ES',
+                'frances': 'Francês - FR'
+            },
+
+            'exemplo': 'Olá, tudo bom?\nEste é um exemplo de escrita no idioma escolhido.\n\n(Português - BR)'
         }
     },
 
     'EUA': {
         'titulos': {
+            'idioma': 'Language',
             'inicio': 'Home',
             'agenda': 'Schedule',
             'historico': 'History',
@@ -148,7 +164,10 @@ palavras = {
             'desconto': 'Discount',
             'adicional': 'Extra',
             'valor_porcentagem': 'Percentage value %',
-            'unidade_abrev': 'Unit'
+            'unidade_abrev': 'Unit',
+            'pix': 'Pix',
+            'cartao': 'Card',
+            'dinheiro': 'Cash'
         },
 
         'notificacoes': {
@@ -164,11 +183,23 @@ palavras = {
             'saldo_insuficiente_msg': 'The amount received is less than the total.',
             'valor_inserido_invalido_titulo': 'Oops..!\n',
             'valor_inserido_invalido_msg': 'Could not process the entered value.'
+        },
+
+        'idioma': {
+            'nome_idioma': {
+                'portugues': 'Portuguese - BR',
+                'ingles': 'English - USA',
+                'espanhol': 'Spanish - ES',
+                'frances': 'French - FR'
+            },
+
+            'exemplo': 'Hello, how are you?\nThis is an example of text written in the selected language.\n\n(English - USA)'
         }
     },
 
     'ES': {
         'titulos': {
+            'idioma': 'Idioma',
             'inicio': 'Inicio',
             'agenda': 'Agenda',
             'historico': 'Historial',
@@ -230,7 +261,10 @@ palavras = {
             'desconto': 'Descuento',
             'adicional': 'Adicional',
             'valor_porcentagem': 'Valor en porcentaje %',
-            'unidade_abrev': 'Unid.'
+            'unidade_abrev': 'Unid.',
+            'pix': 'Pix',
+            'cartao': 'Tarjeta',
+            'dinheiro': 'Efectivo'
         },
 
         'notificacoes': {
@@ -246,11 +280,23 @@ palavras = {
             'saldo_insuficiente_msg': 'El valor recibido es menor que el total.',
             'valor_inserido_invalido_titulo': '¡Ups..!\n',
             'valor_inserido_invalido_msg': 'No se pudo procesar el valor ingresado.'
+        },
+
+        'idioma': {
+            'nome_idioma': {
+                'portugues': 'Portugués - BR',
+                'ingles': 'Inglés - EUA',
+                'espanhol': 'Español - ES',
+                'frances': 'Francés - FR'
+            },
+
+            'exemplo': '¡Hola! ¿Cómo estás?\nEste es un ejemplo de texto escrito en el idioma seleccionado.\n\n(Español - ES)'
         }
     },
 
     'FR': {
         'titulos': {
+            'idioma': 'Langue',
             'inicio': 'Accueil',
             'agenda': 'Agenda',
             'historico': 'Historique',
@@ -312,7 +358,10 @@ palavras = {
             'desconto': 'Remise',
             'adicional': 'Supplément',
             'valor_porcentagem': 'Valeur en pourcentage %',
-            'unidade_abrev': 'Unité'
+            'unidade_abrev': 'Unité',
+            'pix': 'Pix',
+            'cartao': 'Carte',
+            'dinheiro': 'Espèces'
         },
 
         'notificacoes': {
@@ -328,6 +377,17 @@ palavras = {
             'saldo_insuficiente_msg': 'Le montant reçu est inférieur au total.',
             'valor_inserido_invalido_titulo': 'Oups..!\n',
             'valor_inserido_invalido_msg': 'Impossible de traiter la valeur saisie.'
+        },
+
+        'idioma': {
+            'nome_idioma': {
+                'portugues': 'Portugais - BR',
+                'ingles': 'Anglais - USA',
+                'espanhol': 'Espagnol - ES',
+                'frances': 'Français - FR'
+            },
+
+            'exemplo': 'Bonjour, comment allez-vous ?\nCeci est un exemple de texte écrit dans la langue sélectionnée.\n\n(Français - FR)'
         }
     }
 }

@@ -65,6 +65,8 @@ class Tela_Idioma:
         bd.status_idioma_page(idioma = idioma, option = 1)
         dic.idioma_select = idioma
         await vg.pagina_main()
+        vg.cor_btns_navegation_bar(None, 'idiomas')
+        await vg.pagina_idioma(None)
 
     def buttons_idioma(
         self,
@@ -127,30 +129,49 @@ class Tela_Idioma:
             spacing = 0,
             expand = True,
             alignment = ft.MainAxisAlignment.START,
-            horizontal_alignment = ft.CrossAxisAlignment.START,
+            horizontal_alignment = ft.CrossAxisAlignment.CENTER,
 
             controls = [
                 self.box_idiomas(
                     controls = [
                         self.buttons_idioma(
-                            text_idioma = 'Português BR',
+                            text_idioma = dic.palavras[dic.idioma_select]['idioma']['nome_idioma']['portugues'],
                             img_idioma = 'Brasil', click = self.br_idioma
                         ),
 
                         self.buttons_idioma(
-                            text_idioma = 'Inglês EUA',
+                            text_idioma = dic.palavras[dic.idioma_select]['idioma']['nome_idioma']['ingles'],
                             img_idioma = 'EUA', click = self.eua_idiomas
                         ),
 
                         self.buttons_idioma(
-                            text_idioma = 'Espanhol ES',
+                            text_idioma = dic.palavras[dic.idioma_select]['idioma']['nome_idioma']['espanhol'],
                             img_idioma = 'Espanha', click = self.es_idiomas
                         ),
 
                         self.buttons_idioma(
-                            text_idioma = 'Francês FR',
+                            text_idioma = dic.palavras[dic.idioma_select]['idioma']['nome_idioma']['frances'],
                             img_idioma = 'França', click = self.fr_idiomas
                         ),
+                    ]
+                ),
+
+                self.box_idiomas(
+                    controls = [
+                        ft.Row(
+                            expand = True,
+                            alignment = ft.MainAxisAlignment.START,
+                            vertical_alignment = ft.CrossAxisAlignment.CENTER,
+                            margin = 25,
+                            controls = [
+                                ft.Text(
+                                    expand = True,
+                                    value = dic.palavras[dic.idioma_select]['idioma']['exemplo'],
+                                    size = 16, color = c.texto_secundario,
+                                    font_family = 'inter', overflow = ft.TextOverflow.CLIP
+                                )
+                            ]
+                        )
                     ]
                 )
             ]

@@ -23,11 +23,14 @@ class Configuracao:
     async def alternar_tema(self, e):
         if e.control.value == True:
             bd.status_tema_page(tema = 'escuro', option = 1)
+            
         else:
             bd.status_tema_page(tema = 'claro', option = 1)
 
         await c.carregar_tema()
         await vg.pagina_main()
+        vg.cor_btns_navegation_bar(None, 'tema/escuro/claro')
+        await vg.pagina_configuracao_main(None)
 
     def buttons_config(
         self,

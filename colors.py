@@ -7,6 +7,7 @@ tema = bd.status_tema_page(option = 0)
 cores = {
     'claro': {
         # Base
+        'fundo_teclado': '#9AA6B2',
         'fundo': '#F8F8FC',
         'fundo_alternativo': '#F9F9F9',
         'fundo_neutralo': '#FFFFFF',
@@ -47,6 +48,7 @@ cores = {
     
     'escuro': {
         # Base
+        'fundo_teclado': '#0F0E0E',
         'fundo': '#1A1A1E',
         'fundo_alternativo': '#252529',
         'fundo_neutralo': '#2D2D31',
@@ -59,9 +61,9 @@ cores = {
         'texto_suave': '#7A7280',
 
         # Cor Principal (Roxo)
-        'cor_principal': "#A13AF5",
+        'cor_principal': "#B2A5FF",
         'cor_principal_clara': '#C77DFF',
-        'cor_principal_escura': "#C77DFF",
+        'cor_principal_escura': "#A294F9",
         'cor_principal_suave': '#5A189A',
 
         # Verde
@@ -71,7 +73,7 @@ cores = {
 
         # Vermelho
         'cor_vermelho': '#E63946',
-        'cor_vermelho_fundo': '#7A1D1D',
+        'cor_vermelho_fundo': '#810B38',
         'cor_vermelho_escura': '#3B0000',
         'cor_alerta': '#F94449',
 
@@ -81,7 +83,7 @@ cores = {
 
         # Acessórios
         'cor_laranja': '#FF8C42',
-        'cor_rosa': '#FF6B9D',
+        'cor_rosa': '#F875AA',
         'cor_sombra': '#0A0A0F',
     }
 }
@@ -90,6 +92,7 @@ cores = {
 _cores_ativas = cores[tema]
 
 # Base
+fundo_teclado = _cores_ativas['fundo_teclado']
 fundo = _cores_ativas['fundo']
 fundo_alternativo = _cores_ativas['fundo_alternativo']
 fundo_neutralo = _cores_ativas['fundo_neutralo']
@@ -167,7 +170,9 @@ def shadow_buttons():
     )
 
 async def carregar_tema():
+    global tema
     global fundo
+    global fundo_teclado
     global fundo_alternativo
     global fundo_neutralo
     global borda
@@ -203,9 +208,12 @@ async def carregar_tema():
 
     await asyncio.sleep(0.3)
 
+    tema = bd.status_tema_page(option = 0)
+
     _cores_ativas = cores[bd.status_tema_page(option = 0)]
 
     # Base
+    fundo_teclado = _cores_ativas['fundo_teclado']
     fundo = _cores_ativas['fundo']
     fundo_alternativo = _cores_ativas['fundo_alternativo']
     fundo_neutralo = _cores_ativas['fundo_neutralo']
