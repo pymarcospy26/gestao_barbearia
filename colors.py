@@ -4,6 +4,36 @@ import asyncio
 
 tema = bd.status_tema_page(option = 0)
 
+cor_select = 'lilas'
+
+paleta_cores_select = {
+    'lilas': {
+        'claro': {
+            'cor_principal': '#8A2BE2',
+            'cor_principal_clara': '#B39EF5',
+            'cor_principal_escura': '#4B0082',
+            'cor_principal_suave': '#E6AFFF'
+        },
+
+        'escuro': {
+            'cor_principal': '#B2A5FF',
+            'cor_principal_clara': '#C77DFF',
+            'cor_principal_escura': '#A294F9',
+            'cor_principal_suave': '#5A189A'
+        },
+    }
+}
+
+def atualizar_paleta(cor_desejada, paleta_ativa, tema_ativo):
+    paletas = {
+        'cor_principal': paleta_cores_select[paleta_ativa][tema_ativo]['cor_principal'],
+        'cor_principal_clara': paleta_cores_select[paleta_ativa][tema_ativo]['cor_principal_clara'],
+        'cor_principal_escura': paleta_cores_select[paleta_ativa][tema_ativo]['cor_principal_escura'],
+        'cor_principal_suave': paleta_cores_select[paleta_ativa][tema_ativo]['cor_principal_suave'],
+    }
+
+    return paletas[cor_desejada]
+
 cores = {
     'claro': {
         # Base
@@ -18,12 +48,6 @@ cores = {
         'texto_principal': '#2D2A3D',
         'texto_secundario': '#6B6478',
         'texto_suave': '#9C94A8',
-
-        # Cor Principal (Roxo)
-        'cor_principal': '#8A2BE2',
-        'cor_principal_clara': '#B39EF5',
-        'cor_principal_escura': '#4B0082',
-        'cor_principal_suave': '#E6AFFF',
 
         # Verde
         'cor_verde': '#22B77A',
@@ -59,12 +83,6 @@ cores = {
         'texto_principal': '#E8E8EC',
         'texto_secundario': '#B8B0C4',
         'texto_suave': '#7A7280',
-
-        # Cor Principal (Roxo)
-        'cor_principal': "#B2A5FF",
-        'cor_principal_clara': '#C77DFF',
-        'cor_principal_escura': "#A294F9",
-        'cor_principal_suave': '#5A189A',
 
         # Verde
         'cor_verde': '#1FB580',
@@ -105,10 +123,10 @@ texto_secundario = _cores_ativas['texto_secundario']
 texto_suave = _cores_ativas['texto_suave']
 
 # Cor Principal
-cor_principal = _cores_ativas['cor_principal']
-cor_principal_clara = _cores_ativas['cor_principal_clara']
-cor_principal_escura = _cores_ativas['cor_principal_escura']
-cor_principal_suave = _cores_ativas['cor_principal_suave']
+cor_principal = atualizar_paleta('cor_principal', cor_select, tema)
+cor_principal_clara = atualizar_paleta('cor_principal_clara', cor_select, tema)
+cor_principal_escura = atualizar_paleta('cor_principal_escura', cor_select, tema)
+cor_principal_suave = atualizar_paleta('cor_principal_suave', cor_select, tema)
 
 # Verde
 cor_verde = _cores_ativas['cor_verde']
@@ -177,6 +195,7 @@ async def carregar_tema():
     global fundo_neutralo
     global borda
     global borda_neutra
+    global cor_select
 
     global texto_principal
     global texto_secundario
@@ -210,6 +229,8 @@ async def carregar_tema():
 
     tema = bd.status_tema_page(option = 0)
 
+    cor_select = 'lilas'
+
     _cores_ativas = cores[bd.status_tema_page(option = 0)]
 
     # Base
@@ -226,10 +247,10 @@ async def carregar_tema():
     texto_suave = _cores_ativas['texto_suave']
 
     # Cor principal
-    cor_principal = _cores_ativas['cor_principal']
-    cor_principal_clara = _cores_ativas['cor_principal_clara']
-    cor_principal_escura = _cores_ativas['cor_principal_escura']
-    cor_principal_suave = _cores_ativas['cor_principal_suave']
+    cor_principal = atualizar_paleta('cor_principal', cor_select, tema)
+    cor_principal_clara = atualizar_paleta('cor_principal_clara', cor_select, tema)
+    cor_principal_escura = atualizar_paleta('cor_principal_escura', cor_select, tema)
+    cor_principal_suave = atualizar_paleta('cor_principal_suave', cor_select, tema)
 
     # Verde
     cor_verde = _cores_ativas['cor_verde']

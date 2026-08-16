@@ -1,7 +1,6 @@
 import flet as ft
 import icons as ic
 import colors as c
-import teclado as tecl
 import play_audio as play
 import variaveis_globais as vg
 import dicionario_idioma as dic
@@ -26,9 +25,6 @@ class App:
         self.quantidade_historico = 0
         self.quantidade_configuracao = 0
         self.lista_btns_control_bar = []
-        self.campo_ativo = None
-        self.teclado_aberto = None
-        self.teclado_normal = tecl.teclado_completo
 
         self.page.fonts = {
             'inter': 'fonts/Inter-VariableFont_opsz,wght.ttf'
@@ -354,8 +350,11 @@ class App:
 
     async def recriar_main(self, page_go = None):
         self.page.controls.clear()
-        novo_app = App(self.page)
-        await novo_app.abrir_home()
+        async def page_page(page: ft.Page):
+            novo_app = App(page)
+            await novo_app.abrir_home()
+
+        await page_page(self.page)
 
         if page_go != None:
             pass
@@ -376,23 +375,6 @@ class App:
         alert_dialog = diag.AlertDialog_atendimento(self.page)
         await alert_dialog.inicializar()
         alert_dialog.abrir(e)
-
-    async def abrir_teclado(self, e, campo: ft.Control = None):
-        self.campo_ativo = campo
-
-        if self.teclado_aberto is None:
-            self.teclado_aberto = self.teclado_normal(self.page, campo)
-            self.estrutura.controls.append(self.teclado_aberto)
-        else:
-            self.teclado_aberto.campo = campo
-
-        self.page.update()
-    async def fechar_teclado(self, e = None):
-        if self.teclado_aberto is not None:
-            self.estrutura.controls.remove(self.teclado_aberto)
-            self.teclado_aberto = None
-            self.campo_ativo = None
-            self.page.update()
 
     async def tela_home_GO(self, e):
         self.mudar_button_config_EXIT_MENU()
@@ -462,14 +444,12 @@ class App:
         self.page.update()
     async def abrir_home(self):
         self.tela_scrol.scroll = ft.ScrollMode.AUTO
-        vg.ativar_teclado_virtual = self.abrir_teclado
-        vg.desativar_teclado_virtual = self.fechar_teclado
         vg.pagina_main = self.recriar_main
         vg.pagina_configuracao_main = self.tela_configuracao_GO
         vg.pagina_agenda = self.tela_agenda_GO
         vg.pagina_idioma = self.tela_idioma_GO
         vg.cor_btns_navegation_bar = self.click_cor_control_bar
-        await self.tela_home_GO(None)
+        await self.tela_home_GO( None)
         await play.system_sons(self.page)
         self.page.add(
             ft.SafeArea(

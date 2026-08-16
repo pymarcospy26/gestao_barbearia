@@ -13,64 +13,6 @@ class Tela_Atendimento:
         self.servicos_carregados = vg.servicos_carregados
         self.controls_servicos_carregados = []
 
-        self.barra_pesquisa_servicos = self.barra_pesquisa_fx(on_blur = self.fechar_teclado, on_focus = self.abrir_teclado)
-
-    async def abrir_teclado(self, e):
-        await vg.ativar_teclado_virtual(e, self.barra_pesquisa_servicos.controls[0].content)
-
-    async def fechar_teclado(self, e):
-        await vg.desativar_teclado_virtual(e)
-        
-    # def pesquisa_servicos(self, e):
-    #     digitado = e.control.value
-    #     # self.alertdialog_global.data['lista_atendimento'].controls.clear() - ÁREA DE LISTA
-
-    #     controles = []
-
-    #     def normalizar_letras(texto):
-    #         texto = unicodedata.normalize('NFD', texto)
-    #         texto = ''.join(
-    #             letra
-    #             for letra in texto
-    #             if unicodedata.category(letra) != 'Mn'
-    #         )
-
-    #         return texto.lower()
-
-    #     palavras_busca = normalizar_letras(digitado).split()
-
-    #     for servico in self.armazenamento_controles:
-    #         texto_servico = normalizar_letras(servico)
-
-    #         if all(palavra in texto_servico for palavra in palavras_busca):
-    #             self.alertdialog_global.data['lista_atendimento'].alignment = ft.MainAxisAlignment.START
-    #             controles.append(self.armazenamento_controles[servico])
-
-    #     if len(controles) == 0:
-    #         not_found = ft.Column(
-    #             alignment = ft.MainAxisAlignment.CENTER,
-    #             horizontal_alignment = ft.CrossAxisAlignment.CENTER,
-    #             controls = [
-    #                 ic.svg_icon(
-    #                     'not_found_busca',
-    #                     size = 50, color = c.texto_principal
-    #                 ),
-
-    #                 ft.Text(
-    #                     value = dic.palavras[dic.idioma_select]['atendimento']['sem_resultados'],
-    #                     size = 16, color = c.texto_principal,
-    #                     font_family = 'inter', text_align = ft.TextAlign.CENTER
-    #                 ),
-    #             ]
-    #         )
-
-    #         self.alertdialog_global.data['lista_atendimento'].alignment = ft.MainAxisAlignment.CENTER
-    #         self.alertdialog_global.data['lista_atendimento'].controls.append(not_found)
-
-    #         return
-        
-    #     self.alertdialog_global.data['lista_atendimento'].controls.extend(controles)
-
     def barra_pesquisa_fx(
         self,
         text_interno = dic.palavras[dic.idioma_select]['atendimento']['busca_rapida'],
@@ -80,8 +22,9 @@ class Tela_Atendimento:
         on_change: ft.Event = None,
     ):
         return ft.Stack(
-            height = 74,
-            alignment = ft.Alignment.CENTER,
+            height = 78,
+            expand = True,
+            alignment = ft.Alignment.TOP_CENTER,
 
             controls = [
                 ft.Container(
@@ -89,17 +32,17 @@ class Tela_Atendimento:
                     right = 0,
                     expand = True,
                     bgcolor = c.fundo_neutralo,
-                    border_radius = 24,
+                    border_radius = 28,
                     shadow = c.shadow_leve(),
                     
                     margin = ft.Margin(
-                        left = vg.margin_left, right = vg.margin_right
+                        left = vg.margin_left
                     ),
 
                     content = ft.TextField(
                         expand = True,
-                        border_radius = 24,
-                        content_padding = ft.Padding(top = 21, bottom = 21),
+                        border_radius = 28,
+                        content_padding = ft.Padding(top = 24.5, bottom = 24.5),
 
                         bgcolor = c.fundo_neutralo,
                         border_color = ft.Colors.TRANSPARENT,
@@ -121,15 +64,13 @@ class Tela_Atendimento:
                         on_blur = on_blur,
                         on_focus = on_focus,
                         on_change = on_change,
-
-                        keyboard_type = ft.KeyboardType.NONE
                     )
                 ),
                 
                 ic.svg_icon(
                     path = 'lupa',
                     size = 30, color = c.texto_suave,
-                    left = 38
+                    left = 38, top = 0, bottom = 4
                 )
             ]
         )
@@ -138,12 +79,61 @@ class Tela_Atendimento:
         self,
         setor = 'setor not found',
         servico = 'servico not found',
-        valor = 'valor not found'
+        valor = 'valor not found',
+        lista: ft.Control = None,
     ):
+        
+        async def acao_botoes_quantidae(e):
+            btn_click = e.control
+            campo_text = btn_click.data['campo']
+            btn_mais = btn_click.data['botao_mais']
+            btn_menos = btn_click.data['botao_menos']
+
+            subiu_yn = btn_click.data['subiu']
+            box_clik = btn_click.data['box']
+            key_box = btn_click.data['key']
+            lista = btn_click.data['lista']
+
+            if btn_click.data['x'] == 'menos':
+                if int(campo_text.value) >= 1:
+                    campo_text.value = int(campo_text.value) - 1
+
+                    if int(campo_text.value) == 0:
+                        btn_mais.shadow = None
+                        btn_mais.bgcolor = c.fundo_alternativo
+                        btn_mais.content.color = c.texto_principal
+
+                        btn_click.opacity = 0.2
+                        btn_click.ink = False 
+
+            if btn_click.data['x'] == 'mais':
+                campo_text.value = int(campo_text.value) + 1
+
+                if int(campo_text.value) >= 1:
+                    btn_click.bgcolor = c.cor_principal_escura
+                    btn_click.shadow = c.shadow_leve()
+                    btn_click.content.color = c.fundo_neutralo
+
+                    btn_menos.opacity = 1
+                    btn_menos.ink = True
+
+                    if subiu_yn == False:
+                        lista.controls.remove(box_clik)
+                        lista.controls.insert(0, box_clik)
+
+                        await vg.scrollagem(
+                            offset = 0,
+                            column_row = lista,
+                            time = 350
+                        )
+
+                        btn_click.data['subiu'] = True
+
+            self.page.update()
 
         campo = ft.Text(
-            value = 0,
-            size = 16, color = c.texto_principal,
+            value = 0, width = 30,
+            size = 16, color = c.texto_principal, text_align = ft.TextAlign.CENTER,
             font_family = 'inter', margin = ft.Margin(left = 8, right = 8)
         )
 
@@ -162,17 +152,16 @@ class Tela_Atendimento:
                 size = 24, color = c.texto_principal,
             ),
 
-            ink = True,
+            ink = False,
+            on_click = acao_botoes_quantidae
         )
 
         botao_mais = ft.Container(
             data = {},
             width = 56,
             height = 56,
-            opacity = 0.2,
             border_radius = 24,
-            shadow = c.shadow_leve(),
-            bgcolor = c.fundo_neutralo,
+            bgcolor = c.fundo_alternativo,
             alignment = ft.Alignment.CENTER,
             margin = ft.Margin(right = 26),
 
@@ -182,11 +171,12 @@ class Tela_Atendimento:
             ),
 
             ink = True,
+            on_click = acao_botoes_quantidae
         )
 
         control_quantidade = ft.Row(
             data = {},
-            spacing = 0,
+            spacing = 8,
             alignment = ft.MainAxisAlignment.CENTER,
             vertical_alignment = ft.CrossAxisAlignment.CENTER,
 
@@ -197,20 +187,6 @@ class Tela_Atendimento:
             ]
         )
 
-        botao_mais.data = {
-            'campo': campo,
-            'botao_mais': botao_mais,
-            'botao_menos': botao_menos,
-            'control_quantidade': control_quantidade,
-        }
-        
-        botao_menos.data = {
-            'campo': campo,
-            'botao_mais': botao_mais,
-            'botao_menos': botao_menos,
-            'control_quantidade': control_quantidade,
-        }
-        
         control_quantidade.data = {
             'campo': campo,
             'botao_mais': botao_mais,
@@ -221,6 +197,7 @@ class Tela_Atendimento:
         box = ft.Container(
             height = 86,
             expand = True,
+            key = ft.ScrollKey(f'Key_{setor}/{servico}/{valor}'),
             shadow = c.shadow_leve(),
             bgcolor = c.fundo_neutralo,
             data = {'setor': setor},
@@ -257,12 +234,48 @@ class Tela_Atendimento:
             )
         )
 
+        botao_mais.data = {
+            'x': 'mais',
+            'campo': campo,
+            'botao_mais': botao_mais,
+            'botao_menos': botao_menos,
+            'control_quantidade': control_quantidade,
+            'box': box, 'lista': lista, 'key': box.key, 'subiu': False
+        }
+        
+        botao_menos.data = {
+            'x': 'menos',
+            'campo': campo,
+            'botao_mais': botao_mais,
+            'botao_menos': botao_menos,
+            'control_quantidade': control_quantidade,
+            'box': box, 'lista': lista, 'key': box.key, 'subiu': False
+        }
+        
         return box
 
     def tela(self):
         return self.lista()
 
     def lista(self):
+        btn_filtro = ft.Container(
+            width = 74,
+            height = 74,
+            border_radius = 28,
+            shadow = c.shadow_leve(),
+            alignment = ft.Alignment.CENTER,
+            bgcolor = c.cor_principal_escura,
+            margin = ft.Margin(right = vg.margin_right),
+
+            content = ic.svg_icon(
+                'filtro',
+                size = 30, color = c.fundo_neutralo
+            ),
+
+            ink = True,
+            on_click = True,
+        )
+
         lista = ft.Column(
             spacing = 16,
             expand = True,
@@ -271,7 +284,17 @@ class Tela_Atendimento:
             horizontal_alignment = ft.CrossAxisAlignment.CENTER,
 
             controls = [
-                self.barra_pesquisa_servicos
+                ft.Row(
+                    spacing = 16,
+                    alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
+                    vertical_alignment = ft.CrossAxisAlignment.START,
+                    controls = [
+                        self.barra_pesquisa_fx(
+                            text_interno = dic.palavras[dic.idioma_select]['atendimento']['busca_rapida']
+                        ),
+                        btn_filtro
+                    ]
+                )
             ]
         )
 
@@ -287,7 +310,7 @@ class Tela_Atendimento:
         box_lista = ft.Container(
             expand = True,
             border_radius = 28,
-            margin = vg.margin_top,
+            margin = ft.Margin(left = vg.margin_left, right = vg.margin_right),
             shadow = c.shadow_leve(),
             bgcolor = c.fundo_neutralo,
             alignment = ft.Alignment.CENTER,
@@ -298,7 +321,8 @@ class Tela_Atendimento:
             control_box = self.box_servicos(
                 setor = self.servicos_carregados['todos'][x]['setor'],
                 valor = self.servicos_carregados['todos'][x]['valor'],
-                servico = self.servicos_carregados['todos'][x]['produto']
+                servico = self.servicos_carregados['todos'][x]['produto'],
+                lista = lista_scroll
             )
 
             lista_scroll.controls.append(control_box)
