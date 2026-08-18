@@ -3,8 +3,8 @@ from pathlib import Path
 
 LOCAL = Path(__file__).parent
 
-def svg_icon(path, size = 90, color = '#ff0000', left = None, right = None, bottom = None, top = None):
-    path_mod = LOCAL / 'assets' / 'icons' / f'{path}.svg'
+def svg_icon(icon = None, size = 90, color = '#ff0000', left = None, right = None, bottom = None, top = None):
+    path_mod = LOCAL / 'assets' / 'icons' / f'{icon}.svg'
 
     svg = open(path_mod, 'r', encoding = 'utf-8').read()
 

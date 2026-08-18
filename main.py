@@ -18,7 +18,6 @@ class App:
         self.page.data = {}
         self.page.padding = 0
 
-        self.titulos_page = 'HELLO WORD'
         self.page.bgcolor = c.fundo
         self.quantidade_home = 0
         self.quantidade_agenda = 0
@@ -59,7 +58,7 @@ class App:
         self.tela_home = thm.Tela_Home(page)
 
         self.titulo_control = ft.Text(
-            value = self.titulos_page,
+            value = 'HELLO WORD',
             size = 26, color = c.texto_principal,
             font_family = 'inter', weight = ft.FontWeight.W_400
         )
@@ -378,7 +377,6 @@ class App:
 
     async def tela_home_GO(self, e):
         self.mudar_button_config_EXIT_MENU()
-        self.tela_scrol.scroll = ft.ScrollMode.AUTO
         self.click_cor_control_bar(e, controle = 'Início')
         tela_home_go = await self.tela_home.tela()
         fx.tela_anterior = tela_home_go
@@ -389,7 +387,7 @@ class App:
         self.page.update()
     async def tela_atendimento_GO(self, e):
         self.mudar_button_config_EXIT_MENU()
-        self.tela_scrol.scroll = None
+        self.click_cor_control_bar(e, controle = 'atendimento_')
         await vg.carregar_dados()
         tela_atendimento_go = norm.Tela_Atendimento(self.page).tela()
         self.titulo_control.value = dic.palavras[dic.idioma_select]['dialog_atendimento']['titulo_atendimento']
@@ -398,7 +396,6 @@ class App:
         self.page.update()
     async def tela_agenda_GO(self, e):
         self.mudar_button_config_EXIT_MENU()
-        self.tela_scrol.scroll = ft.ScrollMode.AUTO
         self.click_cor_control_bar(e, controle = 'Agenda')
         tela_agenda_go = ft.Container(expand = True, bgcolor = c.cor_verde)
         fx.tela_anterior = tela_agenda_go
@@ -409,7 +406,6 @@ class App:
         self.page.update()
     async def tela_historico_GO(self, e):
         self.mudar_button_config_EXIT_MENU()
-        self.tela_scrol.scroll = ft.ScrollMode.AUTO
         self.click_cor_control_bar(e, controle = 'Histórico')
         tela_historico_go = tra.Registro_Atendimentos(self.page).tela()
         fx.tela_anterior = tela_historico_go
@@ -420,7 +416,6 @@ class App:
         self.page.update()
     async def tela_configuracao_GO(self, e):
         self.mudar_button_config_EXIT_MENU()
-        self.tela_scrol.scroll = ft.ScrollMode.AUTO
         self.click_cor_control_bar(e, controle = 'Config')
 
         tela_configuracao_go = tcg.Configuracao(
@@ -436,28 +431,38 @@ class App:
         self.page.update()
     async def tela_idioma_GO(self, e):
         self.mudar_button_config_EXIT_MENU(icon = 'seta_exit')
-        self.tela_scrol.scroll = ft.ScrollMode.AUTO
         tela_idioma_go = tid.Tela_Idioma(self.page).tela()
         self.titulo_control.value = dic.palavras[dic.idioma_select]['titulos']['idioma']
         self.area_page.controls.clear()
         self.area_page.controls.append(tela_idioma_go)
         self.page.update()
     async def abrir_home(self):
-        self.tela_scrol.scroll = ft.ScrollMode.AUTO
+        #ABASTECER GLOBAIS DO VG
+        vg.mudar_button_config_EXIT_MENU = self.mudar_button_config_EXIT_MENU
+        vg.click_cor_control_bar = self.click_cor_control_bar
+        vg.titulo_control = self.titulo_control
+        vg.area_page = self.area_page
+        vg.page = self.page
+
         vg.pagina_main = self.recriar_main
-        vg.pagina_configuracao_main = self.tela_configuracao_GO
         vg.pagina_agenda = self.tela_agenda_GO
         vg.pagina_idioma = self.tela_idioma_GO
+        vg.pagina_configuracao_main = self.tela_configuracao_GO
         vg.cor_btns_navegation_bar = self.click_cor_control_bar
         await self.tela_home_GO( None)
         await play.system_sons(self.page)
         self.page.add(
             ft.SafeArea(
-                expand = True,
-                content = self.estrutura
+                height = self.page.height,
+                content = ft.Column(
+                    height = self.page.height,
+                    alignment = ft.MainAxisAlignment.START,
+                    horizontal_alignment = ft.CrossAxisAlignment.CENTER,
+                    controls = [self.estrutura]
+                )
             )
         )
-  
+
 async def execute( page: ft.Page):
     i = App(page)  
     await i.abrir_home()

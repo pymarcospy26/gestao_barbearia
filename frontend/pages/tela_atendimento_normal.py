@@ -3,15 +3,29 @@ import icons as ic
 import banco as bd
 import colors as c
 import unicodedata
+import conversores as conv
+
+import asyncio
+import play_audio as play
 import variaveis_globais as vg
 import dicionario_idioma as dic
 
 class Tela_Atendimento:
     def __init__(self, page: ft.Page):
+        vg.totais = 0
         self.page = page
+        vg.armazenamento_totais_p_servico.clear()
 
-        self.servicos_carregados = vg.servicos_carregados
+        self.pagamentos_criados = []
+        self.multiplo_pagamento = False
         self.controls_servicos_carregados = []
+        self.servicos_carregados = vg.servicos_carregados
+
+    def decimal(self, valor = None, text_yn = False):
+        return conv.Moedas().decimal_n(valor = valor, p_texto = text_yn)
+
+    def conversor(self, valor = None, decimal = None, text_yn = False):
+        return conv.Moedas().conversao_moeda(valor = valor, p_decimal = decimal, p_text = text_yn)
 
     def barra_pesquisa_fx(
         self,
@@ -42,7 +56,7 @@ class Tela_Atendimento:
                     content = ft.TextField(
                         expand = True,
                         border_radius = 28,
-                        content_padding = ft.Padding(top = 24.5, bottom = 24.5),
+                        content_padding = ft.Padding(top = 24.5, left = 64, bottom = 24.5),
 
                         bgcolor = c.fundo_neutralo,
                         border_color = ft.Colors.TRANSPARENT,
@@ -59,7 +73,7 @@ class Tela_Atendimento:
                             font_family = 'inter'
                         ),
 
-                        text_align = ft.TextAlign.CENTER,
+                        text_align = ft.TextAlign.START,
 
                         on_blur = on_blur,
                         on_focus = on_focus,
@@ -68,7 +82,7 @@ class Tela_Atendimento:
                 ),
                 
                 ic.svg_icon(
-                    path = 'lupa',
+                    icon = 'lupa',
                     size = 30, color = c.texto_suave,
                     left = 38, top = 0, bottom = 4
                 )
@@ -77,57 +91,94 @@ class Tela_Atendimento:
 
     def box_servicos(
         self,
-        setor = 'setor not found',
-        servico = 'servico not found',
-        valor = 'valor not found',
+        setor = 'setor do servico',
+        servico = 'nome do servico',
+        valor = 'valor unitario do servico',
         lista: ft.Control = None,
+        botao_presseguir = None,
+        text_subtotal = None
     ):
         
+        lock_quantidade = asyncio.Lock()
+
         async def acao_botoes_quantidae(e):
             btn_click = e.control
-            campo_text = btn_click.data['campo']
+            id_quantidade = btn_click.data['campo']
             btn_mais = btn_click.data['botao_mais']
             btn_menos = btn_click.data['botao_menos']
-
-            subiu_yn = btn_click.data['subiu']
             box_clik = btn_click.data['box']
-            key_box = btn_click.data['key']
-            lista = btn_click.data['lista']
 
-            if btn_click.data['x'] == 'menos':
-                if int(campo_text.value) >= 1:
-                    campo_text.value = int(campo_text.value) - 1
+            async with lock_quantidade:
+                if btn_click.data['x'] == 'menos':
+                    if int(id_quantidade.value) > 0:
+                        id_quantidade.value = str(int(id_quantidade.value) - 1)
 
-                    if int(campo_text.value) == 0:
-                        btn_mais.shadow = None
-                        btn_mais.bgcolor = c.fundo_alternativo
-                        btn_mais.content.color = c.texto_principal
+                        if int(id_quantidade.value) == 0:
+                            btn_click.on_click = None
+                            
+                            btn_mais.shadow = None
+                            btn_mais.bgcolor = c.fundo_alternativo
+                            btn_mais.content.color = c.texto_principal
 
-                        btn_click.opacity = 0.2
-                        btn_click.ink = False 
+                            btn_click.opacity = 0.2
+                            btn_click.ink = False
 
-            if btn_click.data['x'] == 'mais':
-                campo_text.value = int(campo_text.value) + 1
+                if btn_click.data['x'] == 'mais':
+                    id_quantidade.value = str(int(id_quantidade.value) + 1)
 
-                if int(campo_text.value) >= 1:
-                    btn_click.bgcolor = c.cor_principal_escura
-                    btn_click.shadow = c.shadow_leve()
-                    btn_click.content.color = c.fundo_neutralo
+                    if int(id_quantidade.value) > 0:
+                        btn_click.bgcolor = c.cor_principal_escura
+                        btn_click.shadow = c.shadow_leve(opc = 0.56)
+                        btn_click.content.color = c.fundo_neutralo
 
-                    btn_menos.opacity = 1
-                    btn_menos.ink = True
+                        btn_menos.on_click = acao_botoes_quantidae
+                        btn_menos.opacity = 1
+                        btn_menos.ink = True
 
-                    if subiu_yn == False:
-                        lista.controls.remove(box_clik)
-                        lista.controls.insert(0, box_clik)
+                        box_clik.animate_opacity = ft.Animation(duration = 0)
+                        box_clik.animate_offset = ft.Animation(duration = 0)
+                        box_clik.opacity = 0
+                        box_clik.offset = ft.Offset(0, -0.26)
+                        box_clik.update()
 
-                        await vg.scrollagem(
-                            offset = 0,
-                            column_row = lista,
-                            time = 350
+                        await asyncio.sleep(0.02)
+
+                        box_clik.animate_opacity = ft.Animation(
+                            curve = ft.AnimationCurve.EASE_IN_OUT,
+                            duration = 240
                         )
 
-                        btn_click.data['subiu'] = True
+                        box_clik.animate_offset = ft.Animation(
+                            curve = ft.AnimationCurve.EASE_IN_OUT,
+                            duration = 240
+                        )
+                        box_clik.update()
+
+                        box_clik.opacity = 1
+                        box_clik.offset = ft.Offset(0, 0)
+                        box_clik.update()
+
+            if servico not in vg.armazenamento_totais_p_servico:
+                vg.armazenamento_totais_p_servico[servico] = 0
+
+            vg.armazenamento_totais_p_servico[servico] = int(id_quantidade.value) * self.decimal(valor = valor)
+            vg.totais = 0
+            for x in vg.armazenamento_totais_p_servico:
+                vg.totais += self.decimal(valor = vg.armazenamento_totais_p_servico[x])
+
+            vg.totais = self.decimal(valor = vg.totais, text_yn = True)
+
+            if self.decimal(valor = vg.totais) >= 1:
+                botao_presseguir.border = ft.Border.all(width = 2, color = c.cor_principal)
+                botao_presseguir.content.weight = ft.FontWeight.W_600
+                botao_presseguir.content.color = c.cor_principal
+                botao_presseguir.on_click = True
+
+            else:
+                botao_presseguir.border = ft.Border.all(width = 0.6, color = c.texto_suave)
+                botao_presseguir.content.weight = ft.FontWeight.NORMAL
+                botao_presseguir.content.color = c.texto_suave
+                botao_presseguir.on_click = None
 
             self.page.update()
 
@@ -143,7 +194,7 @@ class Tela_Atendimento:
             height = 56,
             opacity = 0.2,
             border_radius = 24,
-            shadow = c.shadow_leve(),
+            shadow = c.shadow_leve(opc = 0.56),
             bgcolor = c.fundo_neutralo,
             alignment = ft.Alignment.CENTER,
 
@@ -193,7 +244,7 @@ class Tela_Atendimento:
             'botao_menos': botao_menos,
             'control_quantidade': control_quantidade,
         }
-     
+
         box = ft.Container(
             height = 86,
             expand = True,
@@ -231,6 +282,16 @@ class Tela_Atendimento:
 
                     control_quantidade
                 ]
+            ),
+
+            animate_opacity = ft.Animation(
+                curve = ft.AnimationCurve.EASE_IN_OUT,
+                duration = 240
+            ),
+
+            animate_offset = ft.Animation(
+                curve = ft.AnimationCurve.EASE_IN_OUT,
+                duration = 240
             )
         )
 
@@ -281,7 +342,7 @@ class Tela_Atendimento:
             expand = True,
             margin = ft.Margin(top = vg.margin_top),
             alignment = ft.MainAxisAlignment.START,
-            horizontal_alignment = ft.CrossAxisAlignment.CENTER,
+            horizontal_alignment = ft.CrossAxisAlignment.START,
 
             controls = [
                 ft.Row(
@@ -314,7 +375,46 @@ class Tela_Atendimento:
             shadow = c.shadow_leve(),
             bgcolor = c.fundo_neutralo,
             alignment = ft.Alignment.CENTER,
-            content = lista_scroll
+            content = lista_scroll,
+            height = self.page.height * 0.44,
+        )
+
+        titulo_subtotal = ft.Text(
+            value = dic.palavras[dic.idioma_select]['dialog_atendimento']['subtotal'],
+            size = 16, color = c.texto_secundario, font_family = 'inter'
+        )
+
+        texto_subtotal = ft.Text(
+            value = 'R$ 0,00',
+            size = 32, color = c.texto_principal, font_family = 'inter'
+        )
+
+        subtotal_completo = ft.Column(
+            spacing = 0,
+            alignment = ft.MainAxisAlignment.START,
+            horizontal_alignment = ft.CrossAxisAlignment.START,
+            controls = [titulo_subtotal, texto_subtotal],
+            margin = ft.Margin(left = vg.margin_left)
+        )
+
+        btn_prosseguir = ft.Container(
+            height = 74,
+            expand = True,
+            bgcolor = c.fundo,
+            border_radius = 28,
+            shadow = c.shadow_leve(),
+            alignment = ft.Alignment.CENTER,
+            border = ft.Border.all(width = 0.6, color = c.texto_suave),
+            margin = ft.Margin(left = vg.margin_left, right = vg.margin_right),
+            
+            content = ft.Text(
+                value = dic.palavras[dic.idioma_select]['dialog_atendimento']['prosseguir'],
+                size = 16, color = c.texto_suave, font_family = 'inter',
+                weight = ft.FontWeight.NORMAL
+            ),
+
+            ink = True,
+            on_click = None,
         )
 
         for x in self.servicos_carregados['todos']:
@@ -322,13 +422,17 @@ class Tela_Atendimento:
                 setor = self.servicos_carregados['todos'][x]['setor'],
                 valor = self.servicos_carregados['todos'][x]['valor'],
                 servico = self.servicos_carregados['todos'][x]['produto'],
-                lista = lista_scroll
+                lista = lista_scroll, text_subtotal = texto_subtotal,
+                botao_presseguir = btn_prosseguir
             )
 
             lista_scroll.controls.append(control_box)
             self.controls_servicos_carregados.append(control_box)
 
         lista.controls.append(box_lista)
+        lista.controls.append(subtotal_completo)
+        lista.controls.append(btn_prosseguir)
+        lista.controls.append(ft.Column(height = 100))
 
         return lista
 

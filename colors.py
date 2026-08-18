@@ -151,6 +151,7 @@ cor_sombra = _cores_ativas['cor_sombra']
 # Gradientes
 gradiente_banner = [cor_principal, cor_principal_escura]
 gradiente_botoes = [cor_principal, cor_principal_escura]
+gradiente_pagamento = [fundo, cor_principal_suave]
 
 def gradiente_top_bottom(colors):
     return ft.LinearGradient(
@@ -224,6 +225,7 @@ async def carregar_tema():
 
     global gradiente_banner
     global gradiente_botoes
+    global gradiente_pagamento
 
     await asyncio.sleep(0.3)
 
@@ -275,3 +277,4 @@ async def carregar_tema():
     # Gradientes
     gradiente_banner = [cor_principal, cor_principal_escura]
     gradiente_botoes = [cor_principal, cor_principal_escura]
+    gradiente_pagamento = [fundo, cor_principal_suave]

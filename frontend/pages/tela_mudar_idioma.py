@@ -64,6 +64,7 @@ class Tela_Idioma:
     async def idiomas(self, idioma = 'BR'):
         bd.status_idioma_page(idioma = idioma, option = 1)
         dic.idioma_select = idioma
+        vg.moeda_ativa = idioma
         await vg.pagina_main()
         vg.cor_btns_navegation_bar(None, 'idiomas')
         await vg.pagina_idioma(None)

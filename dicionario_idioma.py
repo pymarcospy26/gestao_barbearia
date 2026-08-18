@@ -1,6 +1,6 @@
 import banco as bd
 
-idioma_select = bd.status_idioma_page(option = 0)
+idioma_select = bd.status_idioma_page(option=0)
 
 palavras = {
     'BR': {
@@ -68,22 +68,29 @@ palavras = {
             'adicional': 'Adicional',
             'valor_porcentagem': 'Valor em porcentagem %',
             'unidade_abrev': 'Und',
-            'pix': 'Pix',
+
+            'digital': 'Digital',
             'cartao': 'Cartão',
-            'dinheiro': 'Dinheiro'
+            'dinheiro': 'Dinheiro',
+            'outros': 'Outros',
         },
 
         'notificacoes': {
             'selecione_itens_titulo': 'Atenção!\n',
             'selecione_itens_msg': 'Selecione pelo menos um serviço para continuar.',
+
             'valor_invalido_titulo': 'Ops..!\n',
             'valor_invalido_msg': 'Valor inválido, digite apenas números.',
+
             'selecione_pagamento_titulo': 'Atenção!\n',
             'selecione_pagamento_msg': 'Escolha uma forma de pagamento para continuar.',
+
             'venda_sucesso_titulo': 'Sucesso!\n',
             'venda_sucesso_msg': 'Venda registrada e salva no histórico.',
+
             'saldo_insuficiente_titulo': 'Saldo insuficiente!\n',
             'saldo_insuficiente_msg': 'O valor recebido é menor que o total da venda.',
+
             'valor_inserido_invalido_titulo': 'Ops..!\n',
             'valor_inserido_invalido_msg': 'Não foi possível processar o valor informado.'
         },
@@ -99,6 +106,7 @@ palavras = {
             'exemplo': 'Olá, tudo bom?\nEste é um exemplo de escrita no idioma escolhido.\n\n(Português - BR)'
         }
     },
+
 
     'EUA': {
         'titulos': {
@@ -165,22 +173,29 @@ palavras = {
             'adicional': 'Extra',
             'valor_porcentagem': 'Percentage value %',
             'unidade_abrev': 'Unit',
-            'pix': 'Pix',
+
+            'digital': 'Electronic',
             'cartao': 'Card',
-            'dinheiro': 'Cash'
+            'dinheiro': 'Cash',
+            'outros': 'Other',
         },
 
         'notificacoes': {
             'selecione_itens_titulo': 'Attention!\n',
             'selecione_itens_msg': 'Select at least one service to continue.',
+
             'valor_invalido_titulo': 'Oops..!\n',
             'valor_invalido_msg': 'Invalid value, enter numbers only.',
+
             'selecione_pagamento_titulo': 'Attention!\n',
             'selecione_pagamento_msg': 'Choose a payment method to continue.',
+
             'venda_sucesso_titulo': 'Success!\n',
             'venda_sucesso_msg': 'Sale recorded and saved in the history.',
+
             'saldo_insuficiente_titulo': 'Insufficient balance!\n',
             'saldo_insuficiente_msg': 'The amount received is less than the total.',
+
             'valor_inserido_invalido_titulo': 'Oops..!\n',
             'valor_inserido_invalido_msg': 'Could not process the entered value.'
         },
@@ -196,6 +211,7 @@ palavras = {
             'exemplo': 'Hello, how are you?\nThis is an example of text written in the selected language.\n\n(English - USA)'
         }
     },
+
 
     'ES': {
         'titulos': {
@@ -262,22 +278,29 @@ palavras = {
             'adicional': 'Adicional',
             'valor_porcentagem': 'Valor en porcentaje %',
             'unidade_abrev': 'Unid.',
-            'pix': 'Pix',
+
+            'digital': 'Digital',
             'cartao': 'Tarjeta',
-            'dinheiro': 'Efectivo'
+            'dinheiro': 'Efectivo',
+            'outros': 'Otros',
         },
 
         'notificacoes': {
             'selecione_itens_titulo': '¡Atención!\n',
             'selecione_itens_msg': 'Selecciona al menos un servicio para continuar.',
+
             'valor_invalido_titulo': '¡Ups..!\n',
             'valor_invalido_msg': 'Valor inválido, ingresa solo números.',
+
             'selecione_pagamento_titulo': '¡Atención!\n',
             'selecione_pagamento_msg': 'Elige una forma de pago para continuar.',
+
             'venda_sucesso_titulo': '¡Éxito!\n',
             'venda_sucesso_msg': 'Venta registrada y guardada en el historial.',
+
             'saldo_insuficiente_titulo': '¡Saldo insuficiente!\n',
             'saldo_insuficiente_msg': 'El valor recibido es menor que el total.',
+
             'valor_inserido_invalido_titulo': '¡Ups..!\n',
             'valor_inserido_invalido_msg': 'No se pudo procesar el valor ingresado.'
         },
@@ -293,6 +316,7 @@ palavras = {
             'exemplo': '¡Hola! ¿Cómo estás?\nEste es un ejemplo de texto escrito en el idioma seleccionado.\n\n(Español - ES)'
         }
     },
+
 
     'FR': {
         'titulos': {
@@ -359,22 +383,29 @@ palavras = {
             'adicional': 'Supplément',
             'valor_porcentagem': 'Valeur en pourcentage %',
             'unidade_abrev': 'Unité',
-            'pix': 'Pix',
+
+            'digital': 'Électronique',
             'cartao': 'Carte',
-            'dinheiro': 'Espèces'
+            'dinheiro': 'Espèces',
+            'outros': 'Autres',
         },
 
         'notificacoes': {
             'selecione_itens_titulo': 'Attention !\n',
             'selecione_itens_msg': 'Sélectionnez au moins un service pour continuer.',
+
             'valor_invalido_titulo': 'Oups..!\n',
             'valor_invalido_msg': 'Valeur invalide, entrez uniquement des chiffres.',
+
             'selecione_pagamento_titulo': 'Attention !\n',
             'selecione_pagamento_msg': 'Choisissez un moyen de paiement pour continuer.',
+
             'venda_sucesso_titulo': 'Succès !\n',
             'venda_sucesso_msg': 'Vente enregistrée et sauvegardée dans l’historique.',
+
             'saldo_insuficiente_titulo': 'Solde insuffisant !\n',
             'saldo_insuficiente_msg': 'Le montant reçu est inférieur au total.',
+
             'valor_inserido_invalido_titulo': 'Oups..!\n',
             'valor_inserido_invalido_msg': 'Impossible de traiter la valeur saisie.'
         },
@@ -382,7 +413,7 @@ palavras = {
         'idioma': {
             'nome_idioma': {
                 'portugues': 'Portugais - BR',
-                'ingles': 'Anglais - USA',
+                'ingles': 'Anglais - EUA',
                 'espanhol': 'Espagnol - ES',
                 'frances': 'Français - FR'
             },
