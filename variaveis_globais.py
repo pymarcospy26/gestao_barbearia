@@ -1,13 +1,22 @@
-import banco as bd
 import flet as ft
+import banco as bd
 from decimal import Decimal
+import dicionario_idioma as dic
 
-moeda_ativa = 'BR'
+moeda_ativa = dic.idioma_select
 margin_left = 16
 margin_right = 16
 margin_top = 16
 
+moedas_format = {
+    'BR': ['0,00', 'R$ 1.234,56', '.', ',', 0, 'R$ '],
+    'ES': ['0,00', '1.234,56 €', '.', ',', -1, ' €'],
+    'FR': ['0,00', '1 234,56 €', ' ', ',', -1, ' €'],
+    'EUA': ['0.00', '$ 1,234.56', ',', '.', 0, '$ '],
+}
+
 servicos_carregados = {}
+subtotal = 0
 
 async def carregar_dados():
     conexao = await bd.servico_valor()
@@ -47,43 +56,26 @@ def decimal_n(valor = None, texto = False, moeda = None):
 
         except Exception as err: print('NÂO FOI POSSÍVEL CONVERTER DECIMAL.\nERRO:\n', err)
 
-async def scrollagem(column_row, key = None, time = 300, offset = None):
+async def scrollagem_key(column_row, key = None, time = 260):
     await column_row.scroll_to(
-        offset = offset,
         scroll_key = key,
-        duration = time
+        duration = time,
     )
 
 armazenamento_totais_p_servico = {}
 totais = 0.00
 
-mudar_button_config_EXIT_MENU = None
-click_cor_control_bar = None
-titulo_control = None
 tela_anterior = None
-area_page = None
-page = None
+troca_de_pagina = None
 
-async def troca_tela(e, nova_tela_go = None, anterior = False, titulo = None):
-    global page
-    global area_page
-    global tela_anterior
-    global titulo_control
-    global click_cor_control_bar
-    global mudar_button_config_EXIT_MENU
-
-    mudar_button_config_EXIT_MENU()
-    click_cor_control_bar(e, controle = titulo)
-    nova_tela_GO = await nova_tela_go.tela()
-    titulo_control.value = titulo
-
-    area_page.controls.clear()
-    area_page.controls.append(nova_tela_GO)
-    
-    if anterior:
-        tela_anterior = nova_tela_GO
-
-    page.update()
+page_croll_main = None
+area_page_main = None
+pagina_atendimento_go = None
+pagina_pagamento_go = None
+pagina_ativa_go = None
+btn_centro = None
+go_pagamento_aprovd = False
+nova_tela_atendimento = None
 
 
 

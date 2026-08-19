@@ -8,17 +8,19 @@ palavras = {
             'idioma': 'Idioma',
             'inicio': 'Início',
             'agenda': 'Agenda',
-            'historico': 'Histórico',
             'outros': 'Outros',
-            'configuracao': 'Configuração',
-            'notificacao': 'Notificação',
-        },
-
-        'navegacao': {
-            'inicio': 'Início',
-            'agenda': 'Agenda',
+            'pagamento': 'Pagamento',
+            'conclusao': 'Conclusão',
             'historico': 'Histórico',
-            'outros': 'Outros'
+            'valor_invalido': 'Ops..!\n',
+            'notificacao': 'Notificação',
+            'atendimento': 'Atendimento',
+            'venda_sucesso': 'Sucesso!\n',
+            'configuracao': 'Configuração',
+            'selecione_itens': 'Atenção!\n',
+            'selecione_pagamento': 'Atenção!\n',
+            'valor_inserido_invalido': 'Ops..!\n',
+            'saldo_insuficiente': 'Saldo insuficiente!\n',
         },
 
         'home': {
@@ -31,7 +33,26 @@ palavras = {
         'atendimento': {
             'busca_rapida': 'Busca rápida',
             'todos': 'Todos',
-            'sem_resultados': 'Sem resultados\npara essa busca'
+            'sem_resultados': 'Sem resultados\npara essa busca',
+            'nome_cliente': 'Nome do cliente..',
+            'cliente_padrao': 'Cliente ##',
+            'total': 'Total:',
+            'troco': 'Troco:',
+            'subtotal': 'Subtotal',
+            'voltar': 'Voltar',
+            'finalizar': 'Finalizar',
+            'prosseguir': 'Prosseguir',
+            'cartao_credito': 'Cartão de crédito',
+            'recebido': 'Recebido em',
+            'desconto': 'Desconto',
+            'adicional': 'Adicional',
+            'porcentagem': 'Valor em porcentagem %',
+            'unidade': 'Unidade',
+            'digital': 'Digital',
+            'cartao': 'Cartão',
+            'dinheiro': 'Dinheiro',
+            'outros': 'Outros',
+            'salvar': 'Salvar',
         },
 
         'registros': {
@@ -43,56 +64,19 @@ palavras = {
             'info_empresa': 'Informações da empresa',
             'administracao': 'Administração',
             'controle_acessos': 'Controle de acessos e senhas',
-
             'tema_escuro': 'Tema escuro',
             'alternar_tema': 'Alternar tema escuro/claro',
-
             'idioma': 'Idioma',
             'alterar_idioma': 'Alterar idioma do aplicativo'
         },
 
-        'dialog_atendimento': {
-            'titulo_atendimento': 'Atendimento',
-            'titulo_conclusao': 'Conclusão',
-            'nome_cliente_hint': 'Nome do cliente..',
-            'cliente_padrao': 'Cliente ##',
-            'total': 'Total:',
-            'troco': 'Troco:',
-            'subtotal': 'Subtotal',
-            'voltar': 'Voltar',
-            'finalizar': 'Finalizar',
-            'prosseguir': 'Prosseguir',
-            'cartao_credito': 'Cartão de crédito',
-            'recebido_em': 'Recebido em',
-            'desconto': 'Desconto',
-            'adicional': 'Adicional',
-            'valor_porcentagem': 'Valor em porcentagem %',
-            'unidade_abrev': 'Und',
-
-            'digital': 'Digital',
-            'cartao': 'Cartão',
-            'dinheiro': 'Dinheiro',
-            'outros': 'Outros',
-        },
-
         'notificacoes': {
-            'selecione_itens_titulo': 'Atenção!\n',
-            'selecione_itens_msg': 'Selecione pelo menos um serviço para continuar.',
-
-            'valor_invalido_titulo': 'Ops..!\n',
-            'valor_invalido_msg': 'Valor inválido, digite apenas números.',
-
-            'selecione_pagamento_titulo': 'Atenção!\n',
-            'selecione_pagamento_msg': 'Escolha uma forma de pagamento para continuar.',
-
-            'venda_sucesso_titulo': 'Sucesso!\n',
-            'venda_sucesso_msg': 'Venda registrada e salva no histórico.',
-
-            'saldo_insuficiente_titulo': 'Saldo insuficiente!\n',
-            'saldo_insuficiente_msg': 'O valor recebido é menor que o total da venda.',
-
-            'valor_inserido_invalido_titulo': 'Ops..!\n',
-            'valor_inserido_invalido_msg': 'Não foi possível processar o valor informado.'
+            'selecione_itens': 'Selecione pelo menos um serviço para continuar.',
+            'valor_invalido': 'Valor inválido, digite apenas números.',
+            'selecione_pagamento': 'Escolha uma forma de pagamento para continuar.',
+            'venda_sucesso': 'Venda registrada e salva no histórico.',
+            'saldo_insuficiente': 'O valor recebido é menor que o total da venda.',
+            'valor_inserido_invalido': 'Não foi possível processar o valor informado.'
         },
 
         'idioma': {
@@ -102,28 +86,28 @@ palavras = {
                 'espanhol': 'Espanhol - ES',
                 'frances': 'Francês - FR'
             },
-
             'exemplo': 'Olá, tudo bom?\nEste é um exemplo de escrita no idioma escolhido.\n\n(Português - BR)'
         }
     },
-
 
     'EUA': {
         'titulos': {
             'idioma': 'Language',
             'inicio': 'Home',
             'agenda': 'Schedule',
-            'historico': 'History',
             'outros': 'More',
-            'configuracao': 'Settings',
-            'notificacao': 'Notification',
-        },
-
-        'navegacao': {
-            'inicio': 'Home',
-            'agenda': 'Schedule',
+            'pagamento': 'Payment',
+            'conclusao': 'Checkout',
             'historico': 'History',
-            'outros': 'More'
+            'valor_invalido': 'Oops..!\n',
+            'notificacao': 'Notification',
+            'atendimento': 'Service',
+            'venda_sucesso': 'Success!\n',
+            'configuracao': 'Settings',
+            'selecione_itens': 'Attention!\n',
+            'selecione_pagamento': 'Attention!\n',
+            'valor_inserido_invalido': 'Oops..!\n',
+            'saldo_insuficiente': 'Insufficient balance!\n'
         },
 
         'home': {
@@ -136,7 +120,26 @@ palavras = {
         'atendimento': {
             'busca_rapida': 'Quick search',
             'todos': 'All',
-            'sem_resultados': 'No results\nfor this search'
+            'sem_resultados': 'No results\nfor this search',
+            'nome_cliente': 'Client name..',
+            'cliente_padrao': 'Client ##',
+            'total': 'Total:',
+            'troco': 'Change:',
+            'subtotal': 'Subtotal',
+            'voltar': 'Back',
+            'finalizar': 'Finish',
+            'prosseguir': 'Continue',
+            'cartao_credito': 'Credit card',
+            'recebido': 'Received in',
+            'desconto': 'Discount',
+            'adicional': 'Extra',
+            'porcentagem': 'Percentage value %',
+            'unidade': 'Unit',
+            'digital': 'Electronic',
+            'cartao': 'Card',
+            'dinheiro': 'Cash',
+            'outros': 'Other',
+            'salvar': 'Save'
         },
 
         'registros': {
@@ -148,56 +151,19 @@ palavras = {
             'info_empresa': 'Company information',
             'administracao': 'Administration',
             'controle_acessos': 'Access and passwords',
-
             'tema_escuro': 'Dark mode',
             'alternar_tema': 'Toggle dark/light mode',
-
             'idioma': 'Language',
             'alterar_idioma': 'Change app language'
         },
 
-        'dialog_atendimento': {
-            'titulo_atendimento': 'Service',
-            'titulo_conclusao': 'Checkout',
-            'nome_cliente_hint': 'Client name..',
-            'cliente_padrao': 'Client ##',
-            'total': 'Total:',
-            'troco': 'Change:',
-            'subtotal': 'Subtotal',
-            'voltar': 'Back',
-            'finalizar': 'Finish',
-            'prosseguir': 'Continue',
-            'cartao_credito': 'Credit card',
-            'recebido_em': 'Received in',
-            'desconto': 'Discount',
-            'adicional': 'Extra',
-            'valor_porcentagem': 'Percentage value %',
-            'unidade_abrev': 'Unit',
-
-            'digital': 'Electronic',
-            'cartao': 'Card',
-            'dinheiro': 'Cash',
-            'outros': 'Other',
-        },
-
         'notificacoes': {
-            'selecione_itens_titulo': 'Attention!\n',
-            'selecione_itens_msg': 'Select at least one service to continue.',
-
-            'valor_invalido_titulo': 'Oops..!\n',
-            'valor_invalido_msg': 'Invalid value, enter numbers only.',
-
-            'selecione_pagamento_titulo': 'Attention!\n',
-            'selecione_pagamento_msg': 'Choose a payment method to continue.',
-
-            'venda_sucesso_titulo': 'Success!\n',
-            'venda_sucesso_msg': 'Sale recorded and saved in the history.',
-
-            'saldo_insuficiente_titulo': 'Insufficient balance!\n',
-            'saldo_insuficiente_msg': 'The amount received is less than the total.',
-
-            'valor_inserido_invalido_titulo': 'Oops..!\n',
-            'valor_inserido_invalido_msg': 'Could not process the entered value.'
+            'selecione_itens': 'Select at least one service to continue.',
+            'valor_invalido': 'Invalid value, enter numbers only.',
+            'selecione_pagamento': 'Choose a payment method to continue.',
+            'venda_sucesso': 'Sale recorded and saved in the history.',
+            'saldo_insuficiente': 'The amount received is less than the total.',
+            'valor_inserido_invalido': 'Could not process the entered value.'
         },
 
         'idioma': {
@@ -207,28 +173,28 @@ palavras = {
                 'espanhol': 'Spanish - ES',
                 'frances': 'French - FR'
             },
-
             'exemplo': 'Hello, how are you?\nThis is an example of text written in the selected language.\n\n(English - USA)'
         }
     },
-
 
     'ES': {
         'titulos': {
             'idioma': 'Idioma',
             'inicio': 'Inicio',
             'agenda': 'Agenda',
-            'historico': 'Historial',
             'outros': 'Más',
-            'configuracao': 'Configuración',
-            'notificacao': 'Notificación',
-        },
-
-        'navegacao': {
-            'inicio': 'Inicio',
-            'agenda': 'Agenda',
+            'pagamento': 'Pago',
+            'conclusao': 'Conclusión',
             'historico': 'Historial',
-            'outros': 'Más'
+            'valor_invalido': '¡Ups..!\n',
+            'notificacao': 'Notificación',
+            'atendimento': 'Atención',
+            'venda_sucesso': '¡Éxito!\n',
+            'configuracao': 'Configuración',
+            'selecione_itens': '¡Atención!\n',
+            'selecione_pagamento': '¡Atención!\n',
+            'valor_inserido_invalido': '¡Ups..!\n',
+            'saldo_insuficiente': '¡Saldo insuficiente!\n'
         },
 
         'home': {
@@ -241,7 +207,26 @@ palavras = {
         'atendimento': {
             'busca_rapida': 'Búsqueda rápida',
             'todos': 'Todos',
-            'sem_resultados': 'Sin resultados\npara esta búsqueda'
+            'sem_resultados': 'Sin resultados\npara esta búsqueda',
+            'nome_cliente': 'Nombre del cliente..',
+            'cliente_padrao': 'Cliente ##',
+            'total': 'Total:',
+            'troco': 'Cambio:',
+            'subtotal': 'Subtotal',
+            'voltar': 'Volver',
+            'finalizar': 'Finalizar',
+            'prosseguir': 'Continuar',
+            'cartao_credito': 'Tarjeta de crédito',
+            'recebido': 'Recibido en',
+            'desconto': 'Descuento',
+            'adicional': 'Adicional',
+            'porcentagem': 'Valor en porcentaje',
+            'unidade': 'Unidad',
+            'digital': 'Digital',
+            'cartao': 'Tarjeta',
+            'dinheiro': 'Efectivo',
+            'outros': 'Otros',
+            'salvar': 'Guardar'
         },
 
         'registros': {
@@ -253,56 +238,19 @@ palavras = {
             'info_empresa': 'Información de la empresa',
             'administracao': 'Administración',
             'controle_acessos': 'Control de accesos y contraseñas',
-
             'tema_escuro': 'Modo oscuro',
             'alternar_tema': 'Alternar modo oscuro/claro',
-
             'idioma': 'Idioma',
             'alterar_idioma': 'Cambiar idioma de la aplicación'
         },
 
-        'dialog_atendimento': {
-            'titulo_atendimento': 'Atención',
-            'titulo_conclusao': 'Conclusión',
-            'nome_cliente_hint': 'Nombre del cliente..',
-            'cliente_padrao': 'Cliente ##',
-            'total': 'Total:',
-            'troco': 'Cambio:',
-            'subtotal': 'Subtotal',
-            'voltar': 'Volver',
-            'finalizar': 'Finalizar',
-            'prosseguir': 'Continuar',
-            'cartao_credito': 'Tarjeta de crédito',
-            'recebido_em': 'Recibido en',
-            'desconto': 'Descuento',
-            'adicional': 'Adicional',
-            'valor_porcentagem': 'Valor en porcentaje %',
-            'unidade_abrev': 'Unid.',
-
-            'digital': 'Digital',
-            'cartao': 'Tarjeta',
-            'dinheiro': 'Efectivo',
-            'outros': 'Otros',
-        },
-
         'notificacoes': {
-            'selecione_itens_titulo': '¡Atención!\n',
-            'selecione_itens_msg': 'Selecciona al menos un servicio para continuar.',
-
-            'valor_invalido_titulo': '¡Ups..!\n',
-            'valor_invalido_msg': 'Valor inválido, ingresa solo números.',
-
-            'selecione_pagamento_titulo': '¡Atención!\n',
-            'selecione_pagamento_msg': 'Elige una forma de pago para continuar.',
-
-            'venda_sucesso_titulo': '¡Éxito!\n',
-            'venda_sucesso_msg': 'Venta registrada y guardada en el historial.',
-
-            'saldo_insuficiente_titulo': '¡Saldo insuficiente!\n',
-            'saldo_insuficiente_msg': 'El valor recibido es menor que el total.',
-
-            'valor_inserido_invalido_titulo': '¡Ups..!\n',
-            'valor_inserido_invalido_msg': 'No se pudo procesar el valor ingresado.'
+            'selecione_itens': 'Selecciona al menos un servicio para continuar.',
+            'valor_invalido': 'Valor inválido, ingresa solo números.',
+            'selecione_pagamento': 'Elige una forma de pago para continuar.',
+            'venda_sucesso': 'Venta registrada y guardada en el historial.',
+            'saldo_insuficiente': 'El valor recibido es menor que el total.',
+            'valor_inserido_invalido': 'No se pudo procesar el valor ingresado.'
         },
 
         'idioma': {
@@ -312,28 +260,28 @@ palavras = {
                 'espanhol': 'Español - ES',
                 'frances': 'Francés - FR'
             },
-
             'exemplo': '¡Hola! ¿Cómo estás?\nEste es un ejemplo de texto escrito en el idioma seleccionado.\n\n(Español - ES)'
         }
     },
-
 
     'FR': {
         'titulos': {
             'idioma': 'Langue',
             'inicio': 'Accueil',
             'agenda': 'Agenda',
-            'historico': 'Historique',
             'outros': 'Plus',
-            'configuracao': 'Paramètres',
-            'notificacao': 'Notification',
-        },
-
-        'navegacao': {
-            'inicio': 'Accueil',
-            'agenda': 'Agenda',
+            'pagamento': 'Paiement',
+            'conclusao': 'Conclusion',
             'historico': 'Historique',
-            'outros': 'Plus'
+            'valor_invalido': 'Oups..!\n',
+            'notificacao': 'Notification',
+            'atendimento': 'Service',
+            'venda_sucesso': 'Succès !\n',
+            'configuracao': 'Paramètres',
+            'selecione_itens': 'Attention !\n',
+            'selecione_pagamento': 'Attention !\n',
+            'valor_inserido_invalido': 'Oups..!\n',
+            'saldo_insuficiente': 'Solde insuffisant !\n'
         },
 
         'home': {
@@ -346,7 +294,26 @@ palavras = {
         'atendimento': {
             'busca_rapida': 'Recherche rapide',
             'todos': 'Tous',
-            'sem_resultados': 'Aucun résultat\npour cette recherche'
+            'sem_resultados': 'Aucun résultat\npour cette recherche',
+            'nome_cliente': 'Nom du client..',
+            'cliente_padrao': 'Client ##',
+            'total': 'Total :',
+            'troco': 'Monnaie :',
+            'subtotal': 'Sous-total',
+            'voltar': 'Retour',
+            'finalizar': 'Terminer',
+            'prosseguir': 'Continuer',
+            'cartao_credito': 'Carte de crédit',
+            'recebido': 'Reçu en',
+            'desconto': 'Remise',
+            'adicional': 'Supplément',
+            'porcentagem': 'Valeur en pourcentage %',
+            'unidade': 'Unité',
+            'digital': 'Électronique',
+            'cartao': 'Carte',
+            'dinheiro': 'Espèces',
+            'outros': 'Autres',
+            'salvar': 'Enregistrer'
         },
 
         'registros': {
@@ -358,56 +325,19 @@ palavras = {
             'info_empresa': 'Informations sur l’entreprise',
             'administracao': 'Administration',
             'controle_acessos': 'Accès et mots de passe',
-
             'tema_escuro': 'Mode sombre',
             'alternar_tema': 'Basculer entre sombre et clair',
-
             'idioma': 'Langue',
             'alterar_idioma': 'Changer la langue de l’application'
         },
 
-        'dialog_atendimento': {
-            'titulo_atendimento': 'Service',
-            'titulo_conclusao': 'Conclusion',
-            'nome_cliente_hint': 'Nom du client..',
-            'cliente_padrao': 'Client ##',
-            'total': 'Total :',
-            'troco': 'Monnaie :',
-            'subtotal': 'Sous-total',
-            'voltar': 'Retour',
-            'finalizar': 'Terminer',
-            'prosseguir': 'Continuer',
-            'cartao_credito': 'Carte de crédit',
-            'recebido_em': 'Reçu en',
-            'desconto': 'Remise',
-            'adicional': 'Supplément',
-            'valor_porcentagem': 'Valeur en pourcentage %',
-            'unidade_abrev': 'Unité',
-
-            'digital': 'Électronique',
-            'cartao': 'Carte',
-            'dinheiro': 'Espèces',
-            'outros': 'Autres',
-        },
-
         'notificacoes': {
-            'selecione_itens_titulo': 'Attention !\n',
-            'selecione_itens_msg': 'Sélectionnez au moins un service pour continuer.',
-
-            'valor_invalido_titulo': 'Oups..!\n',
-            'valor_invalido_msg': 'Valeur invalide, entrez uniquement des chiffres.',
-
-            'selecione_pagamento_titulo': 'Attention !\n',
-            'selecione_pagamento_msg': 'Choisissez un moyen de paiement pour continuer.',
-
-            'venda_sucesso_titulo': 'Succès !\n',
-            'venda_sucesso_msg': 'Vente enregistrée et sauvegardée dans l’historique.',
-
-            'saldo_insuficiente_titulo': 'Solde insuffisant !\n',
-            'saldo_insuficiente_msg': 'Le montant reçu est inférieur au total.',
-
-            'valor_inserido_invalido_titulo': 'Oups..!\n',
-            'valor_inserido_invalido_msg': 'Impossible de traiter la valeur saisie.'
+            'selecione_itens': 'Sélectionnez au moins un service pour continuer.',
+            'valor_invalido': 'Valeur invalide, entrez uniquement des chiffres.',
+            'selecione_pagamento': 'Choisissez un moyen de paiement pour continuer.',
+            'venda_sucesso': 'Vente enregistrée et sauvegardée dans l’historique.',
+            'saldo_insuficiente': 'Le montant reçu est inférieur au total.',
+            'valor_inserido_invalido': 'Impossible de traiter la valeur saisie.'
         },
 
         'idioma': {
@@ -417,7 +347,6 @@ palavras = {
                 'espanhol': 'Espagnol - ES',
                 'frances': 'Français - FR'
             },
-
             'exemplo': 'Bonjour, comment allez-vous ?\nCeci est un exemple de texte écrit dans la langue sélectionnée.\n\n(Français - FR)'
         }
     }
