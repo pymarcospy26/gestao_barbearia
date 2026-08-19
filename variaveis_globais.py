@@ -77,8 +77,57 @@ btn_centro = None
 go_pagamento_aprovd = False
 nova_tela_atendimento = None
 
+def limpar_globais():
+    global servicos_carregados
+    global subtotal
 
+    global pagina_main
+    global pagina_home
+    global pagina_idioma
+    global pagina_configuracao_main
+    global pagina_agenda
+    global pagina_atendimento
+    global cor_btns_navegation_bar
 
+    global armazenamento_totais_p_servico
+    global totais
+    global tela_anterior
+    global troca_de_pagina
+
+    global page_croll_main
+    global area_page_main
+    global pagina_atendimento_go
+    global pagina_pagamento_go
+    global pagina_ativa_go
+    global btn_centro
+    global go_pagamento_aprovd
+    global nova_tela_atendimento
+
+    servicos_carregados = {}
+    subtotal = 0
+
+    pagina_main = None
+    pagina_home = None
+    pagina_idioma = None
+    pagina_configuracao_main = None
+    pagina_agenda = None
+    pagina_atendimento = None
+    cor_btns_navegation_bar = None
+    
+    armazenamento_totais_p_servico = {}
+    totais = 0.00
+
+    tela_anterior = None
+    troca_de_pagina = None
+
+    page_croll_main = None
+    area_page_main = None
+    pagina_atendimento_go = None
+    pagina_pagamento_go = None
+    pagina_ativa_go = None
+    btn_centro = None
+    go_pagamento_aprovd = False
+    nova_tela_atendimento = None
 
 
 

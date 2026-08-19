@@ -203,6 +203,10 @@ class Configuracao:
                         ),
 
                     ]
+                ),
+
+                ft.Column(
+                    height = 360
                 )
             ]
         )

@@ -496,7 +496,7 @@ class Tela_Atendimento:
         lista.controls.append(box_lista)
         lista.controls.append(subtotal_completo)
         lista.controls.append(btn_prosseguir)
-        lista.controls.append(ft.Column(height = 100))
+        lista.controls.append(ft.Column(height = 360))
 
         return lista
 

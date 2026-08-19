@@ -380,6 +380,7 @@ class App:
             ]
         )
     async def recriar_main(self, page_go = None):
+        vg.limpar_globais()
         self.page.controls.clear()
         async def page_page(page: ft.Page):
             novo_app = App(page)
