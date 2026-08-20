@@ -273,6 +273,7 @@ class App:
             controls = [
                 self.tela_scrol,
                 self.control_bar,
+                vg.box_PopUp
             ]
         )
 

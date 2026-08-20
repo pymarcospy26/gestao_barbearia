@@ -1,7 +1,157 @@
 import flet as ft
 import banco as bd
+import icons as ic
+import colors as c
+import unicodedata
 from decimal import Decimal
 import dicionario_idioma as dic
+
+def sistema_de_busca(e, page: ft.Page, lista_de_controls = None, dicionario_controls_carregados = None):
+    if lista_de_controls == None or dicionario_controls_carregados == None:
+        print('Falta lista ou dicionario')
+        return None
+    
+    digitado = e.control.value
+    if digitado == '':
+        print('campo caiu no vazio')
+        if len(lista_de_controls.controls) < len(dicionario_controls_carregados):
+            print('controles caiu no menor numemro')
+            lista_de_controls.controls.clear()
+            for x in dicionario_controls_carregados:
+                print('adicionado')
+                lista_de_controls.controls.append(dicionario_controls_carregados[x])
+
+        page.update()
+
+        return
+    lista_de_controls.controls.clear()
+    controles = []
+
+    def normalizar_letras(texto):
+        texto = unicodedata.normalize('NFD', texto)
+        texto = ''.join(
+            letra
+            for letra in texto
+            if unicodedata.category(letra) != 'Mn'
+        )
+        return texto.lower()
+    
+    palavras_busca = normalizar_letras(digitado).split()
+
+    for servico in dicionario_controls_carregados:
+        texto_servico = normalizar_letras(servico)
+        if all(palavra in texto_servico for palavra in palavras_busca):
+            lista_de_controls.alignment = ft.MainAxisAlignment.START
+            controles.append(dicionario_controls_carregados[servico])
+
+    if len(controles) == 0:
+        not_found = ft.Column(
+            alignment = ft.MainAxisAlignment.CENTER,
+            horizontal_alignment = ft.CrossAxisAlignment.CENTER,
+            controls = [
+                ic.svg_icon(
+                    'not_found_busca',
+                    size = 50, color = c.texto_principal
+                ),
+                ft.Text(
+                    value = dic.palavras[dic.idioma_select]['atendimento']['sem_resultados'],
+                    size = 16, color = c.texto_principal,
+                    font_family = 'inter', text_align = ft.TextAlign.CENTER
+                ),
+            ]
+        )
+
+        lista_de_controls.alignment = ft.MainAxisAlignment.CENTER
+        lista_de_controls.controls.append(not_found)
+        return
+    
+    lista_de_controls.controls.extend(controles)
+    page.update()
+def barra_pesquisa(
+    text_interno = dic.palavras[dic.idioma_select]['atendimento']['busca_rapida'],
+
+    on_blur: ft.Event = None,
+    on_focus: ft.Event = None,
+    on_change: ft.Event = None,
+):
+    return ft.Stack(
+        height = 78,
+        expand = True,
+        alignment = ft.Alignment.CENTER,
+        controls = [
+            ft.Container(
+                left = 0,
+                right = 0,
+                expand = True,
+                bgcolor = c.fundo_neutralo,
+                border_radius = 28,
+                shadow = c.shadow_leve(),
+                
+                margin = ft.Margin(
+                    left = margin_left
+                ),
+
+                content = ft.TextField(
+                    expand = True,
+                    border_radius = 28,
+                    content_padding = ft.Padding(top = 24.5, left = 64, bottom = 24.5),
+                    bgcolor = c.fundo_neutralo,
+                    border_color = ft.Colors.TRANSPARENT,
+                    focused_border_color = c.cor_principal,
+
+                    text_style = ft.TextStyle(
+                        size = 16, color = c.texto_principal,
+                        font_family = 'inter'
+                    ),
+
+                    hint_text = text_interno,
+                    hint_style = ft.TextStyle(
+                        size = 16, color = c.texto_suave,
+                        font_family = 'inter'
+                    ),
+
+                    text_align = ft.TextAlign.START,
+                    on_blur = on_blur,
+                    on_focus = on_focus,
+                    on_change = on_change,
+                )
+            ),
+            
+            ic.svg_icon(
+                icon = 'lupa',
+                size = 30, color = c.texto_suave,
+                left = 38, top = 0, bottom = 0
+            )
+        ]
+    )
+
+box_PopUp = ft.Stack(
+    expand = True,
+    visible = False,
+    alignment = ft.Alignment.CENTER,
+    controls = [
+        ft.Container(
+            expand = True,
+            bgcolor = ft.Colors.with_opacity(color = ft.Colors.BLACK, opacity = 0.3)
+        ),
+        ft.Container(
+            border_radius = 34,
+            shadow = c.shadow_leve(),
+            bgcolor = c.fundo_neutralo,
+            alignment = ft.Alignment.CENTER,
+            margin = ft.Margin(
+                top = 98,
+                left = 24,
+                right = 24,
+                bottom = 98
+            ),
+        )
+    ]
+)
+
+def conteudo_box_PopUp(page: ft.Page, conteudo = None):
+    box_PopUp.controls[1].content = conteudo
+    page.update()
 
 moeda_ativa = dic.idioma_select
 margin_left = 16

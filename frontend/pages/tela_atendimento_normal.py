@@ -3,7 +3,6 @@ import flet as ft
 import icons as ic
 import banco as bd
 import colors as c
-import unicodedata
 
 import play_audio as play
 import conversores as conv
@@ -19,9 +18,25 @@ class Tela_Atendimento:
         vg.armazenamento_totais_p_servico.clear()
 
         self.pagamentos_criados = []
-        self.multiplo_pagamento = False
-        self.controls_servicos_carregados = []
-        self.servicos_carregados = vg.servicos_carregados
+        self.controls_servicos_carregados = {}
+        self.servicos_carregados = vg.servicos_carregados #DADOS DE TODOS OS DADOS CARREGADOS DO BANCO BD
+        self.lista_scroll = ft.Column(
+            spacing = 0,
+            expand = True,
+            scroll = ft.ScrollMode.AUTO,
+            alignment = ft.MainAxisAlignment.START,
+            margin = ft.Margin(top = 8, bottom = 8),
+            horizontal_alignment = ft.CrossAxisAlignment.CENTER,
+        )
+
+        self.lista_tags = []
+        self.space_tags = ft.Row(
+            wrap = True,
+            width = self.page.width - (2 * 26),
+            alignment = ft.MainAxisAlignment.START,
+            vertical_alignment = ft.CrossAxisAlignment.CENTER,
+            controls = self.lista_tags
+        )
 
     async def go_pagamento(self, e):
         async def retorno(e):
@@ -58,73 +73,59 @@ class Tela_Atendimento:
                 preservar_anterior = True, clear = False
             )
 
+    def recarregar_produtos(self, e, tag):
+        if tag in self.servicos_carregados:
+            self.lista_scroll.controls.clear()
+            for x in self.servicos_carregados[tag]:
+                item_filtrado = self.controls_servicos_carregados[self.servicos_carregados['todos'][x]['produto']]
+                self.lista_scroll.controls.append(item_filtrado)
+
+        self.fechar_PopUp(e)
+        self.page.update()
+        
+    def abrir_PopUp(self, e):
+        vg.box_PopUp.controls[1].content = None
+        for x in vg.servicos_carregados:
+            tag = ft.Container(
+                height = 74,
+                border_radius = 28,
+                alignment = ft.Alignment.CENTER,
+                padding = ft.Padding(left = 12, right = 12),
+                border = ft.Border.all(width = 0.6, color = c.texto_suave),
+
+                content = ft.Text(
+                    value = x, size = 16, color = c.texto_suave,
+                    font_family = 'inter'
+                ),
+
+                data = {'tag': x},
+
+                ink = True,
+                on_click = lambda e, x = x: self.recarregar_produtos(e, tag = x)
+            )
+
+            self.page.update()
+
+            tag.width = tag.width
+            self.lista_tags.append(tag)
+            
+            self.page.update()
+        vg.conteudo_box_PopUp(self.page, conteudo = self.space_tags)
+        vg.box_PopUp.visible = True
+        self.page.update()
+
+    def fechar_PopUp(self, e):
+        self.lista_tags.clear()
+        self.space_tags.controls.clear()
+        vg.box_PopUp.visible = False
+        vg.box_PopUp.controls[1].content = None
+        self.page.update()
+
     def decimal(self, valor = None, text_yn = False):
         return conv.Moedas().decimal_n(valor = valor, p_texto = text_yn)
 
     def conversor(self, valor = None, decimal = None, text_yn = False, cifrao = False):
         return conv.Moedas().conversao_moeda(valor = valor, p_decimal = decimal, p_text = text_yn, cifrao = cifrao)
-
-    def barra_pesquisa_fx(
-        self,
-        text_interno = dic.palavras[dic.idioma_select]['atendimento']['busca_rapida'],
-
-        on_blur:ft.Event = None,
-        on_focus: ft.Event = None,
-        on_change: ft.Event = None,
-    ):
-        return ft.Stack(
-            height = 78,
-            expand = True,
-            alignment = ft.Alignment.TOP_CENTER,
-
-            controls = [
-                ft.Container(
-                    left = 0,
-                    right = 0,
-                    expand = True,
-                    bgcolor = c.fundo_neutralo,
-                    border_radius = 28,
-                    shadow = c.shadow_leve(),
-                    
-                    margin = ft.Margin(
-                        left = vg.margin_left
-                    ),
-
-                    content = ft.TextField(
-                        expand = True,
-                        border_radius = 28,
-                        content_padding = ft.Padding(top = 24.5, left = 64, bottom = 24.5),
-
-                        bgcolor = c.fundo_neutralo,
-                        border_color = ft.Colors.TRANSPARENT,
-                        focused_border_color = c.cor_principal,
-
-                        text_style = ft.TextStyle(
-                            size = 16, color = c.texto_principal,
-                            font_family = 'inter'
-                        ),
-
-                        hint_text = text_interno,
-                        hint_style = ft.TextStyle(
-                            size = 16, color = c.texto_suave,
-                            font_family = 'inter'
-                        ),
-
-                        text_align = ft.TextAlign.START,
-
-                        on_blur = on_blur,
-                        on_focus = on_focus,
-                        on_change = on_change,
-                    )
-                ),
-                
-                ic.svg_icon(
-                    icon = 'lupa',
-                    size = 30, color = c.texto_suave,
-                    left = 38, top = 0, bottom = 4
-                )
-            ]
-        )
 
     def box_servicos(
         self,
@@ -379,8 +380,9 @@ class Tela_Atendimento:
             ),
 
             ink = True,
-            on_click = True,
+            on_click = self.abrir_PopUp,
         )
+        vg.box_PopUp.controls[0].on_click = self.fechar_PopUp
 
         lista = ft.Column(
             spacing = 16,
@@ -394,23 +396,9 @@ class Tela_Atendimento:
                     spacing = 16,
                     alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
                     vertical_alignment = ft.CrossAxisAlignment.START,
-                    controls = [
-                        self.barra_pesquisa_fx(
-                            text_interno = dic.palavras[dic.idioma_select]['atendimento']['busca_rapida']
-                        ),
-                        btn_filtro
-                    ]
+                    controls = []
                 )
             ]
-        )
-
-        lista_scroll = ft.Column(
-            spacing = 0,
-            expand = True,
-            scroll = ft.ScrollMode.AUTO,
-            alignment = ft.MainAxisAlignment.START,
-            margin = ft.Margin(top = 8, bottom = 8),
-            horizontal_alignment = ft.CrossAxisAlignment.CENTER,
         )
 
         box_lista = ft.Container(
@@ -420,7 +408,7 @@ class Tela_Atendimento:
             shadow = c.shadow_leve(),
             bgcolor = c.fundo_neutralo,
             alignment = ft.Alignment.CENTER,
-            content = lista_scroll,
+            content = self.lista_scroll,
             height = self.page.height * 0.44,
         )
 
@@ -486,13 +474,21 @@ class Tela_Atendimento:
                 setor = self.servicos_carregados['todos'][x]['setor'],
                 valor = self.servicos_carregados['todos'][x]['valor'],
                 servico = self.servicos_carregados['todos'][x]['produto'],
-                lista = lista_scroll, text_subtotal = texto_subtotal,
+                lista = self.lista_scroll, text_subtotal = texto_subtotal,
                 botao_presseguir = btn_prosseguir
             )
 
-            lista_scroll.controls.append(control_box)
-            self.controls_servicos_carregados.append(control_box)
+            self.lista_scroll.controls.append(control_box)
+            self.controls_servicos_carregados[self.servicos_carregados['todos'][x]['produto']] = control_box
 
+        lista.controls[0].controls.extend([
+            vg.barra_pesquisa(
+                text_interno = dic.palavras[dic.idioma_select]['atendimento']['busca_rapida'],
+                on_change = lambda e: vg.sistema_de_busca(e, self.page, self.lista_scroll, self.controls_servicos_carregados)
+            ),
+
+            btn_filtro
+        ])
         lista.controls.append(box_lista)
         lista.controls.append(subtotal_completo)
         lista.controls.append(btn_prosseguir)
