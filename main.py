@@ -520,7 +520,7 @@ class App:
         )
 
 async def execute( page: ft.Page):
-    i = App(page)  
+    i = App(page)
     await i.abrir_home()
 
 ft.run(execute, assets_dir = 'assets')

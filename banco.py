@@ -34,7 +34,7 @@ def setores_base():
     con.close()
 
     return [setor[0] for setor in resultados_set]
-
+print(setores_base())
 async def setores():
     return await asyncio.to_thread(setores_base)
 

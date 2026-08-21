@@ -10,7 +10,7 @@ def sistema_de_busca(e, page: ft.Page, lista_de_controls = None, dicionario_cont
     if lista_de_controls == None or dicionario_controls_carregados == None:
         print('Falta lista ou dicionario')
         return None
-    
+
     digitado = e.control.value
     if digitado == '':
         print('campo caiu no vazio')
@@ -94,10 +94,10 @@ def barra_pesquisa(
                 content = ft.TextField(
                     expand = True,
                     border_radius = 28,
-                    content_padding = ft.Padding(top = 24.5, left = 64, bottom = 24.5),
+                    content_padding = ft.Padding(top = 26, left = 64, right = 44,bottom = 26),
                     bgcolor = c.fundo_neutralo,
                     border_color = ft.Colors.TRANSPARENT,
-                    focused_border_color = c.cor_principal,
+                    focused_border_color = c.cor_principal_escura,
 
                     text_style = ft.TextStyle(
                         size = 16, color = c.texto_principal,
@@ -132,7 +132,7 @@ box_PopUp = ft.Stack(
     controls = [
         ft.Container(
             expand = True,
-            bgcolor = ft.Colors.with_opacity(color = ft.Colors.BLACK, opacity = 0.3)
+            bgcolor = ft.Colors.with_opacity(color = ft.Colors.BLACK, opacity = 0.6)
         ),
         ft.Container(
             border_radius = 34,
@@ -168,22 +168,22 @@ moedas_format = {
 servicos_carregados = {}
 subtotal = 0
 
+todos_txt = dic.palavras[dic.idioma_select]['atendimento']['todos']
 async def carregar_dados():
     conexao = await bd.servico_valor()
-
     for servico in conexao:
         setor = servico[0]
         produto = servico[1]
         valor = servico[2]
 
+        if todos_txt not in servicos_carregados:
+            servicos_carregados[todos_txt] = {}
+
         if setor not in servicos_carregados:
             servicos_carregados[setor] = {}
 
-        if 'todos' not in servicos_carregados:
-            servicos_carregados['todos'] = {}
-
+        servicos_carregados[todos_txt][produto] = {'setor': setor, 'produto': produto, 'valor': valor}
         servicos_carregados[setor][produto] = {'setor': setor, 'produto': produto, 'valor': valor}
-        servicos_carregados['todos'][produto] = {'setor': setor, 'produto': produto, 'valor': valor}
 
 pagina_main = None
 pagina_home = None

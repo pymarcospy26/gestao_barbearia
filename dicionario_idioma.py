@@ -1,9 +1,14 @@
 import banco as bd
+import variaveis_globais as vg
+
 
 idioma_select = bd.status_idioma_page(option=0)
 
+
 palavras = {
+
     'BR': {
+
         'titulos': {
             'idioma': 'Idioma',
             'inicio': 'Início',
@@ -17,10 +22,12 @@ palavras = {
             'atendimento': 'Atendimento',
             'venda_sucesso': 'Sucesso!\n',
             'configuracao': 'Configuração',
+            'tikets': 'Descontos & Cupons',
             'selecione_itens': 'Atenção!\n',
             'selecione_pagamento': 'Atenção!\n',
             'valor_inserido_invalido': 'Ops..!\n',
-            'saldo_insuficiente': 'Saldo insuficiente!\n',
+            'filtros_produtos': 'Produtos por categorias',
+            'saldo_insuficiente': 'Saldo insuficiente!\n'
         },
 
         'home': {
@@ -46,13 +53,14 @@ palavras = {
             'recebido': 'Recebido em',
             'desconto': 'Desconto',
             'adicional': 'Adicional',
+            'cupom': 'Código do Cupom',
             'porcentagem': 'Valor em porcentagem %',
             'unidade': 'Unidade',
             'digital': 'Digital',
             'cartao': 'Cartão',
             'dinheiro': 'Dinheiro',
             'outros': 'Outros',
-            'salvar': 'Salvar',
+            'salvar': 'Salvar'
         },
 
         'registros': {
@@ -90,7 +98,9 @@ palavras = {
         }
     },
 
+
     'EUA': {
+
         'titulos': {
             'idioma': 'Language',
             'inicio': 'Home',
@@ -104,9 +114,11 @@ palavras = {
             'atendimento': 'Service',
             'venda_sucesso': 'Success!\n',
             'configuracao': 'Settings',
+            'tikets': 'Discounts & Coupons',
             'selecione_itens': 'Attention!\n',
             'selecione_pagamento': 'Attention!\n',
             'valor_inserido_invalido': 'Oops..!\n',
+            'filtros_produtos': 'Products by category',
             'saldo_insuficiente': 'Insufficient balance!\n'
         },
 
@@ -133,6 +145,7 @@ palavras = {
             'recebido': 'Received in',
             'desconto': 'Discount',
             'adicional': 'Extra',
+            'cupom': 'Coupon Code',
             'porcentagem': 'Percentage value %',
             'unidade': 'Unit',
             'digital': 'Electronic',
@@ -177,7 +190,9 @@ palavras = {
         }
     },
 
+
     'ES': {
+
         'titulos': {
             'idioma': 'Idioma',
             'inicio': 'Inicio',
@@ -191,9 +206,11 @@ palavras = {
             'atendimento': 'Atención',
             'venda_sucesso': '¡Éxito!\n',
             'configuracao': 'Configuración',
+            'tikets': 'Descuentos y Cupones',
             'selecione_itens': '¡Atención!\n',
             'selecione_pagamento': '¡Atención!\n',
             'valor_inserido_invalido': '¡Ups..!\n',
+            'filtros_produtos': 'Productos por categorías',
             'saldo_insuficiente': '¡Saldo insuficiente!\n'
         },
 
@@ -220,6 +237,7 @@ palavras = {
             'recebido': 'Recibido en',
             'desconto': 'Descuento',
             'adicional': 'Adicional',
+            'cupom': 'Código de Cupón',
             'porcentagem': 'Valor en porcentaje',
             'unidade': 'Unidad',
             'digital': 'Digital',
@@ -264,7 +282,9 @@ palavras = {
         }
     },
 
+
     'FR': {
+
         'titulos': {
             'idioma': 'Langue',
             'inicio': 'Accueil',
@@ -278,9 +298,11 @@ palavras = {
             'atendimento': 'Service',
             'venda_sucesso': 'Succès !\n',
             'configuracao': 'Paramètres',
+            'tikets': 'Réductions et Coupons',
             'selecione_itens': 'Attention !\n',
             'selecione_pagamento': 'Attention !\n',
             'valor_inserido_invalido': 'Oups..!\n',
+            'filtros_produtos': 'Produits par catégorie',
             'saldo_insuficiente': 'Solde insuffisant !\n'
         },
 
@@ -307,6 +329,7 @@ palavras = {
             'recebido': 'Reçu en',
             'desconto': 'Remise',
             'adicional': 'Supplément',
+            'cupom': 'Code Coupon',
             'porcentagem': 'Valeur en pourcentage %',
             'unidade': 'Unité',
             'digital': 'Électronique',
