@@ -18,8 +18,6 @@ class Tela_Atendimento:
         vg.armazenamento_totais_p_servico.clear()
 
         self.pagamentos_criados = []
-        self.controls_servicos_carregados = {}
-        self.servicos_carregados = vg.servicos_carregados
         self.lista_scroll = ft.Column(
             spacing = 0,
             expand = True,
@@ -31,30 +29,19 @@ class Tela_Atendimento:
 
         self.lista_tags = []
         self.lista_tags_ativas = []
-        self.space_tags = ft.Row(
-            wrap = True,
-            spacing = 16,
-            run_spacing = 16,
-            alignment = ft.MainAxisAlignment.START,
-            vertical_alignment = ft.CrossAxisAlignment.START,
-            margin = ft.Margin(
-                top = vg.margin_top,
-                left = vg.margin_left,
-                right = vg.margin_right
-            )
-        )
 
         for x in vg.servicos_carregados:
             title_tag = ft.Text(
-                value = x, size = 16, color = c.texto_suave,
+                value = x, size = vg.size_letra_normal, color = c.texto_suave,
                 font_family = 'inter'
             )
 
             tag = ft.Container(
-                height = 74,
-                width = self.width_tag(texto = x),
-                border_radius = 28,
+                opacity = 0.64,
+                height = vg.size_botoes * 5 / 6,
+                border_radius = vg.raio_borda,
                 bgcolor = c.fundo_neutralo,
+                width = self.width_tag(texto = x),
                 padding = ft.Padding(left = 20, right = 20),
                 border = ft.Border.all(width = 0.8, color = c.texto_suave),
 
@@ -79,15 +66,26 @@ class Tela_Atendimento:
             
             self.page.update()
 
+        self.space_tags = ft.Row(
+            wrap = True,
+            spacing = 16,
+            run_spacing = 16,
+            alignment = ft.MainAxisAlignment.START,
+            vertical_alignment = ft.CrossAxisAlignment.START,
+            margin = ft.Margin(
+                left = vg.margin_left,
+                right = vg.margin_right
+            )
+        )
         self.titulo_tags = ft.Row(
-            height = 74,
+            height = 54,
             alignment = ft.MainAxisAlignment.CENTER,
-            vertical_alignment = ft.CrossAxisAlignment.CENTER,
+            vertical_alignment = ft.CrossAxisAlignment.END,
             controls = [
                 ft.Text(
                     value = dic.palavras[dic.idioma_select]['titulos']['filtros_produtos'],
-                    size = 26, color = c.texto_principal,
-                    font_family = 'inter', weight = ft.FontWeight.W_500
+                    size = vg.size_letra_titulos, color = c.texto_principal,
+                    font_family = 'inter'
                 )
             ]
         )
@@ -110,15 +108,16 @@ class Tela_Atendimento:
             horizontal_alignment = ft.CrossAxisAlignment.CENTER,
             controls = [
                 self.lista_scroll_tag,
+                
                 ft.Container(
-                    height = 74,
-                    border_radius = 28,
+                    height = vg.size_botoes,
+                    border_radius = vg.raio_borda,
                     alignment = ft.Alignment.CENTER,
-                    bgcolor = c.cor_principal_escura,
+                    gradient = c.gradiente_top_bottom(colors = c.gradiente_botoes),
 
                     content = ft.Text(
                         value = dic.palavras[dic.idioma_select]['atendimento']['salvar'],
-                        size = 16, color = c.fundo_neutralo if c.tema == 'claro' else c.fundo,
+                        size = vg.size_letra_destaque, color = c.fundo_neutralo if c.tema == 'claro' else c.fundo,
                         font_family = 'inter'
                     ),
 
@@ -136,27 +135,30 @@ class Tela_Atendimento:
         )
 
         self.titulo_tikets = ft.Row(
-            height = 74,
+            height = 54,
             alignment = ft.MainAxisAlignment.CENTER,
-            vertical_alignment = ft.CrossAxisAlignment.CENTER,
+            vertical_alignment = ft.CrossAxisAlignment.END,
             controls = [
                 ft.Text(
                     value = dic.palavras[dic.idioma_select]['titulos']['tikets'],
-                    size = 26, color = c.texto_principal,
-                    font_family = 'inter', weight = ft.FontWeight.W_500
+                    size = vg.size_letra_titulos, color = c.texto_principal,
+                    font_family = 'inter'
                 )
             ]
         )
+        self.column_cupom = ft.Column(
+            alignment = ft.MainAxisAlignment.START,
+            horizontal_alignment = ft.CrossAxisAlignment.START,
+        )
         self.campo_desconto = ft.TextField(
             expand = True,
-            border_radius = 28,
+            border_radius = vg.raio_borda,
             border_color = c.texto_suave,
             focused_border_color = c.cor_principal,
-            value = vg.moedas_format[dic.idioma_select][0],
             border = ft.Border.all(width = 0.8, color = c.texto_suave),
-            text_style = ft.TextStyle(size = 18, color = c.texto_principal, font_family = 'inter'),
+            text_style = ft.TextStyle(size = vg.size_letra_normal, color = c.texto_principal, font_family = 'inter'),
             label_style = ft.TextStyle(
-                size = 20, color = c.texto_suave,
+                size = vg.size_letra_destaque, color = c.texto_suave,
                 font_family = 'inter',
             ),
 
@@ -164,52 +166,13 @@ class Tela_Atendimento:
 
             label = dic.palavras[dic.idioma_select]['atendimento']['desconto'],
 
-            content_padding = ft.Padding(
-                top = 24.5,
-                left = 24.5,
-                right = 24.5,
-                bottom = 24.5,
-            ),
-
             on_focus = self.campo_on,
             on_blur = self.campo_off,
+            keyboard_type = ft.KeyboardType.DATETIME,
 
             key = ft.ScrollKey(f'Key_{dic.palavras[dic.idioma_select]['atendimento']['desconto']}'),
-            prefix_style = ft.TextStyle(size = 20, color = c.texto_principal, font_family = 'inter'),
-            suffix_style = ft.TextStyle(size = 20, color = c.texto_principal, font_family = 'inter'),
-            prefix = vg.moedas_format[dic.idioma_select][5] if vg.moedas_format[dic.idioma_select][5] != ' €' else None,
-            suffix = vg.moedas_format[dic.idioma_select][5] if vg.moedas_format[dic.idioma_select][5] == ' €' else None,
-        )
-        self.campo_adicional = ft.TextField(
-            expand = True,
-            border_radius = 28,
-            border_color = c.texto_suave,
-            focused_border_color = c.cor_principal,
-            value = vg.moedas_format[dic.idioma_select][0],
-            border = ft.Border.all(width = 0.8, color = c.texto_suave),
-            text_style = ft.TextStyle(size = 18, color = c.texto_principal, font_family = 'inter'),
-            label_style = ft.TextStyle(
-                size = 20, color = c.texto_suave,
-                font_family = 'inter',
-            ),
-
-            margin = ft.Margin(left = vg.margin_left, right = vg.margin_right),
-
-            label = dic.palavras[dic.idioma_select]['atendimento']['adicional'],
-
-            content_padding = ft.Padding(
-                top = 24.5,
-                left = 24.5,
-                right = 24.5,
-                bottom = 24.5,
-            ),
-
-            on_focus = self.campo_on,
-            on_blur = self.campo_off,
-
-            key = ft.ScrollKey(f'Key_{dic.palavras[dic.idioma_select]['atendimento']['adicional']}'),
-            prefix_style = ft.TextStyle(size = 20, color = c.texto_principal, font_family = 'inter'),
-            suffix_style = ft.TextStyle(size = 20, color = c.texto_principal, font_family = 'inter'),
+            prefix_style = ft.TextStyle(size = vg.size_letra_normal, color = c.texto_principal, font_family = 'inter'),
+            suffix_style = ft.TextStyle(size = vg.size_letra_normal, color = c.texto_principal, font_family = 'inter'),
             prefix = vg.moedas_format[dic.idioma_select][5] if vg.moedas_format[dic.idioma_select][5] != ' €' else None,
             suffix = vg.moedas_format[dic.idioma_select][5] if vg.moedas_format[dic.idioma_select][5] == ' €' else None,
         )
@@ -218,11 +181,10 @@ class Tela_Atendimento:
             border_radius = 28,
             border_color = c.texto_suave,
             focused_border_color = c.cor_principal,
-            value = vg.moedas_format[dic.idioma_select][0],
             border = ft.Border.all(width = 0.8, color = c.texto_suave),
-            text_style = ft.TextStyle(size = 18, color = c.texto_principal, font_family = 'inter'),
+            text_style = ft.TextStyle(size = vg.size_letra_normal, color = c.texto_principal, font_family = 'inter'),
             label_style = ft.TextStyle(
-                size = 20, color = c.texto_suave,
+                size = vg.size_letra_destaque, color = c.texto_suave,
                 font_family = 'inter',
             ),
 
@@ -230,32 +192,26 @@ class Tela_Atendimento:
 
             label = dic.palavras[dic.idioma_select]['atendimento']['cupom'],
 
-            content_padding = ft.Padding(
-                top = 24.5,
-                left = 24.5,
-                right = 24.5,
-                bottom = 24.5,
-            ),
+            data = {'coluna': self.column_cupom,},
 
             on_focus = self.campo_on,
-            on_blur = self.campo_off,
+            on_blur = self.campo_loading,
+            on_change = self.text_maiusculo,
 
             key = ft.ScrollKey(f'Key_{dic.palavras[dic.idioma_select]['atendimento']['adicional']}'),
-            prefix_style = ft.TextStyle(size = 20, color = c.texto_principal, font_family = 'inter'),
-            suffix_style = ft.TextStyle(size = 20, color = c.texto_principal, font_family = 'inter'),
-            prefix = vg.moedas_format[dic.idioma_select][5] if vg.moedas_format[dic.idioma_select][5] != ' €' else None,
-            suffix = vg.moedas_format[dic.idioma_select][5] if vg.moedas_format[dic.idioma_select][5] == ' €' else None,
+            prefix_style = ft.TextStyle(size = vg.size_letra_normal, color = c.texto_principal, font_family = 'inter'),
+            prefix = 'N° '
         )
+        self.column_cupom.controls.append(self.campo_cupom)
         self.lista_scroll_tikets = ft.Column(
-            spacing = 16,
+            spacing = 20,
             scroll = ft.ScrollMode.AUTO,
             alignment = ft.MainAxisAlignment.START,
             horizontal_alignment = ft.CrossAxisAlignment.CENTER,
             controls = [
                 self.titulo_tikets,
                 self.campo_desconto,
-                self.campo_adicional,
-                self.campo_cupom,
+                self.column_cupom,
             ]
         )
         self.lista_controls_tikets = ft.Column(
@@ -264,15 +220,16 @@ class Tela_Atendimento:
             horizontal_alignment = ft.CrossAxisAlignment.CENTER,
             controls = [
                 self.lista_scroll_tikets,
+
                 ft.Container(
-                    height = 74,
-                    border_radius = 28,
+                    height = vg.size_botoes,
+                    border_radius = vg.raio_borda,
                     alignment = ft.Alignment.CENTER,
-                    bgcolor = c.cor_principal_escura,
+                    gradient = c.gradiente_top_bottom(colors = c.gradiente_botoes),
 
                     content = ft.Text(
                         value = dic.palavras[dic.idioma_select]['atendimento']['salvar'],
-                        size = 16, color = c.fundo_neutralo if c.tema == 'claro' else c.fundo,
+                        size = vg.size_letra_destaque, color = c.fundo_neutralo if c.tema == 'claro' else c.fundo,
                         font_family = 'inter'
                     ),
 
@@ -289,23 +246,50 @@ class Tela_Atendimento:
             ]
         )
 
+    def text_maiusculo(self, e):
+        e.control.value = str(e.control.value).upper()
+        e.control.update()
+
+    async def campo_loading(self, e):
+        verifid_completo = ft.Row(
+            alignment = ft.MainAxisAlignment.START,
+            vertical_alignment = ft.CrossAxisAlignment.CENTER,
+            controls = [
+                ft.ProgressRing(width = 18, height = 18, color = c.cor_principal, stroke_width = 2),
+                ft.Text(
+                    value = 'Verificando código...',
+                    size = vg.size_letra_destaque, color = c.cor_principal, font_family = 'inter'
+                )
+            ],
+
+            margin = ft.Margin(left = vg.margin_left, right = vg.margin_right)
+        )
+
+        if verifid_completo not in e.control.data['coluna'].controls:
+            e.control.data['coluna'].controls.append(verifid_completo)
+
+        self.campo_off(e)
+
+        self.page.update()
+
     async def campo_on(self, e):
         e.control.label_style = ft.TextStyle(
-            size = 20, color = c.cor_principal,
-            font_family = 'inter',            )
+            size = vg.size_letra_destaque, color = c.cor_principal,
+            font_family = 'inter',
+        )
 
         await vg.scrollagem_key(column_row = self.lista_controls_tikets, key = e.control.key)
 
     def campo_off(self, e):
         if e.control.value == '':
             e.control.label_style = ft.TextStyle(
-                size = 16, color = c.texto_suave,
+                size = vg.size_letra_normal, color = c.texto_suave,
                 font_family = 'inter',
             )
 
         else:
             e.control.label_style = ft.TextStyle(
-                size = 20, color = c.texto_suave,
+                size = vg.size_letra_destaque, color = c.texto_suave,
                 font_family = 'inter',
             )
 
@@ -347,14 +331,20 @@ class Tela_Atendimento:
     def recarregar_produtos(self, e):
         self.lista_scroll.controls.clear()
 
-        for tag in self.lista_tags_ativas:
-            if tag.data['tag'] in self.servicos_carregados:
-                for x in self.servicos_carregados[tag.data['tag']]:
-                    setor = self.servicos_carregados[tag.data['tag']][x]['setor']
-                    produto = self.servicos_carregados[tag.data['tag']][x]['produto']
+        if len(self.lista_tags_ativas) >= 1:
+            for tag in self.lista_tags_ativas:
+                if tag.data['tag'] in vg.servicos_carregados:
+                    for x in vg.servicos_carregados[tag.data['tag']]:
+                        control_box = vg.servicos_carregados[tag.data['tag']][x]['control']
 
-                    item_filtrado = self.controls_servicos_carregados[f'{setor}||{produto}']
-                    self.lista_scroll.controls.append(item_filtrado)
+                        item_filtrado = control_box
+                        self.lista_scroll.controls.append(item_filtrado)
+
+        elif len(self.lista_tags_ativas) == 0:
+            for x in vg.servicos_carregados[vg.todos_txt]:
+                control_box = vg.servicos_carregados[vg.todos_txt][x]['control']
+                
+                self.lista_scroll.controls.append(control_box)
 
         self.fechar_PopUp(e)
         self.page.update()
@@ -367,21 +357,48 @@ class Tela_Atendimento:
             elif ativar == False:
                 box.data['ativo'] = True
 
-            if box.data['ativo'] == False:
-                if box not in self.lista_tags_ativas:
-                    self.lista_tags_ativas.append(box)
-                box.data['ativo'] = True
-                box.bgcolor = c.cor_principal_escura
-                box.content.controls[0].color = c.fundo_neutralo if c.tema == 'claro' else c.fundo
-                box.border = ft.Border.all(width = 0.8, color = ft.Colors.TRANSPARENT)
+            if box.data['tag'] != vg.todos_txt:
+                box.bgcolor = c.fundo_neutralo
+
+                if box.data['ativo'] == False:
+                    if box not in self.lista_tags_ativas:
+                        self.lista_tags_ativas.append(box)
+
+                    box.data['ativo'] = True
+                    box.opacity = 1.0
+                    box.content.controls[0].color = c.cor_principal
+                    box.border = ft.Border.all(width = 1.6, color = c.cor_principal)
+
+                else:
+                    if box in self.lista_tags_ativas:
+                        self.lista_tags_ativas.remove(box)
+
+                    box.opacity = 0.6
+                    box.data['ativo'] = False
+                    box.content.controls[0].color = c.texto_suave
+                    box.border = ft.Border.all(width = 0.8, color = c.texto_suave)
 
             else:
-                if box in self.lista_tags_ativas:
-                    self.lista_tags_ativas.remove(box)
-                box.data['ativo'] = False
-                box.bgcolor = c.fundo_neutralo
-                box.content.controls[0].color = c.texto_suave
-                box.border = ft.Border.all(width = 0.8, color = c.texto_suave)
+                if box.data['ativo'] == False:
+                    if box not in self.lista_tags_ativas:
+                        self.lista_tags_ativas.append(box)
+
+                    box.opacity = 1.0
+                    box.data['ativo'] = True
+                    box.bgcolor = c.cor_principal
+                    box.content.controls[0].color = c.fundo_neutralo if c.tema == 'claro' else c.fundo
+                    box.border = ft.Border.all(width = 0.8, color = ft.Colors.TRANSPARENT)
+
+                else:
+                    if box in self.lista_tags_ativas:
+                        self.lista_tags_ativas.remove(box)
+
+                    box.opacity = 0.6
+                    box.data['ativo'] = False
+                    box.bgcolor = c.fundo_neutralo
+                    box.content.controls[0].color = c.texto_suave
+                    box.border = ft.Border.all(width = 0.8, color = c.texto_suave)
+
         if update:
             box.update()
 
@@ -430,6 +447,8 @@ class Tela_Atendimento:
 
     def abrir_aba_tikets(self, e):
         vg.box_PopUp.controls[1].content = None
+        vg.box_PopUp.controls[1].shadow = c.shadow_leve()
+        vg.box_PopUp.controls[1].bgcolor = c.fundo_neutralo
         vg.conteudo_box_PopUp(page = self.page, conteudo = self.lista_controls_tikets)
         vg.box_PopUp.visible = True
         self.page.update()
@@ -438,6 +457,8 @@ class Tela_Atendimento:
         return conv.Moedas().decimal_n(valor = valor, p_texto = text_yn)
 
     def conversor(self, valor = None, decimal = None, text_yn = False, cifrao = False):
+        if valor is not None:
+            valor = str(valor)
         return conv.Moedas().conversao_moeda(valor = valor, p_decimal = decimal, p_text = text_yn, cifrao = cifrao)
 
     def box_servicos(
@@ -478,7 +499,7 @@ class Tela_Atendimento:
                     id_quantidade.value = str(int(id_quantidade.value) + 1)
 
                     if int(id_quantidade.value) > 0:
-                        btn_click.bgcolor = c.cor_principal_escura
+                        btn_click.bgcolor = c.cor_principal
                         btn_click.shadow = c.shadow_leve(opc = 0.56)
                         btn_click.content.color = c.fundo_neutralo
 
@@ -514,6 +535,7 @@ class Tela_Atendimento:
 
             vg.armazenamento_totais_p_servico[servico] = self.decimal(valor = id_quantidade.value) * self.decimal(valor = valor)
             vg.totais = self.decimal(valor = 0)
+            
             for x in vg.armazenamento_totais_p_servico:
                 vg.totais += self.decimal(valor = vg.armazenamento_totais_p_servico[x])
 
@@ -543,23 +565,23 @@ class Tela_Atendimento:
 
         campo = ft.Text(
             value = 0, width = 30,
-            size = 16, color = c.texto_principal, text_align = ft.TextAlign.CENTER,
+            size = vg.size_letra_destaque, color = c.texto_principal, text_align = ft.TextAlign.CENTER,
             font_family = 'inter', margin = ft.Margin(left = 8, right = 8)
         )
 
         botao_menos = ft.Container(
             data = {},
-            width = 56,
-            height = 56,
+            width = vg.size_botoes * 6 / 7,
+            height = vg.size_botoes * 6 / 7,
             opacity = 0.2,
-            border_radius = 24,
+            border_radius = vg.raio_borda,
             shadow = c.shadow_leve(opc = 0.56),
             bgcolor = c.fundo_neutralo,
             alignment = ft.Alignment.CENTER,
 
             content = ft.Icon(
                 icon = ft.CupertinoIcons.MINUS,
-                size = 24, color = c.texto_principal,
+                size = vg.size_icons, color = c.texto_principal,
             ),
 
             ink = False,
@@ -568,16 +590,16 @@ class Tela_Atendimento:
 
         botao_mais = ft.Container(
             data = {},
-            width = 56,
-            height = 56,
-            border_radius = 24,
+            width = vg.size_botoes * 6 / 7,
+            height = vg.size_botoes * 6 / 7,
+            border_radius = vg.raio_borda,
             bgcolor = c.fundo_alternativo,
             alignment = ft.Alignment.CENTER,
-            margin = ft.Margin(right = 26),
+            margin = ft.Margin(right = vg.margin_right),
 
             content = ft.Icon(
                 icon = ft.CupertinoIcons.PLUS,
-                size = 24, color = c.texto_principal,
+                size = vg.size_icons, color = c.texto_principal,
             ),
 
             ink = True,
@@ -620,21 +642,28 @@ class Tela_Atendimento:
                 controls = [
                     ft.Column(
                         spacing = 0,
-                        margin = ft.Margin(left = 26),
+                        margin = ft.Margin(left = vg.margin_left),
                         alignment = ft.MainAxisAlignment.CENTER,
                         horizontal_alignment = ft.CrossAxisAlignment.START,
 
                         controls = [
                             ft.Text(
                                 value = servico,
-                                size = 16, color = c.texto_principal,
+                                size = vg.size_letra_destaque, color = c.texto_principal,
                                 font_family = 'inter'
                             ),
 
-                            ft.Text(
-                                value = valor,
-                                size = 14, color = c.texto_secundario,
-                                font_family = 'inter'
+                            ft.Row(
+                                spacing = 0,
+                                alignment = ft.MainAxisAlignment.START,
+                                vertical_alignment = ft.CrossAxisAlignment.CENTER,
+                                controls = [
+                                    ft.Text(
+                                        value = self.conversor(valor = valor, text_yn = True),
+                                        size = vg.size_letra_normal, color = c.texto_secundario,
+                                        font_family = 'inter'
+                                    )
+                                ]
                             )
                         ]
                     ),
@@ -653,6 +682,25 @@ class Tela_Atendimento:
                 duration = 240
             )
         )
+
+        if dic.idioma_select in ['FR', 'ES']:
+            box.content.controls[0].controls[1].controls.append(
+                ft.Text(
+                    value = vg.moedas_format[dic.idioma_select][5],
+                    size = vg.size_letra_normal, color = c.texto_secundario,
+                    font_family = 'inter'
+                )
+            )
+
+        else:
+            box.content.controls[0].controls[1].controls.insert(
+                0,
+                ft.Text(
+                    value = vg.moedas_format[dic.idioma_select][5],
+                    size = vg.size_letra_normal, color = c.texto_secundario,
+                    font_family = 'inter'
+                )
+            )
 
         botao_mais.data = {
             'x': 'mais',
@@ -679,17 +727,17 @@ class Tela_Atendimento:
 
     def lista(self):
         btn_filtro = ft.Container(
-            width = 74,
-            height = 74,
-            border_radius = 28,
+            width = vg.size_botoes,
+            height = vg.size_botoes,
+            border_radius = vg.raio_borda,
             shadow = c.shadow_leve(),
+            bgcolor = c.cor_principal,
             alignment = ft.Alignment.CENTER,
-            bgcolor = c.cor_principal_escura,
             margin = ft.Margin(right = vg.margin_right),
 
             content = ic.svg_icon(
                 'filtro',
-                size = 30, color = c.fundo_neutralo
+                size = vg.size_icons, color = c.fundo_neutralo
             ),
 
             ink = True,
@@ -716,7 +764,7 @@ class Tela_Atendimento:
 
         box_lista = ft.Container(
             expand = True,
-            border_radius = 28,
+            border_radius = vg.raio_borda,
             margin = ft.Margin(left = vg.margin_left, right = vg.margin_right),
             shadow = c.shadow_leve(),
             bgcolor = c.fundo_neutralo,
@@ -727,17 +775,17 @@ class Tela_Atendimento:
 
         titulo_subtotal = ft.Text(
             value = dic.palavras[dic.idioma_select]['atendimento']['subtotal'],
-            size = 16, color = c.texto_secundario, font_family = 'inter'
+            size = vg.size_letra_normal, color = c.texto_secundario, font_family = 'inter'
         )
 
         texto_subtotal = ft.Text(
             value = vg.moedas_format[vg.moeda_ativa][0],
-            size = 32, color = c.texto_principal, font_family = 'inter'
+            size = vg.size_letras_valores_destaque, color = c.texto_principal, font_family = 'inter'
         )
 
         cifrao = ft.Text(
             value = vg.moedas_format[vg.moeda_ativa][5],
-            size = 32, color = c.texto_principal, font_family = 'inter'
+            size = vg.size_letras_valores_destaque, color = c.texto_principal, font_family = 'inter'
         )
 
         subtotal_completo = ft.Column(
@@ -761,23 +809,24 @@ class Tela_Atendimento:
             row_money_format.controls.extend([cifrao, texto_subtotal])
 
         subtotal_completo.controls.extend([titulo_subtotal, row_money_format])
+
         btn_tiket = ft.Container(
-            width = 74,
-            height = 74,
-            bgcolor = c.fundo,
-            border_radius = 28,
+            width = vg.size_botoes,
+            height = vg.size_botoes,
+            border_radius = vg.raio_borda,
             shadow = c.shadow_leve(),
+            bgcolor = c.cor_principal,
             content = ic.svg_icon(
                 icon = 'tiket',
-                size = 30, color = c.cor_principal_escura
+                size = vg.size_icons, color = c.fundo_neutralo if c.tema == 'claro' else c.fundo
             ),
             alignment = ft.Alignment.CENTER,
             margin = ft.Margin(right = vg.margin_right),
-            border = ft.Border.all(width = 1.4, color = c.cor_principal_escura),
 
             ink = True,
             on_click = self.abrir_aba_tikets
         )
+
         row_subtotal_tikets = ft.Row(
             alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
             vertical_alignment = ft.CrossAxisAlignment.CENTER,
@@ -788,10 +837,10 @@ class Tela_Atendimento:
         )
 
         btn_prosseguir = ft.Container(
-            height = 74,
+            height = vg.size_botoes,
             expand = True,
             bgcolor = c.fundo,
-            border_radius = 28,
+            border_radius = vg.raio_borda,
             shadow = c.shadow_leve(),
             alignment = ft.Alignment.CENTER,
             border = ft.Border.all(width = 0.6, color = c.texto_suave),
@@ -799,7 +848,7 @@ class Tela_Atendimento:
             
             content = ft.Text(
                 value = dic.palavras[dic.idioma_select]['atendimento']['prosseguir'],
-                size = 16, color = c.texto_suave, font_family = 'inter',
+                size = vg.size_letra_destaque, color = c.texto_suave, font_family = 'inter',
                 weight = ft.FontWeight.NORMAL
             ),
 
@@ -807,45 +856,43 @@ class Tela_Atendimento:
             on_click = None,
         )
 
-        for x in self.servicos_carregados[vg.todos_txt]:
+        for x in vg.servicos_carregados[vg.todos_txt]:
+            setor = vg.servicos_carregados[vg.todos_txt][x]['setor']
+            valor = vg.servicos_carregados[vg.todos_txt][x]['valor']
+            produto = vg.servicos_carregados[vg.todos_txt][x]['produto']
+
             control_box = self.box_servicos(
-                setor = self.servicos_carregados[vg.todos_txt][x]['setor'],
-                valor = self.servicos_carregados[vg.todos_txt][x]['valor'],
-                servico = self.servicos_carregados[vg.todos_txt][x]['produto'],
-                lista = self.lista_scroll, text_subtotal = texto_subtotal,
+                setor = setor,
+                valor = valor,
+                servico = produto,
+                lista = self.lista_scroll,
+                text_subtotal = texto_subtotal,
                 botao_presseguir = btn_prosseguir
             )
 
             self.lista_scroll.controls.append(control_box)
-            self.controls_servicos_carregados[f'{self.servicos_carregados[vg.todos_txt][x]['setor']}||{self.servicos_carregados[vg.todos_txt][x]['produto']}'] = control_box
-        print("CHAVES DISPONÍVEIS:", list(self.controls_servicos_carregados.keys()))
+            vg.servicos_carregados[vg.todos_txt][x]['control'] = control_box
+            vg.servicos_carregados[setor][x]['control'] = control_box
+
         lista.controls[0].controls.extend([
             vg.barra_pesquisa(
                 text_interno = dic.palavras[dic.idioma_select]['atendimento']['busca_rapida'],
-                on_change = lambda e: vg.sistema_de_busca(e, self.page, self.lista_scroll, self.controls_servicos_carregados)
+                on_change = lambda e: vg.sistema_de_busca(
+                    e,
+                    self.page,
+                    self.lista_scroll,
+                    vg.servicos_carregados[vg.todos_txt],
+                    busca_servico = True, lista_tags = self.lista_tags,
+                    funcao_tag = self.box_ativo
+                )
             ),
 
             btn_filtro
         ])
+
         lista.controls.append(box_lista)
         lista.controls.append(row_subtotal_tikets)
         lista.controls.append(btn_prosseguir)
         lista.controls.append(ft.Column(height = 360))
 
         return lista
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

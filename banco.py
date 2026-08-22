@@ -8,7 +8,40 @@ from pathlib import Path
 BANCO = Path(__file__).resolve().parent
 BANCO = BANCO / 'banco.db'
 
-sqlite3.register_adapter(Decimal, str)
+# sqlite3.register_adapter(Decimal, str)
+# con = sqlite3.connect(BANCO)
+# cursor = con.cursor()
+# cursor.execute(
+#     'INSERT INTO cupons (codigo, valor) VALUES(?, ?)',('123ABC', 25,)
+# )
+
+# con.commit()
+
+def verificar_cupom(value = None):
+    if value != None:
+        con = sqlite3.connect(BANCO)
+        cursor = con.cursor()
+
+        cursor.execute(
+            'SELECT codigo, valor FROM cupons WHERE codigo = ?',(value,)
+        )
+
+        resultado = cursor.fetchone()
+        con.commit()
+
+        if resultado != None:
+            cursor.execute(
+                'SELECT codigo FROM cupons_usados WHERE codigo = ?',(resultado[0],)
+            )
+
+            verificacao = cursor.fetchone()
+
+            if verificacao is None:
+                print(resultado[1])
+
+        con.commit()
+
+verificar_cupom('123ABC')
 
 def servico_valor_base():
     con = sqlite3.connect(BANCO)

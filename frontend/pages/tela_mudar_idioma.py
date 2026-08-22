@@ -106,7 +106,7 @@ class Tela_Idioma:
                                 controls = [
                                     ft.Text(
                                         value = text_idioma,
-                                        size = 16, color = c.texto_principal,
+                                        size = vg.size_letra_destaque, color = c.texto_principal,
                                         font_family = 'inter',
                                         max_lines = 1, overflow = ft.TextOverflow.ELLIPSIS
                                     ),
@@ -169,7 +169,7 @@ class Tela_Idioma:
                                 ft.Text(
                                     expand = True,
                                     value = dic.palavras[dic.idioma_select]['idioma']['exemplo'],
-                                    size = 16, color = c.texto_secundario,
+                                    size = vg.size_letra_destaque, color = c.texto_secundario,
                                     font_family = 'inter', overflow = ft.TextOverflow.CLIP
                                 )
                             ]

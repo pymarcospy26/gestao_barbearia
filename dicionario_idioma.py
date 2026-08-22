@@ -26,8 +26,8 @@ palavras = {
             'selecione_itens': 'Atenção!\n',
             'selecione_pagamento': 'Atenção!\n',
             'valor_inserido_invalido': 'Ops..!\n',
-            'filtros_produtos': 'Produtos por categorias',
-            'saldo_insuficiente': 'Saldo insuficiente!\n'
+            'filtros_produtos': 'Filtrar por categoria',
+            'saldo_insuficiente': 'Saldo insuficiente!\n',
         },
 
         'home': {
@@ -60,7 +60,7 @@ palavras = {
             'cartao': 'Cartão',
             'dinheiro': 'Dinheiro',
             'outros': 'Outros',
-            'salvar': 'Salvar'
+            'salvar': 'Salvar',
         },
 
         'registros': {
@@ -118,7 +118,7 @@ palavras = {
             'selecione_itens': 'Attention!\n',
             'selecione_pagamento': 'Attention!\n',
             'valor_inserido_invalido': 'Oops..!\n',
-            'filtros_produtos': 'Products by category',
+            'filtros_produtos': 'Filter by category',
             'saldo_insuficiente': 'Insufficient balance!\n'
         },
 
@@ -210,7 +210,7 @@ palavras = {
             'selecione_itens': '¡Atención!\n',
             'selecione_pagamento': '¡Atención!\n',
             'valor_inserido_invalido': '¡Ups..!\n',
-            'filtros_produtos': 'Productos por categorías',
+            'filtros_produtos': 'Filtrar por categoría',
             'saldo_insuficiente': '¡Saldo insuficiente!\n'
         },
 
@@ -302,7 +302,7 @@ palavras = {
             'selecione_itens': 'Attention !\n',
             'selecione_pagamento': 'Attention !\n',
             'valor_inserido_invalido': 'Oups..!\n',
-            'filtros_produtos': 'Produits par catégorie',
+            'filtros_produtos': 'Filtrer par catégorie',
             'saldo_insuficiente': 'Solde insuffisant !\n'
         },
 

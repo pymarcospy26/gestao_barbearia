@@ -76,7 +76,7 @@ class Configuracao:
                                     ft.Text(
                                         expand = True,
                                         value = text_config,
-                                        size = 16, color = c.texto_principal,
+                                        size = vg.size_letra_destaque, color = c.texto_principal,
                                         font_family = 'inter',
                                         max_lines = 1, overflow = ft.TextOverflow.ELLIPSIS
                                     ),
@@ -84,7 +84,7 @@ class Configuracao:
                                     ft.Text(
                                         expand = True,
                                         value = sub_text_config,
-                                        size = 14, color = c.texto_secundario,
+                                        size = vg.size_letra_normal, color = c.texto_secundario,
                                         font_family = 'inter',
                                         max_lines = 1, overflow = ft.TextOverflow.ELLIPSIS
                                     ),
@@ -212,4 +212,3 @@ class Configuracao:
         )
 
         return coluna
-    

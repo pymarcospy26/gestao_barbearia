@@ -39,11 +39,10 @@ class Tela_Home:
         self.banner = ft.Container(
             height = 360,
             expand = True,
-            border_radius = 34,
+            border_radius = vg.raio_borda,
             bgcolor = c.fundo_neutralo,
             shadow = c.shadow_leve(),
             margin = ft.Margin(left = vg.margin_left, top = vg.margin_top, right = vg.margin_right),
-            # gradient = c.gradiente_top_bottom(c.gradiente_banner),
         )
         self.ferramentas = ft.ResponsiveRow(
             spacing = 0,
@@ -63,7 +62,7 @@ class Tela_Home:
                     col = col,
                     height = 140,
                     bgcolor = c.fundo_neutralo,
-                    border_radius = 34,
+                    border_radius = vg.raio_borda,
                     margin = ft.Margin(left = l, right = r, top = t, bottom = b),
 
                     shadow = c.shadow_leve(),
@@ -77,13 +76,13 @@ class Tela_Home:
                         controls = [
                             ic.svg_icon(
                                 icon,
-                                size = 30,
+                                size = 24,
                                 color = c.texto_secundario
                             ),
                             
                             ft.Text(
                                 value = titulo,
-                                size = 16, color = c.texto_secundario, weight = ft.FontWeight.W_400,
+                                size = vg.size_letra_destaque, color = c.texto_secundario, weight = ft.FontWeight.W_400,
                                 font_family = 'inter', text_align = ft.TextAlign.CENTER
                             )
                         ]
@@ -171,7 +170,7 @@ class Tela_Home:
                                 margin = ft.Margin(top = 6),
                                 value = f'{self.agendamentos[cliente]['servico']}\n',
                                 style = ft.TextStyle(
-                                    size = 14, color = c.texto_secundario,
+                                    size = vg.size_letra_normal, color = c.texto_secundario,
                                     font_family = 'inter', weight = ft.FontWeight.W_300
                                 ),
                             ),
@@ -183,7 +182,7 @@ class Tela_Home:
                                 margin = ft.Margin(top = 6, bottom = 18),
                                 value = f'{self.agendamentos[cliente]['setor']}\n',
                                 style = ft.TextStyle(
-                                    size = 14, color = c.texto_secundario,
+                                    size = vg.size_letra_normal, color = c.texto_secundario,
                                     font_family = 'inter', weight = ft.FontWeight.W_300
                                 ),
                             ),
@@ -246,6 +245,7 @@ class Tela_Home:
                 self.banner,
                 self.ferramentas,
                 self.agendados_prox,
+                ft.Column(height = 300)
             ]
         )
 

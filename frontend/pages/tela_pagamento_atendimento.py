@@ -90,7 +90,7 @@ class Pagamento:
                     ),
                     ft.Text(
                         value = tipo_pagamento, weight = ft.FontWeight.NORMAL,
-                        size = 16, color = c.texto_suave, font_family = 'inter'
+                        size = vg.size_letra_destaque, color = c.texto_suave, font_family = 'inter'
                     ),
                 ]
             ),
@@ -194,7 +194,7 @@ class Pagamento:
             border = ft.Border.all(width = 0.6, color = c.texto_suave),
             content = ft.Text(
                 value = dic.palavras[dic.idioma_select]['atendimento']['salvar'],
-                size = 16, color = c.texto_suave, weight = ft.FontWeight.NORMAL
+                size = vg.size_letra_destaque, color = c.texto_suave, weight = ft.FontWeight.NORMAL
             ),
             margin = ft.Margin(top = vg.margin_top, left = vg.margin_left, right = vg.margin_right)
         )
@@ -238,14 +238,3 @@ class Pagamento:
         self.page.update()
 
         return coluna_controles
-
-
-
-
-
-
-
-
-
-
-

@@ -62,11 +62,11 @@ class App:
 
         self.titulo_control = ft.Text(
             value = 'HELLO WORD',
-            size = 26, color = c.texto_principal,
+            size = vg.size_letra_titulos, color = c.texto_principal,
             font_family = 'inter', weight = ft.FontWeight.W_400
         )
         self.box_titulo = ft.Container(
-            height = 74,
+            height = 68,
             bgcolor = ft.Colors.TRANSPARENT,
             alignment = ft.Alignment.CENTER,
             content = self.titulo_control,
@@ -139,7 +139,7 @@ class App:
                             controls = [
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT),
                                 ic.svg_icon('home', size = 30, color = c.cor_principal),
-                                ft.Text(value = dic.palavras[dic.idioma_select]['titulos']['inicio'], size = 14, color = c.cor_principal, font_family = 'inter', weight = ft.FontWeight.W_500, margin = ft.Margin(top = 2)),
+                                ft.Text(value = dic.palavras[dic.idioma_select]['titulos']['inicio'], size = vg.size_letra_normal, color = c.cor_principal, font_family = 'inter', weight = ft.FontWeight.W_500, margin = ft.Margin(top = 2)),
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = c.cor_principal, margin = ft.Margin(top = 6)),
                             ]
                         ),
@@ -163,7 +163,7 @@ class App:
                             controls = [
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT),
                                 ic.svg_icon('calendar', size = 30, color = c.texto_suave),
-                                ft.Text(value = dic.palavras[dic.idioma_select]['titulos']['agenda'], size = 14, color = c.texto_suave, weight = ft.FontWeight.W_500, font_family = 'inter', margin = ft.Margin(top = 2)),
+                                ft.Text(value = dic.palavras[dic.idioma_select]['titulos']['agenda'], size = vg.size_letra_normal, color = c.texto_suave, weight = ft.FontWeight.W_500, font_family = 'inter', margin = ft.Margin(top = 2)),
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = c.texto_suave, margin = ft.Margin(top = 6)),
                             ]
                         ),
@@ -189,7 +189,7 @@ class App:
                             controls = [
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT),
                                 ic.svg_icon('historico', size = 30, color = c.texto_suave),
-                                ft.Text(value = dic.palavras[dic.idioma_select]['titulos']['historico'], size = 14, color = c.texto_suave, weight = ft.FontWeight.W_500, font_family = 'inter', margin = ft.Margin(top = 2)),
+                                ft.Text(value = dic.palavras[dic.idioma_select]['titulos']['historico'], size = vg.size_letra_normal, color = c.texto_suave, weight = ft.FontWeight.W_500, font_family = 'inter', margin = ft.Margin(top = 2)),
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = c.texto_suave, margin = ft.Margin(top = 6)),
                             ]
                         ),
@@ -213,7 +213,7 @@ class App:
                             controls = [
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT),
                                 ic.svg_icon('tres_pontos', size = 30, color = c.texto_suave),
-                                ft.Text(value = dic.palavras[dic.idioma_select]['titulos']['outros'], size = 14, color = c.texto_suave, weight = ft.FontWeight.W_500, font_family = 'inter', margin = ft.Margin(top = 2)),
+                                ft.Text(value = dic.palavras[dic.idioma_select]['titulos']['outros'], size = vg.size_letra_normal, color = c.texto_suave, weight = ft.FontWeight.W_500, font_family = 'inter', margin = ft.Margin(top = 2)),
                                 ft.Container(width = 10, height = 10, border_radius = 5, bgcolor = ft.Colors.TRANSPARENT, margin = ft.Margin(top = 6)),
                             ]
                         ),
@@ -241,7 +241,7 @@ class App:
             alignment = ft.MainAxisAlignment.START,
 
             controls = [
-                ft.Row( 
+                ft.Row(
                     alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
                     vertical_alignment = ft.CrossAxisAlignment.CENTER,
                     controls = [
@@ -250,8 +250,6 @@ class App:
                         self.stack_notificcao('sino', None, margin_top = vg.margin_top, margin_right = vg.margin_right, data = 'Notificação')
                     ]
                 ),
-
-                ft.Column(height = 200) #espaco pra empurrar os componentes a baixo da bar
             ]
         )
 
@@ -293,9 +291,10 @@ class App:
 
     async def troca_de_pagina(self, e, pagina = None, titulo = None, icon_config = 'menu', preservar_anterior = False, clear = True):
         if clear:
-            for x in self.tela_scrol.controls[1:]:
+            fim = len(self.tela_scrol.controls)
+            for x in self.tela_scrol.controls[1: fim]:
                 self.tela_scrol.controls.remove(x)
-            self.tela_scrol.controls.append(self.area_page)
+            self.tela_scrol.controls.insert(1, self.area_page)
 
         self.mudar_button_config_EXIT_MENU(icon = icon_config)
         self.click_cor_control_bar(e, controle = titulo)
@@ -319,19 +318,18 @@ class App:
             right = right,
             bottom = bottom,
             data = {'controle': data},
-            width = 74,
-            height = 74,
+            width = vg.size_botoes,
+            height = vg.size_botoes,
             bgcolor = c.fundo_neutralo,
-            border_radius = 28,
+            border_radius = vg.raio_borda,
             shadow = c.shadow_leve(),
             alignment = ft.Alignment.CENTER,
             margin = ft.Margin(
                 top = margin_top,
                 left = margin_left,
                 right = margin_right,
-                bottom = margin_bottom
             ),
-            content = ic.svg_icon(icon, size = 30, color = c.texto_secundario),
+            content = ic.svg_icon(icon, size = vg.size_icons, color = c.texto_secundario),
             on_click = on_click, ink = True
         )
     def stack_notificcao(
@@ -345,10 +343,11 @@ class App:
             right = 0, bottom = 0,
             data = data
         )
+
         stack = ft.Stack(
             data = {},
-            width = 74,
-            height = 74,
+            width = vg.size_botoes,
+            height = vg.size_botoes,
             controls = [
                 btn,
                 ft.Container(
@@ -364,7 +363,6 @@ class App:
                 top = margin_top,
                 left = margin_left,
                 right = margin_right,
-                bottom = margin_bottom
             )
         )
         btn.data['stack'] = stack
@@ -452,7 +450,6 @@ class App:
             icon = 'vassoura', size = 34, color = c.fundo_neutralo
         )
 
-        await vg.carregar_dados()
         vg.pagina_atendimento_go = norm.Tela_Atendimento(self.page).tela()
         vg.pagina_ativa_go = vg.pagina_atendimento_go
 
@@ -491,6 +488,7 @@ class App:
         await self.devolver_atendimento(e)
 
     async def abrir_home(self):
+        await vg.carregar_dados()
         async def nova_tela_atendimento(e):
             vg.go_pagamento_aprovd = False
             vg.pagina_ativa_go = None

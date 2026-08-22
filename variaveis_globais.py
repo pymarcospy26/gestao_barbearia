@@ -6,7 +6,15 @@ import unicodedata
 from decimal import Decimal
 import dicionario_idioma as dic
 
-def sistema_de_busca(e, page: ft.Page, lista_de_controls = None, dicionario_controls_carregados = None):
+def sistema_de_busca(
+    e,
+    page: ft.Page,
+    lista_de_controls = None,
+    dicionario_controls_carregados = None,
+    busca_servico = False,
+    lista_tags = None,
+    funcao_tag = None,
+):
     if lista_de_controls == None or dicionario_controls_carregados == None:
         print('Falta lista ou dicionario')
         return None
@@ -19,7 +27,14 @@ def sistema_de_busca(e, page: ft.Page, lista_de_controls = None, dicionario_cont
             lista_de_controls.controls.clear()
             for x in dicionario_controls_carregados:
                 print('adicionado')
-                lista_de_controls.controls.append(dicionario_controls_carregados[x])
+                lista_de_controls.controls.append(dicionario_controls_carregados[x]['control'])
+
+        if busca_servico:
+            for x in lista_tags:
+                if x.data['tag'] != todos_txt:
+                    funcao_tag(False, x, False)
+                else:
+                    funcao_tag(True, x, False)
 
         page.update()
 
@@ -42,7 +57,7 @@ def sistema_de_busca(e, page: ft.Page, lista_de_controls = None, dicionario_cont
         texto_servico = normalizar_letras(servico)
         if all(palavra in texto_servico for palavra in palavras_busca):
             lista_de_controls.alignment = ft.MainAxisAlignment.START
-            controles.append(dicionario_controls_carregados[servico])
+            controles.append(dicionario_controls_carregados[servico]['control'])
 
     if len(controles) == 0:
         not_found = ft.Column(
@@ -75,7 +90,7 @@ def barra_pesquisa(
     on_change: ft.Event = None,
 ):
     return ft.Stack(
-        height = 78,
+        height = size_botoes + 4,
         expand = True,
         alignment = ft.Alignment.CENTER,
         controls = [
@@ -83,9 +98,11 @@ def barra_pesquisa(
                 left = 0,
                 right = 0,
                 expand = True,
+                height = size_botoes,
                 bgcolor = c.fundo_neutralo,
-                border_radius = 28,
+                border_radius = raio_borda,
                 shadow = c.shadow_leve(),
+                alignment = ft.Alignment.CENTER,
                 
                 margin = ft.Margin(
                     left = margin_left
@@ -93,20 +110,20 @@ def barra_pesquisa(
 
                 content = ft.TextField(
                     expand = True,
-                    border_radius = 28,
-                    content_padding = ft.Padding(top = 26, left = 64, right = 44,bottom = 26),
+                    border_radius = raio_borda,
+                    content_padding = ft.Padding(left = 64, top = size_botoes * 1 / 3, bottom = size_botoes * 1 / 3),
                     bgcolor = c.fundo_neutralo,
                     border_color = ft.Colors.TRANSPARENT,
-                    focused_border_color = c.cor_principal_escura,
+                    focused_border_color = c.cor_principal,
 
                     text_style = ft.TextStyle(
-                        size = 16, color = c.texto_principal,
+                        size = size_letra_destaque, color = c.texto_principal,
                         font_family = 'inter'
                     ),
 
                     hint_text = text_interno,
                     hint_style = ft.TextStyle(
-                        size = 16, color = c.texto_suave,
+                        size = size_letra_destaque, color = c.texto_suave,
                         font_family = 'inter'
                     ),
 
@@ -157,6 +174,13 @@ moeda_ativa = dic.idioma_select
 margin_left = 16
 margin_right = 16
 margin_top = 16
+size_botoes = 68 #em casos de botões quadrados/ que tem height e width iguais, usar esse size de 68 para ambos, caso o botão tenha largura diferente da altura, usar somente na altura
+raio_borda = 24
+size_icons = 26
+size_letra_destaque = 16 #em casos de um titulo e subtitulo/ destaque é o titulo de um componente da pagina por exemplo na tela home que tem os box com clientes próximos, ai tem o nome do cliente em destaque e abaixo um subtitulo do serviço a ser realizado
+size_letra_normal = 14 #textos comuns na tela
+size_letra_titulos = 22 #titulos de paginas
+size_letras_valores_destaque = 26
 
 moedas_format = {
     'BR': ['0,00', 'R$ 1.234,56', '.', ',', 0, 'R$ '],
@@ -182,8 +206,8 @@ async def carregar_dados():
         if setor not in servicos_carregados:
             servicos_carregados[setor] = {}
 
-        servicos_carregados[todos_txt][produto] = {'setor': setor, 'produto': produto, 'valor': valor}
-        servicos_carregados[setor][produto] = {'setor': setor, 'produto': produto, 'valor': valor}
+        servicos_carregados[todos_txt][f'{setor}||{produto}'] = {'setor': setor, 'produto': produto, 'valor': valor, 'control': None}
+        servicos_carregados[setor][f'{setor}||{produto}'] = {'setor': setor, 'produto': produto, 'valor': valor, 'control': None}
 
 pagina_main = None
 pagina_home = None
